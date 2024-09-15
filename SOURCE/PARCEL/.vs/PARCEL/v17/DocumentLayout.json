@@ -1,0 +1,263 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\controls\\gaugeparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:controls\\gaugeparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\parcel.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:parcel.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\parcel.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:parcel.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\helpers\\mathematician.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:helpers\\mathematician.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\interfaces\\icontrolparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:interfaces\\icontrolparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\controls\\buttonparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:controls\\buttonparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\interfaces\\ibuttonparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:interfaces\\ibuttonparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\converters\\substringtrailingconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:converters\\substringtrailingconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\converters\\substringprecedingconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:converters\\substringprecedingconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\converters\\isnullconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:converters\\isnullconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\controls\\controlparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:controls\\controlparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\controls\\indicatorparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:controls\\indicatorparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\interfaces\\igaugeparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:interfaces\\igaugeparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|c:\\users\\joshreeves\\source\\repos\\parcel\\interfaces\\iindicatorparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{168D5F8B-1FBE-46A4-BE3B-E80563F39D99}|PARCEL.csproj|solutionrelative:interfaces\\iindicatorparcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PARCEL",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\PARCEL.csproj",
+              "RelativeDocumentMoniker": "PARCEL.csproj",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\PARCEL.csproj",
+              "RelativeToolTip": "PARCEL.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-15T20:55:28.813Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PARCEL.csproj",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\PARCEL.csproj",
+              "RelativeDocumentMoniker": "PARCEL.csproj",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\PARCEL.csproj",
+              "RelativeToolTip": "PARCEL.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-15T19:11:07.783Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SubstringTrailingConverter.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Converters\\SubstringTrailingConverter.cs",
+              "RelativeDocumentMoniker": "Converters\\SubstringTrailingConverter.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Converters\\SubstringTrailingConverter.cs",
+              "RelativeToolTip": "Converters\\SubstringTrailingConverter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:22:41.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SubstringPrecedingConverter.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Converters\\SubstringPrecedingConverter.cs",
+              "RelativeDocumentMoniker": "Converters\\SubstringPrecedingConverter.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Converters\\SubstringPrecedingConverter.cs",
+              "RelativeToolTip": "Converters\\SubstringPrecedingConverter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:21:50.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IsNullConverter.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Converters\\IsNullConverter.cs",
+              "RelativeDocumentMoniker": "Converters\\IsNullConverter.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Converters\\IsNullConverter.cs",
+              "RelativeToolTip": "Converters\\IsNullConverter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:21:45.009Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Mathematician.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Helpers\\Mathematician.cs",
+              "RelativeDocumentMoniker": "Helpers\\Mathematician.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Helpers\\Mathematician.cs",
+              "RelativeToolTip": "Helpers\\Mathematician.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:21:28.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IControlPARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IControlPARCEL.cs",
+              "RelativeDocumentMoniker": "Interfaces\\IControlPARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IControlPARCEL.cs",
+              "RelativeToolTip": "Interfaces\\IControlPARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:05:29.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ControlPARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\ControlPARCEL.cs",
+              "RelativeDocumentMoniker": "Controls\\ControlPARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\ControlPARCEL.cs",
+              "RelativeToolTip": "Controls\\ControlPARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:06:08.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IIndicatorPARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IIndicatorPARCEL.cs",
+              "RelativeDocumentMoniker": "Interfaces\\IIndicatorPARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IIndicatorPARCEL.cs",
+              "RelativeToolTip": "Interfaces\\IIndicatorPARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:04:58.852Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IndicatorPARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\IndicatorPARCEL.cs",
+              "RelativeDocumentMoniker": "Controls\\IndicatorPARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\IndicatorPARCEL.cs",
+              "RelativeToolTip": "Controls\\IndicatorPARCEL.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAmwIIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:06:56.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IGaugePARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IGaugePARCEL.cs",
+              "RelativeDocumentMoniker": "Interfaces\\IGaugePARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IGaugePARCEL.cs",
+              "RelativeToolTip": "Interfaces\\IGaugePARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAlpmZmZkOwBwAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:05:43.067Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GaugePARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\GaugePARCEL.cs",
+              "RelativeDocumentMoniker": "Controls\\GaugePARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\GaugePARCEL.cs",
+              "RelativeToolTip": "Controls\\GaugePARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:06:36.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IButtonPARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IButtonPARCEL.cs",
+              "RelativeDocumentMoniker": "Interfaces\\IButtonPARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Interfaces\\IButtonPARCEL.cs",
+              "RelativeToolTip": "Interfaces\\IButtonPARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:05:21.745Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ButtonPARCEL.cs",
+              "DocumentMoniker": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\ButtonPARCEL.cs",
+              "RelativeDocumentMoniker": "Controls\\ButtonPARCEL.cs",
+              "ToolTip": "C:\\Users\\JoshReeves\\source\\repos\\PARCEL\\Controls\\ButtonPARCEL.cs",
+              "RelativeToolTip": "Controls\\ButtonPARCEL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-15T06:05:56.995Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
