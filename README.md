@@ -1,5 +1,7 @@
 ## PARCEL
 
+[PARCEL_LOGO](PARCEL_LOGO.SVG)
+
 PARCEL is a libary of (relatively) platform-agnostic controls for .NET MAUI rendered using the framework's graphics system. Thexe controls are meant to extend and, in some cases replace, those provided with MAUI by default in order to provide additional functionality and ease of use. 
 
 Unlike the standard views provided with MAUI by default, which map to underlying controls provided by the OS, PARCELs contain both the code required to render the control and the members required to track its state and impelement its behavior. As a result, the difference's between each control's appearance and behavior from platform to platform should be minimized.
