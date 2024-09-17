@@ -1,24 +1,156 @@
+using Microsoft.Maui.Controls.Shapes;
+using PARCEL.Interfaces;
+using System.Windows.Input;
+
 namespace PARCEL.Controls;
 
-public class ButtonPARCEL : ControlPARCEL
+public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 {
+
 	public ButtonPARCEL()
 	{
-		Content = new VerticalStackLayout
-		{
-			Children = 
-			{
-				new Label 
-				{ 
-					HorizontalOptions = LayoutOptions.Center, 
-					VerticalOptions = LayoutOptions.Center, 
-					Text = "Welcome to .NET MAUI!"
-				}
-
-			}
-
-		};
+        throw new NotImplementedException();
 
 	}
+
+    #region Events
+    public event EventHandler Pressed;
+    public event EventHandler Released;
+
+    #endregion
+
+    #region Properties
+    public bool IsPressed
+    {
+        get; set;
+
+    }
+
+    public double Offset
+    {
+        get; set;
+
+    }
+
+    public double StrokeWidth
+    {
+        get;
+        set;
+
+    }
+
+    public double FontSize
+    {
+        get;
+        set;
+
+    }
+
+    public double TextOpacity
+    {
+        get;
+        set;
+
+    }
+
+    public string Text
+    {
+        get;
+        set;
+
+    }
+
+    public string Font
+    {
+        get;
+        set;
+
+    }
+
+    public IButtonPARCEL.ButtonStyle Appearance
+    {
+        get;
+        set;
+
+    }
+
+    public ICommand ReleasedCommand
+    {
+        get;
+        set;
+
+    }
+
+    public ICommand PressedCommand
+    {
+        get;
+        set;
+
+    }
+
+    public IStackLayout ButtonContents
+    {
+        get;
+        set;
+
+    }
+
+    public IIndicatorPARCEL ButtonIcon
+    {
+        get;
+        set;
+
+    }
+
+    public object CommandParameter
+    {
+        get;
+        set;
+
+    }
+
+    public Color TextColor
+    {
+        get;
+        set;
+
+    }
+
+    public Brush ButtonColor
+    {
+        get;
+        set;
+
+    }
+
+    public Brush OffsetColor
+    {
+        get;
+        set;
+
+    }
+
+    public Brush PressedColor
+    {
+        get;
+        set;
+
+    }
+
+    public Brush StrokeColor
+    {
+        get;
+        set;
+
+    }
+
+    public Shape ButtonShape
+    {
+        get;
+        set;
+
+    }
+
+    #endregion
 
 }

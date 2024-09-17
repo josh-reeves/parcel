@@ -1,6 +1,9 @@
 ## PARCEL
 <br>
-<p align="center"><img style="width: 20%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_002.svg"/></p>
+
+<p align="center"><img style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_002.svg"/></p>
+
+<br>
 
 PARCEL is a libary of (relatively) platform-agnostic controls for .NET MAUI rendered using the framework's graphics system. These controls are meant to extend and, in some cases replace, those provided with MAUI by default in order to provide additional functionality and ease of use. 
 

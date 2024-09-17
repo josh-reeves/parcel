@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace PARCEL.Interfaces;
 
-interface IButtonPARCEL : IControlPARCEL
+public interface IButtonPARCEL : IControlPARCEL
 {
     #region Events
     public event EventHandler Pressed;
@@ -85,6 +85,13 @@ interface IButtonPARCEL : IControlPARCEL
     }
 
     public ICommand PressedCommand
+    {
+        get;
+        set;
+
+    }
+
+    public IStackLayout ButtonContents
     {
         get;
         set;

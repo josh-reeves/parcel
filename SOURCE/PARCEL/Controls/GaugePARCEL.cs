@@ -371,7 +371,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             {
                 ValueChanged?.Invoke(this, EventArgs.Empty);
 
-                if (ValueChangedCommand?.CanExecute(null) == true)
+                if (ValueChangedCommand?.CanExecute(null) ?? false)
                     ValueChangedCommand.Execute(null);
 
             }
