@@ -12,13 +12,13 @@ Unlike the standard views provided with MAUI by default, which map to underlying
 ## About PARCELs
 
 PARCELs are a series of interfaces based on IContentView that provide, at the very least, a GraphicsView. These include, but are not limited to, the following:
-- A touch-responsive indicator control for displaying shapes or images of various sizes [IIndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/source/PARCEL/Interfaces/IIndicatorPARCEL.cs)
-- A gauge control for displaying data in the form of a variety of graphics including linear and radial [IGaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/source/PARCEL/Interfaces/IGaugePARCEL.cs).
+- A touch-responsive indicator control for displaying shapes or images of various sizes [IIndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Interfaces/IIndicatorPARCEL.cs)
+- A gauge control for displaying data in the form of a variety of graphics including linear and radial [IGaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Interfaces/IGaugePARCEL.cs).
     - This can be combined with the indicator control to enable slider functionality. 
 
 <br>
 
-In addition to the interfaces mentioned above, the library also provides a series of default implementations built off of a [ControlPARCEL](https://github.com/josh-reeves/parcel/blob/main/source/PARCEL/Controls/ControlPARCEL.cs) class, which inherits from ContentView and provides a GraphicsView for simplicity. This class also provides a variety of methods useful for updating and interacting with the controls' renderers.
+In addition to the interfaces mentioned above, the library also provides a series of default implementations built off of a [ControlPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/ControlPARCEL.cs) class, which inherits from ContentView and provides a GraphicsView for simplicity. This class also provides a variety of methods useful for updating and interacting with the controls' renderers.
 
 The implementation classes for each of the individual controls provide the rendering logic via a private nested class that implements IDrawable.
 
