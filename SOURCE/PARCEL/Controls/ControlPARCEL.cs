@@ -14,8 +14,13 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
 
     #endregion
 
-    #region Properties        
-    public GraphicsView? ControlCanvas { get; set; }
+    #region Properties
+    public GraphicsView ControlCanvas
+    {
+        get => (GraphicsView)GetValue(ControlCanvasProperty);
+        set => SetValue(ControlCanvasProperty, value);
+
+    }
 
     #endregion
 

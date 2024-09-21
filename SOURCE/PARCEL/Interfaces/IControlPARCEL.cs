@@ -2,7 +2,7 @@
 
 public interface IControlPARCEL : IContentView
 {
-    public GraphicsView? ControlCanvas { get; set; }
+    public GraphicsView ControlCanvas { get; set; }
 
     // The following prevent the need to create multiple base classes and inheritance in favor of interfaces and composition:
     public new bool InputTransparent { get; set; }

@@ -2,6 +2,8 @@ using System.Windows.Input;
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
+using PARCEL.TriggerActions;
+using Microsoft.Maui.Graphics;
 
 namespace PARCEL.Controls;
 
@@ -10,12 +12,12 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     #region Fields
     private readonly Grid? controlContainer;
     private readonly Label? valueLabel;
-    private readonly DataTrigger? labelFontSizeDataTrigger,
-                                  labelDisplayDataTrigger;
-
+    
     private bool dragEnabled;
 
     private PointF firstTouch;
+    private RectF workingCanvas,
+                  indicatorBounds;
 
     public static readonly BindableProperty DisplayValueProperty = BindableProperty.Create(nameof(DisplayValue), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: RefreshView);
     public static readonly BindableProperty ReverseProperty = BindableProperty.Create(nameof(Reverse), typeof(bool), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -37,7 +39,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public static readonly BindableProperty EmptyColorProperty = BindableProperty.Create(nameof(EmptyColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FillColorProperty = BindableProperty.Create(nameof(FillColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FontColorProperty = BindableProperty.Create(nameof(FontColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
-
     #endregion
 
     #region Constructors
@@ -47,46 +48,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         {
             firstTouch = new();
 
-            ControlCanvas = new()
-            {
-                Drawable = new GaugePARCELRenderer(this)
-
-            };
-
-            labelFontSizeDataTrigger = new(typeof(Label))
-            {
-                Binding = new Binding(nameof(FontSize), converter: new IsNullConverter()),
-                Value = false,
-                Setters =
-            {
-                new()
-                {
-                    Property = Label.FontSizeProperty,
-                    Value = new Binding(nameof(FontSize))
-
-                }
-
-            }
-
-            };
-
-            labelDisplayDataTrigger = new(typeof(Label))
-            {
-                Binding = new Binding(nameof(DisplayValue)),
-                Value = true,
-                Setters =
-            {
-                new()
-                {
-                    Property = IsVisibleProperty,
-                    Value = true
-
-                }
-
-            }
-
-            };
-
             valueLabel = new Label()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -95,8 +56,38 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                 InputTransparent = true,
                 Triggers =
                 {
-                    labelFontSizeDataTrigger,
-                    labelDisplayDataTrigger
+                    new DataTrigger(typeof(Label))
+                    {
+                        Binding = new Binding(nameof(DisplayValue)),
+                        Value = true,
+                        Setters =
+                        {
+                            new()
+                            {
+                                Property = IsVisibleProperty,
+                                Value = true
+
+                            }
+
+                        }
+
+                    },
+                    new DataTrigger(typeof(Label))
+                    {
+                        Binding = new Binding(nameof(FontSize), converter: new IsNullConverter()),
+                        Value = false,
+                        Setters =
+                        {
+                            new()
+                            {
+                                Property = Label.FontSizeProperty,
+                                Value = new Binding(nameof(FontSize))
+
+                            }
+
+                        }
+
+                    }
 
                 }
 
@@ -108,12 +99,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
             controlContainer = new()
             {
-                Children = 
-                { 
-                    ControlCanvas,
-                    valueLabel 
-                
-                }
+                Children = { valueLabel }
 
             };
 
@@ -305,11 +291,11 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             if (firstTouch.IsEmpty)
                 firstTouch = e.Touches.First();
 
-            if ((renderer ?? new GaugePARCELRenderer(this)).IndicatorBounds.Contains(firstTouch))
+            if (indicatorBounds.Contains(firstTouch))
                 dragEnabled = true;
 
             if (dragEnabled)
-                TranslateInput(renderer ?? new GaugePARCELRenderer(this), e);
+                TranslateInput(e);
 #if DEBUG
             Console.WriteLine($"Console Drag Event");
 #endif
@@ -339,29 +325,26 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
-    private void TranslateInput(GaugePARCELRenderer renderer, TouchEventArgs e)
+    private void TranslateInput(TouchEventArgs e)
     {
         try
         {
             double previous = Value,
                    inputThreshold = 20;
 
+            PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(workingCanvas.Left, workingCanvas.Top, workingCanvas.Width, workingCanvas.Height, StartPos); ;
+
             switch (Appearance)
             {
                 case IGaugePARCEL.MeterStyle.Horizontal:
-
-                    break;
+                    throw new NotImplementedException();
 
                 case IGaugePARCEL.MeterStyle.Vertical:
-
-                    break;
+                    throw new NotImplementedException();
 
                 case IGaugePARCEL.MeterStyle.Radial:
-                    if (Mathematician.GetAngle(renderer.WorkingCanvas.Center, e.Touches.Last(), renderer.StartPosAsPoint) <= (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) + inputThreshold)
-                    {
-                        Value = Math.Round(Mathematician.GetAngle(renderer.WorkingCanvas.Center, e.Touches.Last(), renderer.StartPosAsPoint) / (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) * ValueMax, Precision);
-
-                    }
+                    if (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) <= (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) + inputThreshold)
+                        Value = Math.Round(Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) / (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) * ValueMax, Precision);
 
                     break;
 
@@ -389,18 +372,26 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
-            if (!(Indicator == null || (controlContainer ?? []).Contains(Indicator)))
+            ControlCanvas ??= new()
+            {
+                Drawable = new GaugePARCELRenderer(this)
+
+            };
+
+            if (!controlContainer?.Contains(ControlCanvas) ?? false)
+            {
+                controlContainer?.Add(ControlCanvas);
+
+            }
+
+            if (!(Indicator == null || (controlContainer?.Contains(Indicator) ?? false )))
             {
                 Indicator.InputTransparent = true;
 
                 controlContainer?.Add(Indicator);
 
-                if (ControlCanvas != null)
-                {
-                    ControlCanvas.DragInteraction += ControlCanvasDragInteraction;
-                    ControlCanvas.EndInteraction += ControlCanvasEndInteraction;
-
-                }
+                ControlCanvas.DragInteraction += ControlCanvasDragInteraction;
+                ControlCanvas.EndInteraction += ControlCanvasEndInteraction;
 
             }
 
@@ -436,43 +427,26 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
         #endregion
 
-        #region Properties        
-        internal RectF WorkingCanvas { get; private set; }
-        
-        internal RectF IndicatorBounds { get; private set; }
-
-        internal PointF StartPosAsPoint
-        {
-            get
-            {
-                return GeometryUtil.EllipseAngleToPoint(WorkingCanvas.Left, WorkingCanvas.Top, WorkingCanvas.Width, WorkingCanvas.Height, parent.StartPos);
-
-            }
-
-        }
-
-        #endregion
-
         #region Methods
         private void DrawIndicator(RectF rect)
         {
             PointF indicatorPos = GeometryUtil.EllipseAngleToPoint(
-                WorkingCanvas.Left,
-                WorkingCanvas.Top,
-                WorkingCanvas.Width,
-                WorkingCanvas.Height,
+                parent.workingCanvas.Left,
+                parent.workingCanvas.Top,
+                parent.workingCanvas.Width,
+                parent.workingCanvas.Height,
                 Math.Abs(valuePos));
 
-            IndicatorBounds = new((float)(indicatorPos.X - (parent.Indicator.Content.Width / 2)), (float)(indicatorPos.Y - (parent.Indicator.Content.Height / 2)), (float)parent.Indicator.Content.Width, (float)parent.Indicator.Content.Height);
+            parent.indicatorBounds = new((float)(indicatorPos.X - (parent.Indicator.Content.Width / 2)), (float)(indicatorPos.Y - (parent.Indicator.Content.Height / 2)), (float)parent.Indicator.Content.Width, (float)parent.Indicator.Content.Height);
 
-            parent.Indicator.TranslationX = IndicatorBounds.X - (rect.Width / 2 - (IndicatorBounds.Width / 2));
-            parent.Indicator.TranslationY = IndicatorBounds.Y - (rect.Height / 2 - (IndicatorBounds.Height / 2));
+            parent.Indicator.TranslationX = parent.indicatorBounds.X - (rect.Width / 2 - (parent.indicatorBounds.Width / 2));
+            parent.Indicator.TranslationY = parent.indicatorBounds.Y - (rect.Height / 2 - (parent.indicatorBounds.Height / 2));
 
         }
 
         public void Draw(ICanvas canvas, RectF rect)
         {
-            WorkingCanvas = new()
+            parent.workingCanvas = new()
             { 
                 Width = rect.Width - (parent.Thickness + parent.StrokeThickness),
                 Height = rect.Height - (parent.Thickness + parent.StrokeThickness),
@@ -488,22 +462,20 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             switch (parent.Appearance)
             {
                 case IGaugePARCEL.MeterStyle.Horizontal:
-
-                    break;
+                    throw new NotImplementedException();
 
                 case IGaugePARCEL.MeterStyle.Vertical:
-
-                    break;
+                    throw new NotImplementedException();
 
                 case IGaugePARCEL.MeterStyle.Radial:
                     valuePos = parent.StartPos - (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin) * (360f - (Math.Abs(parent.StartPos) - Math.Abs(parent.EndPos))));
                     
                     if (parent.EmptyColor.Alpha > 0)
                         canvas.DrawArc(
-                            WorkingCanvas.Left,
-                            WorkingCanvas.Top,
-                            WorkingCanvas.Width,
-                            WorkingCanvas.Height,
+                            parent.workingCanvas.Left,
+                            parent.workingCanvas.Top,
+                            parent.workingCanvas.Width,
+                            parent.workingCanvas.Height,
                             parent.StartPos,
                             parent.EndPos,
                             clockwise: true,
@@ -511,10 +483,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
                     if (parent.EmptyColor.Alpha == 0)
                         canvas.DrawArc(
-                            WorkingCanvas.Left,
-                            WorkingCanvas.Top,
-                            WorkingCanvas.Width,
-                            WorkingCanvas.Height,
+                            parent.workingCanvas.Left,
+                            parent.workingCanvas.Top,
+                            parent.workingCanvas.Width,
+                            parent.workingCanvas.Height,
                             parent.StartPos,
                             valuePos,
                             clockwise: true,
@@ -524,10 +496,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                     canvas.StrokeColor = parent.EmptyColor;
 
                     canvas.DrawArc(
-                        WorkingCanvas.Left, 
-                        WorkingCanvas.Top, 
-                        WorkingCanvas.Width, 
-                        WorkingCanvas.Height, 
+                        parent.workingCanvas.Left, 
+                        parent.workingCanvas.Top, 
+                        parent.workingCanvas.Width, 
+                        parent.workingCanvas.Height, 
                         parent.StartPos, 
                         parent.EndPos, 
                         clockwise: true, 
@@ -536,10 +508,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                     canvas.StrokeColor = parent.FillColor;
 
                     canvas.DrawArc(
-                        WorkingCanvas.Left, 
-                        WorkingCanvas.Top, 
-                        WorkingCanvas.Width, 
-                        WorkingCanvas.Height, 
+                        parent.workingCanvas.Left, 
+                        parent.workingCanvas.Top, 
+                        parent.workingCanvas.Width, 
+                        parent.workingCanvas.Height, 
                         parent.StartPos, 
                         valuePos, 
                         clockwise: true, 

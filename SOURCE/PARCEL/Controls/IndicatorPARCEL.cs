@@ -9,7 +9,6 @@ namespace PARCEL.Controls;
 public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 {
     #region Fields
-    private readonly PointerGestureRecognizer? pointerRecognizer;
     private readonly Grid? controlContainer;
 
     public static readonly BindableProperty IndicatorGaugeProperty = BindableProperty.Create(nameof(IndicatorGauge), typeof(IGaugePARCEL), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
@@ -24,23 +23,18 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 	{
         try
         {
-            pointerRecognizer = new()
-            {
-                PointerPressedCommand = new Command(OnPointerPressed),
-                PointerReleasedCommand = new Command(OnPointerReleased)
-
-            };
-
-            ControlCanvas = new()
-            {
-                Drawable = new IndicatorPARCELRenderer(this)
-
-            };
-
             controlContainer = new()
             {
-                Children = { ControlCanvas },
-                GestureRecognizers = { pointerRecognizer }
+                GestureRecognizers =
+                {
+                    new PointerGestureRecognizer()
+                    {
+                        PointerPressedCommand = new Command(OnPointerPressed),
+                        PointerReleasedCommand = new Command(OnPointerReleased)
+
+                    }
+
+                }
 
             };
 
@@ -129,6 +123,15 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     {
         try
         {
+            ControlCanvas ??= new()
+            {
+                Drawable = new IndicatorPARCELRenderer(this)
+
+            };
+
+            if (!controlContainer?.Contains(ControlCanvas) ?? false)
+                controlContainer?.Add(ControlCanvas);
+
             if (IndicatorIcon != null && (!controlContainer?.Contains(IndicatorIcon) ?? false))
                 controlContainer?.Add(IndicatorIcon);
 
