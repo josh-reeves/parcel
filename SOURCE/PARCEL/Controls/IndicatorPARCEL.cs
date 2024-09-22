@@ -14,7 +14,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     public static readonly BindableProperty IndicatorGaugeProperty = BindableProperty.Create(nameof(IndicatorGauge), typeof(IGaugePARCEL), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorColorProperty = BindableProperty.Create(nameof(IndicatorColor), typeof(Color), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorShapeProperty = BindableProperty.Create(nameof(IndicatorShape), typeof(Shape), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty IndicatorIconProperty = BindableProperty.Create(nameof(IndicatorIcon), typeof(Image), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty IndicatorIconProperty = BindableProperty.Create(nameof(IndicatorIcon), typeof(Image), typeof(IndicatorPARCEL), propertyChanged: AddIcon);
 
     #endregion
 
@@ -152,12 +152,16 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
     }
 
-    protected override void LayoutChildren(double x, double y, double width, double height)
+    private static void AddIcon(BindableObject bindable, object oldValue, object newValue)
     {
+        IndicatorPARCEL instance = (IndicatorPARCEL)bindable;
+
         try
         {
-            if (IndicatorIcon != null && (!controlContainer?.Contains(IndicatorIcon) ?? false))
-                controlContainer?.Add(IndicatorIcon);
+            if (instance.IndicatorIcon != null && (!instance.controlContainer?.Contains(instance.IndicatorIcon) ?? false))
+                instance.controlContainer?.Add(instance.IndicatorIcon);
+
+            RefreshView(bindable, oldValue, newValue);
 
         }
         catch (Exception ex)
@@ -165,8 +169,6 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
             Console.WriteLine(ex);
 
         }
-
-        base.LayoutChildren(x, y, width, height);
 
     }
 

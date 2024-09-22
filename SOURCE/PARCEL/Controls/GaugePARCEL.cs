@@ -34,7 +34,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public static readonly BindableProperty LineCapProperty = BindableProperty.Create(nameof(LineCap), typeof(LineCap), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty GaugeStyleProperty = BindableProperty.Create(nameof(Appearance), typeof(IGaugePARCEL.MeterStyle), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ValueChangedCommandProperty = BindableProperty.Create(nameof(ValueChangedCommand), typeof(ICommand), typeof(GaugePARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty IndicatorProperty = BindableProperty.Create(nameof(Indicator), typeof(IIndicatorPARCEL), typeof(GaugePARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty IndicatorProperty = BindableProperty.Create(nameof(Indicator), typeof(IIndicatorPARCEL), typeof(GaugePARCEL), propertyChanged: AddIndicator);
     public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty EmptyColorProperty = BindableProperty.Create(nameof(EmptyColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FillColorProperty = BindableProperty.Create(nameof(FillColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -407,26 +407,30 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
-    protected override void LayoutChildren(double x, double y, double width, double height)
+    private static void AddIndicator(BindableObject bindable, object oldValue, object newValue)
     {
         try
         {
-            if (Indicator != null && !(controlContainer?.Contains(Indicator) ?? false))
+            GaugePARCEL instance = (GaugePARCEL)bindable;
+
+            if (instance.Indicator != null && !(instance.controlContainer?.Contains(instance.Indicator) ?? false))
             {
-                Indicator.InputTransparent = true;
+                instance.Indicator.InputTransparent = true;
 
-                controlContainer?.Add(Indicator);
+                instance.controlContainer?.Add(instance.Indicator);
 
-                if (ControlCanvas != null && !dragSubscribed)
+                if (instance.ControlCanvas != null && !instance.dragSubscribed)
                 {
-                    ControlCanvas.DragInteraction += ControlCanvasDragInteraction;
-                    ControlCanvas.EndInteraction += ControlCanvasEndInteraction;
+                    instance.ControlCanvas.DragInteraction += instance.ControlCanvasDragInteraction;
+                    instance.ControlCanvas.EndInteraction += instance.ControlCanvasEndInteraction;
 
-                    dragSubscribed = true;
+                    instance.dragSubscribed = true;
 
                 }
 
             }
+
+            RefreshView(bindable, oldValue, newValue);
 
         }
         catch (Exception ex)
@@ -434,8 +438,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             Console.WriteLine(ex);
 
         }
-
-        base.LayoutChildren(x, y, width, height);
 
     }
 
