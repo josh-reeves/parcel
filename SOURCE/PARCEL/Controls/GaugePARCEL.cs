@@ -3,6 +3,7 @@ using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
 using Microsoft.Maui.Graphics;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace PARCEL.Controls;
 
@@ -427,6 +428,17 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
             }
 
+            if (instance.Indicator == null)
+            {
+                if (instance.ControlCanvas != null && instance.dragSubscribed)
+                {
+                    instance.ControlCanvas.DragInteraction -= instance.ControlCanvasDragInteraction;
+                    instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
+
+                }
+
+            }
+            
             RefreshView(bindable, oldValue, newValue);
 
         }
