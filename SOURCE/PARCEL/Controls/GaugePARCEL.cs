@@ -76,9 +76,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                 [
                     new(GraphicsView.DrawableProperty, nameof(Renderer))
 
-                ]
-
-            );
+                ]);
 
             valueLabel = ViewBuilder<Label>.BuildView(
                 new()
@@ -128,7 +126,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                     new(Label.TextColorProperty, nameof(FontColor)),
                     new(Label.FontFamilyProperty, nameof(FontFamily)),
                     new(Label.TextProperty, nameof(Value)),
-
 
                 ]);
 

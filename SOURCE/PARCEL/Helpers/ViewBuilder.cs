@@ -8,12 +8,16 @@ namespace PARCEL.Helpers;
 
 public static class ViewBuilder<T>
 {
+    public delegate void AdditionalSetupDelegate();
+
     #region Methods
-    public static T BuildView(T view, BindingPair[] bindings)
+    public static T BuildView(T view, BindingPair[] bindings, AdditionalSetupDelegate? additionalSetup = null)
     {
         if (view is View)
             foreach (BindingPair binding in bindings)
                 (view as View).SetBinding(binding.Property, binding.Path);
+
+        additionalSetup?.Invoke();
 
         return view;
 
@@ -22,10 +26,18 @@ public static class ViewBuilder<T>
     #endregion
 
     #region Structs
-    public class BindingPair(BindableProperty property, string path)
+    public class BindingPair
     {
-        public BindableProperty Property { get; private set; } = property;
-        public string Path { get; private set; } = path;
+        public BindingPair(BindableProperty property, string path)
+        {
+            Property = property;
+            Path = path;
+
+
+        }
+
+        public BindableProperty Property { get; private set; }
+        public string Path { get; private set; }
 
     }
 

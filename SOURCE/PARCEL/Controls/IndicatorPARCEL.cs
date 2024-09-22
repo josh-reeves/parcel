@@ -51,8 +51,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
                 [
                     new(GraphicsView.DrawableProperty, nameof(Renderer)),
                     
-                ]
-                );
+                ]);
 
             controlContainer = new()
             {
