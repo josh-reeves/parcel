@@ -1,3 +1,5 @@
+using Microsoft.Maui.Graphics.Platform;
+using Microsoft.Maui.Handlers;
 using PARCEL.Interfaces;
 
 namespace PARCEL.Controls;
@@ -5,20 +7,26 @@ namespace PARCEL.Controls;
 public abstract class ControlPARCEL : ContentView, IControlPARCEL
 {
     #region Fields
-    public static readonly BindableProperty ControlCanvasProperty = BindableProperty.Create(nameof(ControlCanvas), typeof(GraphicsView), typeof(ControlPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty RendererProperty = BindableProperty.Create(nameof(Renderer), typeof(IDrawable), typeof(ControlPARCEL), propertyChanged: RefreshView);
 
     #endregion
 
     #region Constructors
-    public ControlPARCEL() { }
+    public ControlPARCEL()
+    {
+
+
+    }
 
     #endregion
 
     #region Properties
-    public GraphicsView ControlCanvas
+    protected GraphicsView? ControlCanvas { get; set; }
+
+    public IDrawable Renderer
     {
-        get => (GraphicsView)GetValue(ControlCanvasProperty);
-        set => SetValue(ControlCanvasProperty, value);
+        get => (IDrawable)GetValue(RendererProperty);
+        set => SetValue(RendererProperty, value);
 
     }
 

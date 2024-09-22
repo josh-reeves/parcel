@@ -11,14 +11,13 @@ Unlike the standard views provided with MAUI by default, which map to underlying
 
 ## About PARCELs
 
-PARCELs are a series of interfaces based on IContentView that provide, at the very least, a GraphicsView. These include, but are not limited to, the following:
-- A touch-responsive indicator control for displaying shapes or images of various sizes [IIndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Interfaces/IIndicatorPARCEL.cs)
-- A gauge control for displaying data in the form of a variety of graphics including linear and radial [IGaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Interfaces/IGaugePARCEL.cs).
+PARCELs are a series of controls and interfaces based on IContentView that provide, at the very least, an IDrawable property. These include, but are not limited to, the following:
+- A touch-responsive indicator control for displaying shapes or images of various sizes [IndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/IndicatorPARCEL.cs) and its associated interface: [IIndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Interfaces/IIndicatorPARCEL.cs).
+- A gauge control for displaying data in the form of a variety of graphics including linear and radial [GaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/GaugePARCEL.cs) and its associated interface: [IGaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Interfaces/IGaugePARCEL.cs).
     - This can be combined with the indicator control to enable slider functionality. 
 
 <br>
 
-In addition to the interfaces mentioned above, the library also provides a series of default implementations built off of a [ControlPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/ControlPARCEL.cs) class, which inherits from ContentView and provides a GraphicsView for simplicity. This class also provides a variety of methods useful for updating and interacting with the controls' renderers.
+In addition to the above, the library also provides an abstract base class ([ControlPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/ControlPARCEL.cs)) which inherits from ContentView and provides the requisite IDrawable property in the form of a Bindable Property along with a GraphicsView for easy consumption and a variety of methods for updating the controls' renderers.
 
-The implementation classes for each of the individual controls provide the rendering logic via a private nested class that implements IDrawable.
-
+The implementations for each of the controls provide a default renderer in the form of a nested class which implements IDrawable. The interfaces of these classes are limited to their constructors, which makes them easy to substitute with custom implementations via the renderer property.

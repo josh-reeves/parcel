@@ -1,8 +1,8 @@
 using Microsoft.Maui.Controls.Shapes;
 using PARCEL.Interfaces;
-using PARCEL.Helpers;
-
+using PARCEL.Converters;
 using Path = Microsoft.Maui.Controls.Shapes.Path;
+using PARCEL.Helpers;
 
 namespace PARCEL.Controls;
 
@@ -23,8 +23,41 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 	{
         try
         {
+            ControlCanvas = ViewBuilder<GraphicsView>.BuildView(
+                new()
+                {
+                    Triggers =
+                    {
+                        new DataTrigger(typeof(GraphicsView))
+                        {
+                            Binding =  new Binding(nameof(Renderer), converter: new IsNullConverter()),
+                            Value = true,
+                            Setters =
+                            {
+                                new()
+                                {
+                                    Property = GraphicsView.DrawableProperty,
+                                    Value = new IndicatorPARCELRenderer(this)
+
+                                }
+
+                            }
+
+                        },
+
+                    }
+
+                },
+                [
+                    new(GraphicsView.DrawableProperty, nameof(Renderer)),
+                    
+                ]
+                );
+
             controlContainer = new()
             {
+                BindingContext = this,
+                Children = { ControlCanvas },
                 GestureRecognizers =
                 {
                     new PointerGestureRecognizer()
@@ -123,15 +156,6 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     {
         try
         {
-            ControlCanvas ??= new()
-            {
-                Drawable = new IndicatorPARCELRenderer(this)
-
-            };
-
-            if (!controlContainer?.Contains(ControlCanvas) ?? false)
-                controlContainer?.Add(ControlCanvas);
-
             if (IndicatorIcon != null && (!controlContainer?.Contains(IndicatorIcon) ?? false))
                 controlContainer?.Add(IndicatorIcon);
 
@@ -191,10 +215,10 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
                             Height = rect.Height - (offset * 2)
 
                         },
-                        (parent.IndicatorShape as RoundRectangle ?? new RoundRectangle()).CornerRadius.TopLeft, 
-                        (parent.IndicatorShape as RoundRectangle ?? new RoundRectangle()).CornerRadius.TopRight,
-                        (parent.IndicatorShape as RoundRectangle ?? new RoundRectangle()).CornerRadius.BottomLeft,
-                        (parent.IndicatorShape as RoundRectangle ?? new RoundRectangle()).CornerRadius.BottomRight);
+                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.TopLeft ?? 0, 
+                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.TopRight ?? 0,
+                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.BottomLeft ?? 0,
+                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.BottomRight ?? 0);
 
                     break;
 
@@ -210,12 +234,6 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
                 case Path:
                     canvas.FillPath((parent.IndicatorShape as Path)?.GetPath());
-
-                    break;
-
-                default:
-
-                    canvas.ResetState();
 
                     break;
 

@@ -153,4 +153,33 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     #endregion
 
+    #region Classes
+    private class ButtonParcelRenderer : IDrawable
+    {
+        #region Fields
+        private readonly ButtonPARCEL parent;
+
+        #endregion
+
+        #region Constructors
+        ButtonParcelRenderer(ButtonPARCEL parentControl)
+        {
+            parent = parentControl;
+
+        }
+
+        #endregion
+
+        public void Draw(ICanvas canvas, RectF rect)
+        {
+
+            canvas.FillPath(parent.ButtonShape.GetPath());
+
+
+        }
+
+    }
+
+    #endregion
+
 }

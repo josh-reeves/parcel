@@ -2,7 +2,6 @@ using System.Windows.Input;
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
-using PARCEL.TriggerActions;
 using Microsoft.Maui.Graphics;
 
 namespace PARCEL.Controls;
@@ -13,7 +12,8 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     private readonly Grid? controlContainer;
     private readonly Label? valueLabel;
     
-    private bool dragEnabled;
+    private bool dragSubscribed,
+                 dragEnabled;
 
     private PointF firstTouch;
     private RectF workingCanvas,
@@ -48,40 +48,23 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         {
             firstTouch = new();
 
-            valueLabel = new Label()
-            {
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center,
-                IsVisible = false,
-                InputTransparent = true,
-                Triggers =
+            ControlCanvas = ViewBuilder<GraphicsView>.BuildView(
+                new()
                 {
-                    new DataTrigger(typeof(Label))
+                    Triggers =
                     {
-                        Binding = new Binding(nameof(DisplayValue)),
-                        Value = true,
-                        Setters =
+                        new DataTrigger(typeof(GraphicsView))
                         {
-                            new()
+                            Binding =  new Binding(nameof(Renderer), converter: new IsNullConverter()),
+                            Value = true,
+                            Setters =
                             {
-                                Property = IsVisibleProperty,
-                                Value = true
+                                new()
+                                {
+                                    Property = GraphicsView.DrawableProperty,
+                                    Value = new GaugePARCELRenderer(this)
 
-                            }
-
-                        }
-
-                    },
-                    new DataTrigger(typeof(Label))
-                    {
-                        Binding = new Binding(nameof(FontSize), converter: new IsNullConverter()),
-                        Value = false,
-                        Setters =
-                        {
-                            new()
-                            {
-                                Property = Label.FontSizeProperty,
-                                Value = new Binding(nameof(FontSize))
+                                }
 
                             }
 
@@ -89,17 +72,75 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
                     }
 
-                }
+                },
+                [
+                    new(GraphicsView.DrawableProperty, nameof(Renderer))
 
-            };
+                ]
 
-            valueLabel.SetBinding(Label.TextColorProperty, nameof(FontColor));
-            valueLabel.SetBinding(Label.FontFamilyProperty, nameof(FontFamily));
-            valueLabel.SetBinding(Label.TextProperty, nameof(Value));
+            );
+
+            valueLabel = ViewBuilder<Label>.BuildView(
+                new()
+                {
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    IsVisible = false,
+                    InputTransparent = true,
+                    Triggers =
+                    {
+                        new DataTrigger(typeof(Label))
+                        {
+                            Binding = new Binding(nameof(DisplayValue)),
+                            Value = true,
+                            Setters =
+                            {
+                                new()
+                                {
+                                    Property = IsVisibleProperty,
+                                    Value = true
+
+                                }
+
+                            }
+
+                        },
+                        new DataTrigger(typeof(Label))
+                        {
+                            Binding = new Binding(nameof(FontSize), converter: new IsNullConverter()),
+                            Value = false,
+                            Setters =
+                            {
+                                new()
+                                {
+                                    Property = Label.FontSizeProperty,
+                                    Value = new Binding(nameof(FontSize))
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                },
+                [
+                    new(Label.TextColorProperty, nameof(FontColor)),
+                    new(Label.FontFamilyProperty, nameof(FontFamily)),
+                    new(Label.TextProperty, nameof(Value)),
+
+
+                ]);
 
             controlContainer = new()
             {
-                Children = { valueLabel }
+                BindingContext = this,
+                Children = 
+                { 
+                    valueLabel,
+                    ControlCanvas
+                
+                }
 
             };
 
@@ -286,8 +327,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
-            GaugePARCELRenderer? renderer = ControlCanvas?.Drawable as GaugePARCELRenderer;
-
             if (firstTouch.IsEmpty)
                 firstTouch = e.Touches.First();
 
@@ -372,26 +411,20 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
-            ControlCanvas ??= new()
-            {
-                Drawable = new GaugePARCELRenderer(this)
-
-            };
-
-            if (!controlContainer?.Contains(ControlCanvas) ?? false)
-            {
-                controlContainer?.Add(ControlCanvas);
-
-            }
-
-            if (!(Indicator == null || (controlContainer?.Contains(Indicator) ?? false )))
+            if (Indicator != null && !(controlContainer?.Contains(Indicator) ?? false))
             {
                 Indicator.InputTransparent = true;
 
                 controlContainer?.Add(Indicator);
 
-                ControlCanvas.DragInteraction += ControlCanvasDragInteraction;
-                ControlCanvas.EndInteraction += ControlCanvasEndInteraction;
+                if (ControlCanvas != null && !dragSubscribed)
+                {
+                    ControlCanvas.DragInteraction += ControlCanvasDragInteraction;
+                    ControlCanvas.EndInteraction += ControlCanvasEndInteraction;
+
+                    dragSubscribed = true;
+
+                }
 
             }
 
@@ -437,7 +470,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                 parent.workingCanvas.Height,
                 Math.Abs(valuePos));
 
-            parent.indicatorBounds = new((float)(indicatorPos.X - (parent.Indicator.Content.Width / 2)), (float)(indicatorPos.Y - (parent.Indicator.Content.Height / 2)), (float)parent.Indicator.Content.Width, (float)parent.Indicator.Content.Height);
+            parent.indicatorBounds = new((float)(indicatorPos.X - (parent.Indicator.Width / 2)), (float)(indicatorPos.Y - (parent.Indicator.Content.Height / 2)), (float)parent.Indicator.Content.Width, (float)parent.Indicator.Content.Height);
 
             parent.Indicator.TranslationX = parent.indicatorBounds.X - (rect.Width / 2 - (parent.indicatorBounds.Width / 2));
             parent.Indicator.TranslationY = parent.indicatorBounds.Y - (rect.Height / 2 - (parent.indicatorBounds.Height / 2));
