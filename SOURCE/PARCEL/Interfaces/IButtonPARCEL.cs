@@ -42,34 +42,6 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public double FontSize
-    {
-        get;
-        set;
-
-    }
-
-    public double TextOpacity
-    {
-        get;
-        set;
-
-    }
-
-    public string Text
-    {
-        get;
-        set;
-
-    }
-
-    public string Font
-    {
-        get;
-        set;
-
-    }
-
     public ButtonStyle Appearance
     {
         get;
@@ -91,14 +63,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public IStackLayout ButtonContents
-    {
-        get;
-        set;
-
-    }
-
-    public IIndicatorPARCEL ButtonIcon
+    public IStackLayout ButtonContent
     {
         get;
         set;
@@ -112,7 +77,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public Color TextColor
+    public Color StrokeColor
     {
         get;
         set;
@@ -140,14 +105,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public Brush StrokeColor
-    {
-        get;
-        set;
-
-    }
-
-    public Shape ButtonShape
+    public IShape ButtonShape
     {
         get;
         set;

@@ -12,7 +12,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     private readonly Grid? controlContainer;
 
     public static readonly BindableProperty IndicatorGaugeProperty = BindableProperty.Create(nameof(IndicatorGauge), typeof(IGaugePARCEL), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty IndicatorColorProperty = BindableProperty.Create(nameof(IndicatorColor), typeof(Color), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty IndicatorColorProperty = BindableProperty.Create(nameof(IndicatorColor), typeof(Brush), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorShapeProperty = BindableProperty.Create(nameof(IndicatorShape), typeof(Shape), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorIconProperty = BindableProperty.Create(nameof(IndicatorIcon), typeof(Image), typeof(IndicatorPARCEL), propertyChanged: AddIcon);
 
@@ -97,9 +97,9 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
     }
 
-    public Color IndicatorColor
+    public Brush IndicatorColor
     {
-        get => (Color)GetValue(IndicatorColorProperty); 
+        get => (Brush)GetValue(IndicatorColorProperty); 
         set => SetValue(IndicatorColorProperty, value);
 
     }
@@ -197,48 +197,12 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 		{
 			parent.IndicatorColor ??= parent.IndicatorShape.BackgroundColor; // Set IndicatorColor to IndicatorShape.BackgroundColor if it is currently null;
 
-            canvas.FillColor = parent.IndicatorColor;
+            canvas.SetFillPaint(parent.IndicatorColor, rect);
 
-			switch (parent.IndicatorShape)
-			{
-				case Rectangle:
-                    canvas.FillRectangle(rect.Left + offset, rect.Top + offset, rect.Width - (offset * 2), rect.Height - (offset *2));
-
-                    break;
-
-                case RoundRectangle:
-                    canvas.FillRoundedRectangle(
-                        new Rect()
-                        {
-                            Left = rect.Left + offset,
-                            Top = rect.Top + offset,
-                            Width = rect.Width - (offset * 2),
-                            Height = rect.Height - (offset * 2)
-
-                        },
-                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.TopLeft ?? 0, 
-                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.TopRight ?? 0,
-                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.BottomLeft ?? 0,
-                        (parent.IndicatorShape as RoundRectangle)?.CornerRadius.BottomRight ?? 0);
-
-                    break;
-
-                case Ellipse:
-                    canvas.FillEllipse(rect.Left + offset, rect.Top + offset, rect.Width - (offset * 2), rect.Height - (offset * 2));
-
-                    break;
-
-                case Polygon:
-                    canvas.FillPath((parent.IndicatorShape as Polygon)?.GetPath());
-
-                    break;
-
-                case Path:
-                    canvas.FillPath((parent.IndicatorShape as Path)?.GetPath());
-
-                    break;
-
-            }
+            Designer.FillShape(
+                canvas,
+                GetSafeMargins(rect, offset),
+                parent.IndicatorShape);
 
         }
 

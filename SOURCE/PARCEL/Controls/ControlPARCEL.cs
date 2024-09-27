@@ -1,5 +1,3 @@
-using Microsoft.Maui.Graphics.Platform;
-using Microsoft.Maui.Handlers;
 using PARCEL.Interfaces;
 
 namespace PARCEL.Controls;
@@ -12,11 +10,7 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #endregion
 
     #region Constructors
-    public ControlPARCEL()
-    {
-
-
-    }
+    public ControlPARCEL() { }
 
     #endregion
 
@@ -38,17 +32,28 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
         if (bindable is ControlPARCEL)
         {
             (bindable as ControlPARCEL)?.ControlCanvas?.Invalidate();
-
         }
 
     }
 
-    protected static void AdjustMargins(ref RectF rect, float offset)
+    /// <summary>
+    /// Returns a new RectF whose measurements have been reduced by the value of offset.
+    /// This was built primarily as a workaround for this issue: https://github.com/dotnet/maui/issues/8629
+    /// Presumably, if MS fixes the bug so that canvas edges no longer clip on Windows/iOS, this won't be needed anymore.
+    /// </summary>
+    /// <param name="rect">The RectF that will act as a base for the new RectF the method returns.</param>
+    /// <param name="offset">The value by which to reduce the perimeter of the new RectF the method returns.</param>
+    /// <returns></returns>
+    protected static RectF GetSafeMargins(RectF rect, float offset)
     {
-        rect.Left += offset;
-        rect.Top += offset;
-        rect.Width -= offset * 2;
-        rect.Height -= offset * 2;
+        return new RectF()
+        {
+            Left = rect.Left + offset,
+            Top = rect.Top + offset,
+            Width = rect.Width - (offset * 2),
+            Height = rect.Height - (offset * 2)
+
+        };
 
     }
 

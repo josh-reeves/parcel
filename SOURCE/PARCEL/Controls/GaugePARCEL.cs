@@ -50,7 +50,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             firstTouch = new();
 
             ControlCanvas = ViewBuilder<GraphicsView>.BuildView(
-                new()
+                new GraphicsView()
                 {
                     Triggers =
                     {
@@ -75,7 +75,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
                 },
                 [
-                    new(GraphicsView.DrawableProperty, nameof(Renderer))
+                    new ViewBuilder<GraphicsView>.BindingPair(GraphicsView.DrawableProperty, nameof(Renderer))
 
                 ]);
 
@@ -434,6 +434,8 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                 {
                     instance.ControlCanvas.DragInteraction -= instance.ControlCanvasDragInteraction;
                     instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
+
+                    instance.dragSubscribed = false;
 
                 }
 
