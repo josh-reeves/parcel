@@ -10,6 +10,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     #region Fields
     private readonly Grid? controlContainer;
 
+    private static readonly BindablePropertyKey IsParentPressedPropertyKey = BindableProperty.CreateAttachedReadOnly("IsParentPressed", typeof(bool), typeof(ButtonPARCEL), false);
     public static readonly BindableProperty IsPressedProperty = BindableProperty.Create(nameof(IsPressed), typeof(bool), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty OffsetProperty = BindableProperty.Create(nameof(Offset), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
@@ -23,6 +24,8 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     public static readonly BindableProperty PressedColorProperty = BindableProperty.Create(nameof(PressedColor), typeof(Brush), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ButtonShapeProperty = BindableProperty.Create(nameof(ButtonShape), typeof(IShape), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty IsParentPressedProperty = IsParentPressedPropertyKey.BindableProperty;
+
     #endregion
 
     #region Constructors
@@ -101,7 +104,12 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     public bool IsPressed
     {
         get => (bool)GetValue(IsPressedProperty);
-        set => SetValue(IsPressedProperty, value);
+        set
+        {
+            SetValue(IsPressedProperty, value);
+            SetValue(IsParentPressedPropertyKey, value);
+
+        }
 
     }
 
@@ -225,7 +233,12 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
         }
 
+        RefreshView(bindable, oldValue, newValue);
+
     }
+
+    public static bool GetIsParentPressed(BindableObject view)
+        => (bool)view.GetValue(IsParentPressedProperty);
 
     #endregion
 
@@ -249,17 +262,19 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
         public void Draw(ICanvas canvas, RectF rect)
         {
+            Console.WriteLine(GetIsParentPressed(parent));
+
+            VisualElement? content = parent.ButtonContent as VisualElement ?? null; 
+
             canvas.StrokeSize = (float)parent.StrokeWidth;
-    
-            parent.StrokeColor ??= Colors.Transparent;
 
             switch (parent.Appearance)
             {
                 case IButtonPARCEL.ButtonStyle.Flat:
-                    if (!parent.IsPressed)
-                        Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.ButtonColor);
-                    else
+                    if (parent.IsPressed)
                         Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.PressedColor);
+                    else
+                        Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.ButtonColor);
 
                     Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor);
                         
@@ -267,27 +282,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
                 case IButtonPARCEL.ButtonStyle.Raised:
 
-                    if (!parent.IsPressed)
-                    {
-                        Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
-
-                        Designer.FillShape(
-                            canvas,
-                            new RectF()
-                            {
-                                Top = rect.Top + offset,
-                                Left = rect.Left + offset,
-                                Width = rect.Width - (offset * 2),
-                                Bottom = rect.Bottom - offset - (float)parent.Offset
-
-                            },
-                            parent.ButtonShape,
-                            parent.ButtonColor);
-
-                        Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor);
-
-                    }
-                    else
+                    if (parent.IsPressed)
                     {
                         Designer.FillShape(canvas,
                             new RectF()
@@ -311,8 +306,34 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
                                 Bottom = rect.Bottom - offset
 
                             },
-                            parent.ButtonShape, 
+                            parent.ButtonShape,
                             parent.StrokeColor);
+
+                        if (content != null)
+                            content.TranslationY = 0 + (parent.Offset / 2);
+
+                    }
+                    else
+                    {
+                        Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
+
+                        Designer.FillShape(
+                            canvas,
+                            new RectF()
+                            {
+                                Top = rect.Top + offset,
+                                Left = rect.Left + offset,
+                                Width = rect.Width - (offset * 2),
+                                Bottom = rect.Bottom - offset - (float)parent.Offset
+
+                            },
+                            parent.ButtonShape,
+                            parent.ButtonColor);
+
+                        Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor);
+
+                        if (content != null)
+                            content.TranslationY = 0 - (parent.Offset / 2);
 
                     }
 
