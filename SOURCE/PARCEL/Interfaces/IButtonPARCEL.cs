@@ -10,17 +10,6 @@ public interface IButtonPARCEL : IControlPARCEL
 
     #endregion
 
-    #region Enums
-    public enum ButtonStyle
-    {
-        Flat,
-        Raised,
-        Recessed
-
-    }
-
-    #endregion
-
     #region Properties
     public bool IsPressed 
     {
@@ -35,13 +24,6 @@ public interface IButtonPARCEL : IControlPARCEL
     }
 
     public double StrokeWidth
-    {
-        get;
-        set;
-
-    }
-
-    public ButtonStyle Appearance
     {
         get;
         set;
