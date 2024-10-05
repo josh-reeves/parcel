@@ -30,6 +30,20 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
+    public IShape ButtonShape
+    {
+        get;
+        set;
+
+    }
+
+    public IStackLayout ButtonContent
+    {
+        get;
+        set;
+
+    }
+
     public ICommand ReleasedCommand
     {
         get;
@@ -44,13 +58,6 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public IStackLayout ButtonContent
-    {
-        get;
-        set;
-
-    }
-
     public object CommandParameter
     {
         get;
@@ -58,7 +65,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public Color StrokeColor
+    public SolidColorBrush StrokeColor
     {
         get;
         set;
@@ -72,13 +79,6 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public Brush OffsetColor
-    {
-        get;
-        set;
-
-    }
-
     public Brush PressedColor
     {
         get;
@@ -86,7 +86,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public IShape ButtonShape
+    public Brush OffsetColor
     {
         get;
         set;

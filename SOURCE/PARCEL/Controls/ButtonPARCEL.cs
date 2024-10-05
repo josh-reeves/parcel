@@ -10,18 +10,19 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     #region Fields
     private readonly Grid? controlContainer;
 
-    public static readonly BindableProperty IsPressedProperty = BindableProperty.Create(nameof(IsPressed), typeof(bool), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty IsPressedProperty = BindableProperty.Create(nameof(IsPressed), typeof(bool), typeof(ButtonPARCEL), defaultValue: false, propertyChanged: RefreshView);
     public static readonly BindableProperty OffsetProperty = BindableProperty.Create(nameof(Offset), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty ButtonShapeProperty = BindableProperty.Create(nameof(ButtonShape), typeof(IShape), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty ButtonContentProperty = BindableProperty.Create(nameof(ButtonContent), typeof(IStackLayout), typeof(ButtonPARCEL), propertyChanged: AddContent);
     public static readonly BindableProperty ReleasedCommandProperty = BindableProperty.Create(nameof(ReleasedCommand), typeof(ICommand), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty ButtonContentProperty = BindableProperty.Create(nameof(ButtonContent), typeof(IStackLayout), typeof(ButtonPARCEL), propertyChanged: AddContent);
     public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(SolidColorBrush), typeof(ButtonPARCEL), propertyChanging: RefreshView, propertyChanged: RefreshView);
     public static readonly BindableProperty ButtonColorProperty = BindableProperty.Create(nameof(ButtonColor), typeof(Brush), typeof(ButtonPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty OffsetColorProperty = BindableProperty.Create(nameof(OffsetColor), typeof(Brush), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty PressedColorProperty = BindableProperty.Create(nameof(PressedColor), typeof(Brush), typeof(ButtonPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(ButtonPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty ButtonShapeProperty = BindableProperty.Create(nameof(ButtonShape), typeof(IShape), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty OffsetColorProperty = BindableProperty.Create(nameof(OffsetColor), typeof(Brush), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty IsParentPressedProperty = BindableProperty.CreateAttached("IsParentPressed", typeof(bool), typeof(ButtonPARCEL), false);
 
     #endregion
 
@@ -103,6 +104,15 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
         get => (bool)GetValue(IsPressedProperty);
         set
         {
+            if (ButtonContent is StackLayout stackLayout)
+            {
+                SetIsParentPressed(stackLayout, value);
+
+                foreach (View child in stackLayout.Children)
+                    SetIsParentPressed(child, value);
+
+            }
+
             SetValue(IsPressedProperty, value);
 
         }
@@ -123,6 +133,20 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     }
 
+    public IShape ButtonShape
+    {
+        get => (IShape)GetValue(ButtonShapeProperty);
+        set => SetValue(ButtonShapeProperty, value);
+
+    }
+
+    public IStackLayout ButtonContent
+    {
+        get => (IStackLayout)GetValue(ButtonContentProperty);
+        set => SetValue(ButtonContentProperty, value);
+
+    }
+
     public ICommand ReleasedCommand
     {
         get => (ICommand)GetValue(ReleasedCommandProperty);
@@ -137,17 +161,17 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     }
 
-    public IStackLayout ButtonContent
-    {
-        get => (IStackLayout)GetValue(ButtonContentProperty);
-        set => SetValue(ButtonContentProperty, value);
-
-    }
-
     public object CommandParameter
     {
         get => GetValue(CommandParameterProperty);
         set => SetValue(CommandParameterProperty, value);
+
+    }
+
+    public SolidColorBrush StrokeColor
+    {
+        get => (SolidColorBrush)GetValue(StrokeColorProperty);
+        set => SetValue(StrokeColorProperty, value);
 
     }
 
@@ -158,13 +182,6 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     }
 
-    public Brush OffsetColor
-    {
-        get => (Brush)GetValue(OffsetColorProperty);
-        set => SetValue(OffsetColorProperty, value);
-
-    }
-
     public Brush PressedColor
     {
         get => (Brush)GetValue(PressedColorProperty);
@@ -172,17 +189,10 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     }
 
-    public Color StrokeColor
+    public Brush OffsetColor
     {
-        get => (Color)GetValue(StrokeColorProperty);
-        set => SetValue(StrokeColorProperty, value);
-
-    }
-
-    public IShape ButtonShape
-    {
-        get => (IShape)GetValue(ButtonShapeProperty);
-        set => SetValue(ButtonShapeProperty, value);
+        get => (Brush)GetValue(OffsetColorProperty);
+        set => SetValue(OffsetColorProperty, value);
 
     }
 
@@ -214,18 +224,22 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     private static void AddContent(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is ButtonPARCEL)
+        if (bindable is ButtonPARCEL instance)
         {
-            ButtonPARCEL instance = (ButtonPARCEL)bindable;
-
-            if (!instance?.controlContainer?.Contains(instance.ButtonContent) ?? false)
-                instance?.controlContainer?.Add(instance.ButtonContent);
+            instance.controlContainer?.Remove(oldValue as VisualElement);
+            instance.controlContainer?.Add(instance.ButtonContent);
 
         }
 
         RefreshView(bindable, oldValue, newValue);
 
     }
+
+    public static bool GetIsParentPressed(BindableObject view)
+        => (bool)view.GetValue(IsParentPressedProperty);
+
+    public static void SetIsParentPressed(BindableObject view, bool value)
+        => view.SetValue(IsParentPressedProperty, value);
 
     #endregion
 
@@ -288,15 +302,13 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
                     },
                     parent.ButtonShape,
-                    parent.StrokeColor);
+                    parent.StrokeColor.Color);
 
-                if (content != null)
-                    content.TranslationY = 0 + (parent.Offset / 2);
+                content.TranslationY = 0 + (parent.Offset / 2);
 
             }
             else
             {
-
                 Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
 
                 Designer.FillShape(
@@ -312,7 +324,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
                     parent.ButtonShape,
                     parent.ButtonColor);
 
-                Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor);
+                Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor.Color);
 
                 content.TranslationY = 0 - (parent.Offset / 2);
 
@@ -321,7 +333,40 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
         }
 
         private void DrawRecessed(ICanvas canvas, RectF rect, VisualElement content)
-            => throw new NotImplementedException();
+        {
+            Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
+
+            if (parent.IsPressed)
+            {
+
+                Designer.FillShape(
+                    canvas,
+                    new RectF()
+                    {
+                        Top = rect.Top + offset + Math.Abs((float)parent.Offset),
+                        Left = rect.Left + offset,
+                        Width = rect.Width - (offset * 2),
+                        Bottom = rect.Bottom - offset
+
+                    },
+                    parent.ButtonShape,
+                    parent.PressedColor);
+
+                
+                content.TranslationY = 0 + (Math.Abs(parent.Offset) / 2);
+
+            }
+            else
+            {
+                Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.ButtonColor);
+
+                content.TranslationY = 0;
+
+            }
+
+            Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor.Color);
+
+        }
 
     }
 
