@@ -1,7 +1,7 @@
 # PARCEL
 <br>
 
-<p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003.svg"/></p>
+<p align="center"><img align="center" style="width: 50%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003.svg"/></p>
 
 <br>
 
@@ -11,19 +11,21 @@ PARCEL is a libary of (relatively) platform-agnostic controls for .NET MAUI rend
 <br>
 
 - [GaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/GaugePARCEL.cs) - A gauge for displaying data in the form of a variety of graphs including both linear and radial variations. Touch input can be enabled via a bindable property, turning any gauge into a slider. An IndicatorPARCEL can be added to any gauge to visually highlight data.
+
+A radial GaugePARCEL with a circular IndicatorPARCEL:
 <p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/gaugeparcel-radial.png"/></p>
 <br>
 
 - [ButtonPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/ButtonPARCEL.cs) - A combo button with a variety of display styles that takes a stack of views as it's content. Place an image, text and more on a single button. Could you put a button on a button? I probably wouldn't recommend it, but sure: You do you!
 
-Flat:
+Flat ButtonPARCEL:
 <p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/buttonparcel-flat.png"/></p>
 
 
-Raised:
+Raised ButtonPARCEL:
 <p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/buttonparcel-raised.png"/></p>
 
-Recessed:
+Recessed ButtonPARCEL:
 <p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/buttonparcel-recessed.png"/></p>
 <br>
 
