@@ -226,7 +226,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     {
         if (bindable is ButtonPARCEL instance)
         {
-            instance.controlContainer?.Remove(oldValue as VisualElement);
+            instance.controlContainer?.Remove(oldValue as IView);
             instance.controlContainer?.Add(instance.ButtonContent);
 
         }
@@ -263,19 +263,19 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
         public void Draw(ICanvas canvas, RectF rect)
         {
-            VisualElement? content = parent.ButtonContent as VisualElement ?? null; 
+            VisualElement? content = parent.ButtonContent as VisualElement; 
 
             canvas.StrokeSize = (float)parent.StrokeWidth;
 
-            if (content != null && parent.Offset >= 0)
+            if (parent.Offset >= 0)
                 DrawRaised(canvas, rect, content);
 
-            if (content != null && parent.Offset < 0)
+            if (parent.Offset < 0)
                 DrawRecessed(canvas, rect, content);
 
         }
 
-        private void DrawRaised(ICanvas canvas, RectF rect, VisualElement content)
+        private void DrawRaised(ICanvas canvas, RectF rect, VisualElement? content)
         {
             if (parent.IsPressed)
             {
@@ -304,7 +304,8 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
                     parent.ButtonShape,
                     parent.StrokeColor.Color);
 
-                content.TranslationY = 0 + (parent.Offset / 2);
+                if (content != null)
+                    content.TranslationY = 0 + (parent.Offset / 2);
 
             }
             else
@@ -326,13 +327,14 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
                 Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor.Color);
 
-                content.TranslationY = 0 - (parent.Offset / 2);
+                if (content != null )
+                    content.TranslationY = 0 - (parent.Offset / 2);
 
             }
 
         }
 
-        private void DrawRecessed(ICanvas canvas, RectF rect, VisualElement content)
+        private void DrawRecessed(ICanvas canvas, RectF rect, VisualElement? content)
         {
             Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
 
@@ -352,15 +354,16 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
                     parent.ButtonShape,
                     parent.PressedColor);
 
-                
-                content.TranslationY = 0 + (Math.Abs(parent.Offset) / 2);
+                if (content != null)
+                    content.TranslationY = 0 + (Math.Abs(parent.Offset) / 2);
 
             }
             else
             {
                 Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.ButtonColor);
 
-                content.TranslationY = 0;
+                if (content != null)
+                    content.TranslationY = 0;
 
             }
 

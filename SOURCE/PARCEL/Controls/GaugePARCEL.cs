@@ -4,6 +4,7 @@ using PARCEL.Helpers;
 using PARCEL.Converters;
 using Microsoft.Maui.Graphics;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.ComponentModel;
 
 namespace PARCEL.Controls;
 
@@ -13,13 +14,13 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     private readonly Grid? controlContainer;
     private readonly Label? valueLabel;
     
-    private bool dragSubscribed,
-                 dragEnabled;
+    private bool dragEnabled;
 
     private PointF firstTouch;
     private RectF workingCanvas,
                   indicatorBounds;
 
+    public static readonly BindableProperty TouchEnabledProperty = BindableProperty.Create(nameof(TouchEnabled), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: EnableTouch);
     public static readonly BindableProperty DisplayValueProperty = BindableProperty.Create(nameof(DisplayValue), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: RefreshView);
     public static readonly BindableProperty ReverseProperty = BindableProperty.Create(nameof(Reverse), typeof(bool), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ThicknessProperty = BindableProperty.Create(nameof(Thickness), typeof(float), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -47,8 +48,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
-            firstTouch = new();
-
             ControlCanvas = ViewBuilder<GraphicsView>.BuildView(
                 new GraphicsView()
                 {
@@ -161,6 +160,13 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     #endregion
 
     #region Properties
+    public bool TouchEnabled
+    {
+        get => (bool)GetValue(TouchEnabledProperty);
+        set => SetValue(TouchEnabledProperty, value);
+
+    }
+
     public bool DisplayValue
     {
         get => (bool)GetValue(DisplayValueProperty);
@@ -411,37 +417,13 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         {
             GaugePARCEL instance = (GaugePARCEL)bindable;
 
-            if (instance.Indicator != null && !(instance.controlContainer?.Contains(instance.Indicator) ?? false))
+            if (instance.Indicator != null && !(instance.controlContainer?.Contains(instance.Indicator) ?? true))
             {
                 instance.Indicator.InputTransparent = true;
 
                 instance.controlContainer?.Add(instance.Indicator);
 
-                if (instance.ControlCanvas != null && !instance.dragSubscribed)
-                {
-                    instance.ControlCanvas.DragInteraction += instance.ControlCanvasDragInteraction;
-                    instance.ControlCanvas.EndInteraction += instance.ControlCanvasEndInteraction;
-
-                    instance.dragSubscribed = true;
-
-                }
-
             }
-
-            if (instance.Indicator == null)
-            {
-                if (instance.ControlCanvas != null && instance.dragSubscribed)
-                {
-                    instance.ControlCanvas.DragInteraction -= instance.ControlCanvasDragInteraction;
-                    instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
-
-                    instance.dragSubscribed = false;
-
-                }
-
-            }
-            
-            RefreshView(bindable, oldValue, newValue);
 
         }
         catch (Exception ex)
@@ -449,6 +431,39 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             Console.WriteLine(ex);
 
         }
+
+        RefreshView(bindable, oldValue, newValue);
+
+    }
+
+    private static void EnableTouch(BindableObject bindable, object oldValue, object newValue)
+    {
+        try
+        {
+            GaugePARCEL instance = (GaugePARCEL)bindable;
+
+            if (instance.ControlCanvas != null)
+            {
+                instance.ControlCanvas.DragInteraction -= instance.ControlCanvasDragInteraction;
+                instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
+
+            }
+
+            if ((bool)newValue && instance.ControlCanvas != null)
+            {                
+                instance.ControlCanvas.DragInteraction += instance.ControlCanvasDragInteraction;
+                instance.ControlCanvas.EndInteraction += instance.ControlCanvasEndInteraction;
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+
+        }
+
+        RefreshView(bindable, oldValue, newValue);
 
     }
 

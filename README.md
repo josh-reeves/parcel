@@ -1,17 +1,30 @@
 # PARCEL
 <br>
 
-<p align="center"><img style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_002.svg"/></p>
+<p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003.svg"/></p>
 
 <br>
 
 PARCEL is a libary of (relatively) platform-agnostic controls for .NET MAUI rendered using Microsoft.Maui.Graphics. These controls are meant to extend and, in some cases replace, those provided with MAUI by default in order to provide additional functionality, uniformity and ease of use. Currently, the PARCEL libray includes the following controls:
-- [IndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/IndicatorPARCEL.cs) - A touch-responsive indicator control for displaying shapes or images of various sizes.
+- [IndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/IndicatorPARCEL.cs) - A touch-responsive indicator control for displaying shapes or images of various sizes. An IndicatorPARCEL can even display a GaugePARCEL.
+<br>
+<br>
 
-- [GaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/GaugePARCEL.cs) - A gauge control for displaying data in the form of a variety of graphs including both linear and radial variations. Adding an IndicatorPARCEL to the gauge via the provided property enables user input, turning the graph into a slider.
+- [GaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/GaugePARCEL.cs) - A gauge for displaying data in the form of a variety of graphs including both linear and radial variations. Touch input can be enabled via a bindable property, turning any gauge into a slider. An IndicatorPARCEL can be added to any gauge to visually highlight data.
+<p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/gaugeparcel-radial.png"/></p>
+<br>
 
-- [ButtonPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/ButtonPARCEL.cs) - A combo button with a variety of display styles that takes a stack of views as it's content. Place an image, text and more on a single button. Could you put a button on a button? I probably wouldn't reccommend it, but sure. You do you!
+- [ButtonPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/ButtonPARCEL.cs) - A combo button with a variety of display styles that takes a stack of views as it's content. Place an image, text and more on a single button. Could you put a button on a button? I probably wouldn't recommend it, but sure: You do you!
 
+Flat:
+<p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/buttonparcel-flat.png"/></p>
+
+
+Raised:
+<p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/buttonparcel-raised.png"/></p>
+
+Recessed:
+<p align="center"><img align="center" style="width: 25%" src="https://github.com/josh-reeves/parcel/raw/main/misc/screenshots/buttonparcel-recessed.png"/></p>
 <br>
 
 ## Flexible

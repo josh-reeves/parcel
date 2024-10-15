@@ -27,11 +27,18 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Refreshes the ControlCanvas of bindable. Invokeable via BindableProperty delegates and accessible by sub-classes.
+    /// </summary>
+    /// <param name="bindable">ControlPARCEL</param>
+    /// <param name="oldValue">Old value of ControlCanvas.</param>
+    /// <param name="newValue">New value of ControlCanvas.</param>
     protected static void RefreshView(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is ControlPARCEL)
         {
             (bindable as ControlPARCEL)?.ControlCanvas?.Invalidate();
+
         }
 
     }
