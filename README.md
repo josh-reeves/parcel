@@ -1,7 +1,7 @@
 # PARCEL
 <br>
 
-<p align="center"><img align="center" style="width: 50%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003_002.svg"/></p>
+<p align="center"><img align="center" style="width: 50%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003_005.svg"/></p>
 
 <br>
 
