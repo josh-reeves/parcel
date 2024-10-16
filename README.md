@@ -1,14 +1,14 @@
 # PARCEL
 <br>
 
-<p align="center"><img align="center" style="width: 50%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003_005.svg"/></p>
+<p align="center"><img align="center" style="width: 50%" src="https://github.com/josh-reeves/parcel/raw/main/misc/iconography/logo_parcel_003_006.svg"/></p>
 
 <br>
 
 PARCEL is a libary of (relatively) platform-agnostic controls for .NET MAUI rendered using Microsoft.Maui.Graphics. These controls are meant to extend and, in some cases replace, those provided with MAUI by default in order to provide additional functionality, uniformity and ease of use. Currently, the PARCEL libray includes the following controls:
 - [IndicatorPARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/IndicatorPARCEL.cs) - A touch-responsive indicator control for displaying shapes or images of various sizes. An IndicatorPARCEL can even display a GaugePARCEL.
 <br>
-<br>
+
 
 - [GaugePARCEL](https://github.com/josh-reeves/parcel/blob/main/SOURCE/PARCEL/Controls/GaugePARCEL.cs) - A gauge for displaying data in the form of a variety of graphs including both linear and radial variations. Touch input can be enabled via a bindable property, turning any gauge into a slider. An IndicatorPARCEL can be added to any gauge to visually highlight data.
 

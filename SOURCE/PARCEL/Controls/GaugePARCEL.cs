@@ -507,15 +507,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
         public void Draw(ICanvas canvas, RectF rect)
         {
-            parent.workingCanvas = new()
-            { 
-                Width = rect.Width - (parent.Thickness + parent.StrokeThickness),
-                Height = rect.Height - (parent.Thickness + parent.StrokeThickness),
-                Left = rect.Left + (float)((parent.Thickness + parent.StrokeThickness) / 2),
-                Top = rect.Top + (float)((parent.Thickness + parent.StrokeThickness) / 2)
-
-            };
-
             canvas.StrokeLineCap = parent.LineCap;
             canvas.StrokeSize = parent.Thickness + parent.StrokeThickness;
             canvas.StrokeColor = parent.StrokeColor;
@@ -523,12 +514,32 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             switch (parent.Appearance)
             {
                 case IGaugePARCEL.MeterStyle.Horizontal:
-                    throw new NotImplementedException();
+                    parent.workingCanvas = GetSafeMargins(rect, 1);
+
+                    canvas.DrawLine(parent.workingCanvas.Left, parent.StartPos, parent.workingCanvas.Right, parent.EndPos); 
+                    
+                    canvas.StrokeSize = parent.Thickness;
+                    canvas.StrokeColor = parent.EmptyColor;
+
+                    canvas.DrawLine(parent.workingCanvas.Left, parent.StartPos, parent.workingCanvas.Right, parent.EndPos);
+
+                    canvas.StrokeColor = parent.FillColor;
+
+                    break;
 
                 case IGaugePARCEL.MeterStyle.Vertical:
                     throw new NotImplementedException();
 
                 case IGaugePARCEL.MeterStyle.Radial:
+                    parent.workingCanvas = new()
+                    {
+                        Width = rect.Width - (parent.Thickness + parent.StrokeThickness),
+                        Height = rect.Height - (parent.Thickness + parent.StrokeThickness),
+                        Left = rect.Left + (float)((parent.Thickness + parent.StrokeThickness) / 2),
+                        Top = rect.Top + (float)((parent.Thickness + parent.StrokeThickness) / 2)
+
+                    };
+
                     valuePos = parent.StartPos - (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin) * (360f - (Math.Abs(parent.StartPos) - Math.Abs(parent.EndPos))));
                     
                     if (parent.EmptyColor.Alpha > 0)
