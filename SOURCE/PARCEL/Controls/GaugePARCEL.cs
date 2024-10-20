@@ -516,17 +516,30 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                 case IGaugePARCEL.MeterStyle.Horizontal:
                     parent.workingCanvas = GetSafeMargins(rect, 1);
 
-                    canvas.DrawLine(parent.workingCanvas.Left, parent.StartPos, parent.workingCanvas.Right, parent.EndPos); 
-                    
+                    canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos,
+                                    parent.workingCanvas.Center.Y,
+                                    parent.workingCanvas.Right - parent.EndPos,
+                                    parent.workingCanvas.Center.Y);
+
                     canvas.StrokeSize = parent.Thickness;
                     canvas.StrokeColor = parent.EmptyColor;
 
-                    canvas.DrawLine(parent.workingCanvas.Left, parent.StartPos, parent.workingCanvas.Right, parent.EndPos);
+                    canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos, 
+                                    parent.workingCanvas.Center.Y, 
+                                    parent.workingCanvas.Right - parent.EndPos, 
+                                    parent.workingCanvas.Center.Y);
 
                     canvas.StrokeColor = parent.FillColor;
 
-                    break;
+                    valuePos = (float)(parent.Value / (parent.ValueMax - parent.ValueMin)) * (parent.workingCanvas.Left - parent.workingCanvas.Right);
 
+                    canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos,
+                                    parent.workingCanvas.Center.Y,
+                                    valuePos - parent.EndPos,
+                                    parent.workingCanvas.Center.Y);
+
+                    break;
+                     
                 case IGaugePARCEL.MeterStyle.Vertical:
                     throw new NotImplementedException();
 
