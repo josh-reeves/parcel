@@ -72,6 +72,8 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
             Content = controlContainer;
 
+            BackgroundColor = Colors.Transparent;
+
         }
         catch (Exception ex) 
         {

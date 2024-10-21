@@ -531,7 +531,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
                     canvas.StrokeColor = parent.FillColor;
 
-                    valuePos = (float)(parent.Value / (parent.ValueMax - parent.ValueMin)) * (parent.workingCanvas.Left - parent.workingCanvas.Right);
+                    valuePos = (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin) * (parent.workingCanvas.Right - parent.workingCanvas.Left));
 
                     canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos,
                                     parent.workingCanvas.Center.Y,
