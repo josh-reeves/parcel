@@ -133,9 +133,9 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             {
                 BindingContext = this,
                 Children = 
-                { 
-                    valueLabel,
-                    ControlCanvas
+                {
+                    ControlCanvas,
+                    valueLabel
                 
                 }
 
@@ -375,7 +375,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             double previous = Value,
                    inputThreshold = 20;
 
-            PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(workingCanvas.Left, workingCanvas.Top, workingCanvas.Width, workingCanvas.Height, StartPos); ;
+            PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(workingCanvas.Left, workingCanvas.Top, workingCanvas.Width, workingCanvas.Height, StartPos);
 
             switch (Appearance)
             {
@@ -387,7 +387,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
                 case IGaugePARCEL.MeterStyle.Radial:
                     if (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) <= (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) + inputThreshold)
-                        Value = Math.Round(Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) / (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) * ValueMax, Precision);
+                        Value = Math.Round(ValueMin + (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) / (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) * (ValueMax - ValueMin)), Precision);
 
                     break;
 
@@ -473,6 +473,8 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     private class GaugePARCELRenderer : IDrawable
     {
         #region Fields
+        private const float offset = 1f;
+
         private float valuePos;
 
         private readonly GaugePARCEL parent;
@@ -489,22 +491,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         #endregion
 
         #region Methods
-        private void DrawIndicator(RectF rect)
-        {
-            PointF indicatorPos = GeometryUtil.EllipseAngleToPoint(
-                parent.workingCanvas.Left,
-                parent.workingCanvas.Top,
-                parent.workingCanvas.Width,
-                parent.workingCanvas.Height,
-                Math.Abs(valuePos));
-
-            parent.indicatorBounds = new((float)(indicatorPos.X - (parent.Indicator.Width / 2)), (float)(indicatorPos.Y - (parent.Indicator.Content.Height / 2)), (float)parent.Indicator.Content.Width, (float)parent.Indicator.Content.Height);
-
-            parent.Indicator.TranslationX = parent.indicatorBounds.X - (rect.Width / 2 - (parent.indicatorBounds.Width / 2));
-            parent.Indicator.TranslationY = parent.indicatorBounds.Y - (rect.Height / 2 - (parent.indicatorBounds.Height / 2));
-
-        }
-
         public void Draw(ICanvas canvas, RectF rect)
         {
             canvas.StrokeLineCap = parent.LineCap;
@@ -514,28 +500,35 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             switch (parent.Appearance)
             {
                 case IGaugePARCEL.MeterStyle.Horizontal:
-                    parent.workingCanvas = GetSafeMargins(rect, 1);
+                    parent.workingCanvas = GetSafeMargins(rect, offset);
 
-                    canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos,
+                    valuePos = (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * (parent.workingCanvas.Width + offset);
+
+                    parent.indicatorBounds = new()
+                    {
+                        X = valuePos,
+                        Y = parent.workingCanvas.Center.Y
+
+                    };
+
+                    canvas.DrawLine(parent.workingCanvas.Left,
                                     parent.workingCanvas.Center.Y,
-                                    parent.workingCanvas.Right - parent.EndPos,
+                                    parent.workingCanvas.Right,
                                     parent.workingCanvas.Center.Y);
 
                     canvas.StrokeSize = parent.Thickness;
                     canvas.StrokeColor = parent.EmptyColor;
 
-                    canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos, 
+                    canvas.DrawLine(parent.workingCanvas.Left, 
                                     parent.workingCanvas.Center.Y, 
-                                    parent.workingCanvas.Right - parent.EndPos, 
+                                    parent.workingCanvas.Right, 
                                     parent.workingCanvas.Center.Y);
 
                     canvas.StrokeColor = parent.FillColor;
 
-                    valuePos = (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin) * (parent.workingCanvas.Right - parent.workingCanvas.Left));
-
-                    canvas.DrawLine(parent.workingCanvas.Left + parent.StartPos,
+                    canvas.DrawLine(parent.workingCanvas.Left,
                                     parent.workingCanvas.Center.Y,
-                                    valuePos - parent.EndPos,
+                                    valuePos,
                                     parent.workingCanvas.Center.Y);
 
                     break;
@@ -602,19 +595,35 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                         clockwise: true, 
                         closed: false);
 
-                    if (parent.Indicator != null)
-                    {
-                        DrawIndicator(rect);
+                    PointF indicatorPos = GeometryUtil.EllipseAngleToPoint(
+                        parent.workingCanvas.Left,
+                        parent.workingCanvas.Top,
+                        parent.workingCanvas.Width,
+                        parent.workingCanvas.Height,
+                        Math.Abs(valuePos));
 
-                    }
+                    parent.indicatorBounds = new(
+                        (float)(indicatorPos.X - ((parent.Indicator?.Width ?? parent.Thickness) / 2)), 
+                        (float)(indicatorPos.Y - ((parent.Indicator?.Height ?? parent.Thickness) / 2)), 
+                        (float)(parent.Indicator?.Width ?? parent.Thickness), 
+                        (float)(parent.Indicator?.Height ?? parent.Thickness));
 
                     break;
 
                 default:
-
-                    break;
+                    throw new NotImplementedException();
 
             }
+
+            if (parent.Indicator != null)
+                DrawIndicator(rect);
+
+        }
+
+        private void DrawIndicator(RectF rect)
+        {
+            parent.Indicator.TranslationX = parent.indicatorBounds.X - (rect.Width / 2 - (parent.indicatorBounds.Width / 2));
+            parent.Indicator.TranslationY = parent.indicatorBounds.Y - (rect.Height / 2 - (parent.indicatorBounds.Height / 2));
 
         }
 

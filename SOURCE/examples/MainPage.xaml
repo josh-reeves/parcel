@@ -6,29 +6,28 @@
              Shell.NavBarIsVisible="False">
 
     <Grid BackgroundColor="#E0E0E0">
-        <VerticalStackLayout>
+        <VerticalStackLayout VerticalOptions="Center"
+                             Spacing="25">
 
-            <parcels:GaugePARCEL x:Name="GaugePARCELTest"
-                                         DisplayValue="True"
-                                         VerticalOptions="Start"
-                                         LineCap="Round"
-                                         MinimumHeightRequest="300"
-                                         WidthRequest="300"
-                                         Thickness="32"
-                                         StrokeThickness="3"
-                                         ValueMin="50"
-                                         FontSize="28"
-                                         ValueMax="300"
-                                         Value="300"
-                                         StartPos="17"
-                                         EndPos="17"
-                                         TouchEnabled="True"
-                                         Appearance="Horizontal"
-                                         FontColor="#18181B"
-                                         FontFamily="Poppins_Light"
-                                         StrokeColor="#52525B"
-                                         FillColor="#1E88E5"
-                                         EmptyColor="#A1A1AA">
+            <parcels:GaugePARCEL DisplayValue="True"
+                                 VerticalOptions="Start"
+                                 LineCap="Round"
+                                 MinimumHeightRequest="300"
+                                 WidthRequest="300"
+                                 Thickness="32"
+                                 StrokeThickness="3"
+                                 ValueMin="200"
+                                 FontSize="20"
+                                 ValueMax="400"
+                                 StartPos="-135"
+                                 EndPos="-45"
+                                 Value="300"
+                                 TouchEnabled="True"
+                                 Appearance="Radial"
+                                 FontColor="#18181B"
+                                 StrokeColor="#52525B"
+                                 FillColor="#1E88E5"
+                                 EmptyColor="#A1A1AA">
                 <parcels:GaugePARCEL.Indicator>
                     <parcels:IndicatorPARCEL WidthRequest="32"
                                              HeightRequest="32"
@@ -38,13 +37,47 @@
                                              IndicatorShape="{Ellipse}">
                         <parcels:IndicatorPARCEL.Shadow>
                             <Shadow Radius="1"
-                                        Offset="0,0"
-                                        Brush="Black" 
-                                        Opacity="1"/>
+                                    Offset="0,0"
+                                    Brush="Black" 
+                                    Opacity="1"/>
                         </parcels:IndicatorPARCEL.Shadow>
                     </parcels:IndicatorPARCEL>
                 </parcels:GaugePARCEL.Indicator>
             </parcels:GaugePARCEL>
+
+            <parcels:GaugePARCEL DisplayValue="True"
+                                 VerticalOptions="Start"
+                                 LineCap="Round"
+                                 WidthRequest="300"
+                                 Thickness="32"
+                                 StrokeThickness="3"
+                                 ValueMin="50"
+                                 FontSize="20"
+                                 ValueMax="400"
+                                 Value="100"
+                                 TouchEnabled="True"
+                                 Appearance="Horizontal"
+                                 FontColor="#18181B"
+                                 StrokeColor="#52525B"
+                                 FillColor="#1E88E5"
+                                 EmptyColor="#A1A1AA">
+                <parcels:GaugePARCEL.Indicator>
+                    <parcels:IndicatorPARCEL WidthRequest="32"
+                                             HeightRequest="32"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             IndicatorColor="#FAFAFA"
+                                             IndicatorShape="{Ellipse}">
+                        <parcels:IndicatorPARCEL.Shadow>
+                            <Shadow Radius="1"
+                                    Offset="0,0"
+                                    Brush="Black" 
+                                    Opacity="1"/>
+                        </parcels:IndicatorPARCEL.Shadow>
+                    </parcels:IndicatorPARCEL>
+                </parcels:GaugePARCEL.Indicator>
+            </parcels:GaugePARCEL>
+
 
             <parcels:ButtonPARCEL WidthRequest="140"
                               HeightRequest="80"

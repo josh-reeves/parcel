@@ -248,6 +248,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     {
         #region Fields
         private const float offset = 1.0f;
+
         private readonly ButtonPARCEL parent;
 
         #endregion
