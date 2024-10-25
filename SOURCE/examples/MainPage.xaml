@@ -54,7 +54,7 @@
                                  ValueMin="50"
                                  FontSize="20"
                                  ValueMax="400"
-                                 Value="100"
+                                 Value="50"
                                  TouchEnabled="True"
                                  Appearance="Horizontal"
                                  FontColor="#18181B"
@@ -101,9 +101,8 @@
                         <Image Source="icon_add_fill_32x32.png"
                            Aspect="Center"/>
                         <Label Text="Add"
-                           TextColor="#FAFAFA"
-                           FontSize="16"
-                           FontFamily="Poppins_Bold"/>
+                               TextColor="#FAFAFA"
+                               FontSize="16"/>
                         <StackLayout.Triggers>
                             <Trigger TargetType="StackLayout"
                                      Property="parcels:ButtonPARCEL.IsParentPressed"
@@ -115,8 +114,8 @@
                 </parcels:ButtonPARCEL.ButtonContent>
                 <parcels:ButtonPARCEL.Triggers>
                     <Trigger TargetType="parcels:ButtonPARCEL"
-                         Property="IsPressed"
-                         Value="True">
+                             Property="IsPressed"
+                             Value="True">
                         <Setter Property="Shadow">
                             <Setter.Value>
                                 <Shadow Opacity="0"/>
@@ -126,9 +125,9 @@
                 </parcels:ButtonPARCEL.Triggers>
                 <parcels:ButtonPARCEL.Shadow>
                     <Shadow Brush="Black"
-                        Radius="1"
-                        Offset="0,0"
-                        Opacity="1"/>
+                            Radius="1"
+                            Offset="0,0"
+                            Opacity="1"/>
                 </parcels:ButtonPARCEL.Shadow>
             </parcels:ButtonPARCEL>
 

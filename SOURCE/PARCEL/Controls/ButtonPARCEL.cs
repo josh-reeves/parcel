@@ -90,6 +90,11 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     }
 
+    private void Test_PointerPressed(object? sender, PointerEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 
     #region Events
@@ -101,7 +106,19 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     #region Properties
     public bool IsPressed
     {
-        get => (bool)GetValue(IsPressedProperty);
+        get
+        {
+            if (ButtonContent is StackLayout stackLayout)
+            {
+                foreach (View child in stackLayout.Children)
+                    if (GetIsParentPressed(child))
+                        IsPressed = GetIsParentPressed(child);
+
+            }
+            
+            return (bool)GetValue(IsPressedProperty);
+
+        }
         set
         {
             if (ButtonContent is StackLayout stackLayout)
