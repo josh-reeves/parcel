@@ -4,10 +4,10 @@ using PARCEL.Platforms.Windows;
 
 namespace PARCEL.Handlers;
 
-public partial class ButtonInputHandler : ElementHandler<ButtonInputDetector, ButtonInput>
+public partial class ButtonInputHandler : ViewHandler<ButtonInputDetector, ButtonInput>
 {
     #region Methods
-    protected override ButtonInput CreatePlatformElement()
+    protected override ButtonInput CreatePlatformView()
         => new ButtonInput();
 
     protected override void ConnectHandler(ButtonInput platformElement)

@@ -1,5 +1,4 @@
-﻿using Android.App;
-using Android.Content;
+﻿using View = Android.Views.View;
 using Android.Views;
 using AndroidX.Core.View;
 using PARCEL.Helpers;
@@ -7,7 +6,7 @@ using Application = Android.App.Application;
 
 namespace PARCEL.Platforms.Android;
 
-public class ButtonInput : GestureDetector.SimpleOnGestureListener
+public class ButtonInput : View
 {
     public ButtonInput()
     {
@@ -27,6 +26,13 @@ public class ButtonInput : GestureDetector.SimpleOnGestureListener
         DebugLogger.Log(e);
 
         return base.OnSingleTapUp(e);
+
+    }
+
+    public struct GestureMap
+    {
+        Action Pressed;
+        Action Released;
 
     }
 

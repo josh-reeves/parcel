@@ -1,26 +1,27 @@
-﻿#if IOS || MACCATALYST
-using PlatformElement = PARCEL.Platforms.MaciOS.ButtonInput;
+﻿using Microsoft.Maui.Handlers;
+using PARCEL.Controls.GestureRecognizers;
+using PARCEL.Helpers;
+
+#if IOS || MACCATALYST
+using PlatformView = PARCEL.Platforms.MaciOS.ButtonInput;
 
 #elif ANDROID
-using PlatformElement = PARCEL.Platforms.Android.ButtonInput;
+using PlatformView = PARCEL.Platforms.Android.ButtonInput;
 
 #elif WINDOWS
-using PlatformElement = PARCEL.Platforms.Windows.ButtonInput;
+using PlatformView = PARCEL.Platforms.Windows.ButtonInput;
 
 #elif (NETSTANDARD || !PLATFORM) || (NET6_0_OR_GREATER && !IOS && !ANDROID)
-using PlatformElement = System.Object;
+using PlatformView = System.Object;
 
 #endif
-
-using Microsoft.Maui.Handlers;
-using PARCEL.Controls.GestureRecognizers;
 
 namespace PARCEL.Handlers;
 
 public partial class ButtonInputHandler
 {
     #region Fields
-    public static IPropertyMapper<ButtonInputDetector, ButtonInputHandler> PropertyMapper = new PropertyMapper<ButtonInputDetector, ButtonInputHandler>(ElementMapper);
+    public static IPropertyMapper<ButtonInputDetector, ButtonInputHandler> PropertyMapper = new PropertyMapper<ButtonInputDetector, ButtonInputHandler>(ViewMapper);
     public static CommandMapper<ButtonInputDetector, ButtonInputHandler> CommandMapper = new(ElementCommandMapper);
 
     #endregion
@@ -28,6 +29,7 @@ public partial class ButtonInputHandler
     #region Constructors
     public ButtonInputHandler() : base(PropertyMapper, CommandMapper)
     {
+        DebugLogger.Log("Test");
 
     }
 

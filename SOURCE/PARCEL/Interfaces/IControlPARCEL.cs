@@ -16,7 +16,7 @@ public interface IControlPARCEL : IView
 
     public new double TranslationY { get; set; }
 
-    public new View Content { get; set; }
+    public View Content { get; set; }
 
 }
 

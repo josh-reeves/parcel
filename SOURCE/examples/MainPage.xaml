@@ -77,65 +77,128 @@
                         </parcels:IndicatorPARCEL.Shadow>
                     </parcels:IndicatorPARCEL>
                 </parcels:GaugePARCEL.Indicator>
-                <!-- This is just a test to confirm that the ButtonInputDetector can be attached via XAML. It can.
-                <parcels:GaugePARCEL.GestureRecognizers>
-                    <gestures:ButtonInputDetector/>
-                </parcels:GaugePARCEL.GestureRecognizers>
-                -->
             </parcels:GaugePARCEL>
 
+            <RoundRectangle WidthRequest="50"
+                            HeightRequest="50"
+                            CornerRadius="5"
+                            BackgroundColor="Orange">
+                <RoundRectangle.GestureRecognizers>
+                    <gestures:ButtonInputDetector WidthRequest="50" HeightRequest="50"/>
+                </RoundRectangle.GestureRecognizers>
+            </RoundRectangle>
 
-            <parcels:ButtonPARCEL WidthRequest="140"
-                              HeightRequest="80"
-                              ButtonShape="{RoundRectangle CornerRadius=5}"
-                              Offset="2"
-                              StrokeWidth="1"
-                              StrokeColor="#0D47A1"
-                              OffsetColor="#1565C0"
-                              PressedColor="#1565C0"
-                              VerticalOptions="Center">
-                <parcels:ButtonPARCEL.ButtonColor>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#90CAF9" Offset="0.0"/>
-                        <GradientStop Color="#1E88E5" Offset="0.02"/>
-                    </LinearGradientBrush>
-                </parcels:ButtonPARCEL.ButtonColor>
-                <parcels:ButtonPARCEL.ButtonContent>
-                    <StackLayout HorizontalOptions="Center"
+            <gestures:ButtonInputDetector WidthRequest="500"
+                                          HeightRequest="500"/>
+
+            <HorizontalStackLayout HorizontalOptions="Center"
+                                   Spacing="15">
+                <parcels:ButtonPARCEL WidthRequest="140"
+                                      HeightRequest="80"
+                                      ButtonShape="{RoundRectangle CornerRadius=5}"
+                                      Offset="2"
+                                      StrokeWidth="1"
+                                      StrokeColor="#0D47A1"
+                                      OffsetColor="#1565C0"
+                                      PressedColor="#1565C0"
+                                      VerticalOptions="Center">
+                    <parcels:ButtonPARCEL.ButtonColor>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#90CAF9" Offset="0.0"/>
+                            <GradientStop Color="#1E88E5" Offset="0.02"/>
+                        </LinearGradientBrush>
+                    </parcels:ButtonPARCEL.ButtonColor>
+                    <parcels:ButtonPARCEL.ButtonContent>
+                        <StackLayout HorizontalOptions="Center"
                              VerticalOptions="Center"
                              Spacing="1">
-                        <Image Source="icon_add_fill_32x32.png"
+                            <Image Source="icon_add_fill_32x32.png"
                            Aspect="Center"/>
-                        <Label Text="Add"
+                            <Label Text="Add"
                                TextColor="#FAFAFA"
                                FontSize="16"/>
-                        <StackLayout.Triggers>
-                            <Trigger TargetType="StackLayout"
+                            <StackLayout.Triggers>
+                                <Trigger TargetType="StackLayout"
                                      Property="parcels:ButtonPARCEL.IsParentPressed"
                                      Value="True">
-                                <Setter Property="Opacity" Value="0.40"/>
-                            </Trigger>
-                        </StackLayout.Triggers>
-                    </StackLayout>
-                </parcels:ButtonPARCEL.ButtonContent>
-                <parcels:ButtonPARCEL.Triggers>
-                    <Trigger TargetType="parcels:ButtonPARCEL"
+                                    <Setter Property="Opacity" Value="0.40"/>
+                                </Trigger>
+                            </StackLayout.Triggers>
+                        </StackLayout>
+                    </parcels:ButtonPARCEL.ButtonContent>
+                    <parcels:ButtonPARCEL.Triggers>
+                        <Trigger TargetType="parcels:ButtonPARCEL"
                              Property="IsPressed"
                              Value="True">
-                        <Setter Property="Shadow">
-                            <Setter.Value>
-                                <Shadow Opacity="0"/>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger>
-                </parcels:ButtonPARCEL.Triggers>
-                <parcels:ButtonPARCEL.Shadow>
-                    <Shadow Brush="Black"
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Opacity="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </parcels:ButtonPARCEL.Triggers>
+                    <parcels:ButtonPARCEL.Shadow>
+                        <Shadow Brush="Black"
                             Radius="1"
                             Offset="0,0"
                             Opacity="1"/>
-                </parcels:ButtonPARCEL.Shadow>
-            </parcels:ButtonPARCEL>
+                    </parcels:ButtonPARCEL.Shadow>
+                </parcels:ButtonPARCEL>
+
+                <parcels:ButtonPARCEL WidthRequest="140"
+                                      HeightRequest="80"
+                                      ButtonShape="{RoundRectangle CornerRadius=5}"
+                                      Offset="2"
+                                      StrokeWidth="1"
+                                      StrokeColor="#0D47A1"
+                                      OffsetColor="#1565C0"
+                                      PressedColor="#1565C0"
+                                      VerticalOptions="Center">
+                    <parcels:ButtonPARCEL.ButtonColor>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#90CAF9" Offset="0.0"/>
+                            <GradientStop Color="#1E88E5" Offset="0.02"/>
+                        </LinearGradientBrush>
+                    </parcels:ButtonPARCEL.ButtonColor>
+                    <parcels:ButtonPARCEL.ButtonContent>
+                        <StackLayout HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="1"
+                                     parcels:ButtonPARCEL.IsParentPressed="True">
+                            <Image Source="icon_add_fill_32x32.png"
+                                   Aspect="Center"/>
+                            <Label Text="Add"
+                                   TextColor="#FAFAFA"
+                                   FontSize="16"/>
+                            <StackLayout.Triggers>
+                                <Trigger TargetType="StackLayout"
+                                         Property="parcels:ButtonPARCEL.IsParentPressed"
+                                         Value="True">
+                                    <Setter Property="Opacity" Value="0.40"/>
+                                </Trigger>
+                            </StackLayout.Triggers>
+                        </StackLayout>
+                    </parcels:ButtonPARCEL.ButtonContent>
+                    <parcels:ButtonPARCEL.Triggers>
+                        <Trigger TargetType="parcels:ButtonPARCEL"
+                                 Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Opacity="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </parcels:ButtonPARCEL.Triggers>
+                    <parcels:ButtonPARCEL.Shadow>
+                        <Shadow Brush="Black"
+                                Radius="1"
+                                Offset="0,0"
+                                Opacity="1"/>
+                    </parcels:ButtonPARCEL.Shadow>
+                </parcels:ButtonPARCEL>
+
+            </HorizontalStackLayout>
 
         </VerticalStackLayout>
         

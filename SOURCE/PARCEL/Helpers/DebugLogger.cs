@@ -8,17 +8,18 @@ public static class DebugLogger
 
     static DebugLogger() { }
 
-    public static void Log(object message, [CallerMemberName] string callerMemberName = "") 
+    public static void Log(object message, [CallerMemberName] string callerMemberName = "",[CallerLineNumber] int lineNumber = 0) 
     {
-        Console.WriteLine(textToPrepend + callerMemberName + ' ' + (string)message);
+        Console.WriteLine(textToPrepend + callerMemberName + ' ' + lineNumber + ' ' + ": " + message);
 
     }
 
-    public static void Log(object[] messages, [CallerMemberName] string callerMemberName = "")
+    public static void Log(object[] messages, [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int lineNumber = 0)
     {
+
         foreach (object message in messages)
         {
-            Console.WriteLine(textToPrepend + callerMemberName + ' ' + (string)message);
+            Console.WriteLine(textToPrepend + callerMemberName + ' ' + lineNumber + ' ' + ": " + message);
 
         }
 

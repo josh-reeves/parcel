@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using GestureRecognizers = PARCEL.Controls.GestureRecognizers;
+using PARCEL;
+using Handlers = PARCEL.Handlers;
 
 namespace examples
 {
@@ -13,6 +16,13 @@ namespace examples
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                })
+                .ConfigureMauiHandlers(handlers =>
+                {
+                    handlers.AddHandler(typeof(GestureRecognizers.ButtonInputDetector), typeof(Handlers.ButtonInputHandler));
+
+                    PARCEL.Helpers.DebugLogger.Log("Test");
+
                 });
 
 #if DEBUG
