@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:parcels="clr-namespace:PARCEL.Controls;assembly=PARCEL"
+             xmlns:gestures="clr-namespace:PARCEL.Controls.GestureRecognizers;assembly=PARCEL"
              x:Class="examples.MainPage"
              Shell.NavBarIsVisible="False">
 
@@ -76,6 +77,11 @@
                         </parcels:IndicatorPARCEL.Shadow>
                     </parcels:IndicatorPARCEL>
                 </parcels:GaugePARCEL.Indicator>
+                <!-- This is just a test to confirm that the ButtonInputDetector can be attached via XAML. It can.
+                <parcels:GaugePARCEL.GestureRecognizers>
+                    <gestures:ButtonInputDetector/>
+                </parcels:GaugePARCEL.GestureRecognizers>
+                -->
             </parcels:GaugePARCEL>
 
 

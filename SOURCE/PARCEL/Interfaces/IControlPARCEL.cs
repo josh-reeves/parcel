@@ -2,7 +2,7 @@
 
 
 
-public interface IControlPARCEL : IContentView
+public interface IControlPARCEL : IView
 {
     public IDrawable Renderer { get; set; }
 

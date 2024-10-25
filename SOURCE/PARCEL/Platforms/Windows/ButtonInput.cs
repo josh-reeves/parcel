@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PARCEL.Platforms.Android;
+namespace PARCEL.Platforms.Windows;
 
-public partial class ButtonInputRecognizerHandler
+public class ButtonInput
 {
-
 }

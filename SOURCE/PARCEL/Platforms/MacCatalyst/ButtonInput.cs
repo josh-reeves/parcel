@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PARCEL.Platforms.MaciOS;
 
-public class ButtonInputRecognizerHandler
+public class ButtonInput
 {
 
 }

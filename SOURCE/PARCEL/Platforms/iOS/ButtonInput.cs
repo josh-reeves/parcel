@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PARCEL.Platforms.Windows;
+namespace PARCEL.Platforms.MaciOS;
 
-public class ButtonInputRecognizerHandler
+public class ButtonInput
 {
 
 }
