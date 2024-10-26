@@ -1,10 +1,9 @@
-﻿using PARCEL.Handlers;
-using PARCEL.Helpers;
+﻿using PARCEL.Helpers;
 using System.Windows.Input;
 
-namespace PARCEL.Controls.GestureRecognizers;
+namespace PARCEL.Controls.Behaviors;
 
-public class ButtonInputDetector : View, IGestureRecognizer
+public partial class ButtonInputDetector 
 {
     #region Fields
     public static BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonInputDetector));
@@ -12,16 +11,10 @@ public class ButtonInputDetector : View, IGestureRecognizer
     public static BindableProperty PressedCommandParameterProperty = BindableProperty.Create(nameof(PressedCommandParamter), typeof(object), typeof(ButtonInputDetector));
     public static BindableProperty ReleasedCommandParameterProperty = BindableProperty.Create(nameof(ReleasedCommandParamter), typeof(object), typeof(ButtonInputDetector));
 
-
     #endregion
 
     #region Constructors
-    public ButtonInputDetector()
-    {
-        DebugLogger.Log("Test");
-        Handler = new ButtonInputHandler();
-
-    }
+    public ButtonInputDetector() { }
 
     #endregion
 

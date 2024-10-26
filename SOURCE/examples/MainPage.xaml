@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:parcels="clr-namespace:PARCEL.Controls;assembly=PARCEL"
-             xmlns:gestures="clr-namespace:PARCEL.Controls.GestureRecognizers;assembly=PARCEL"
+             xmlns:behaviors="clr-namespace:PARCEL.Controls.Behaviors;assembly=PARCEL"
              x:Class="examples.MainPage"
              Shell.NavBarIsVisible="False">
 
@@ -79,17 +79,20 @@
                 </parcels:GaugePARCEL.Indicator>
             </parcels:GaugePARCEL>
 
-            <RoundRectangle WidthRequest="50"
+            <Grid>
+                <RoundRectangle WidthRequest="50"
                             HeightRequest="50"
                             CornerRadius="5"
-                            BackgroundColor="Orange">
-                <RoundRectangle.GestureRecognizers>
-                    <gestures:ButtonInputDetector WidthRequest="50" HeightRequest="50"/>
-                </RoundRectangle.GestureRecognizers>
-            </RoundRectangle>
+                            BackgroundColor="Orange"/>
+                <Label HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       TextColor="#FAFAFA"
+                       Text="Touch"/>
+                <Grid.Behaviors>
+                    <behaviors:ButtonInputDetector/>
+                </Grid.Behaviors>
+            </Grid>
 
-            <gestures:ButtonInputDetector WidthRequest="500"
-                                          HeightRequest="500"/>
 
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Spacing="15">

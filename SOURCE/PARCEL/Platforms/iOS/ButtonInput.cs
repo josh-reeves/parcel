@@ -4,7 +4,7 @@ using UIKit;
 
 namespace PARCEL.Platforms.MaciOS;
 
-public class ButtonInput : UIView
+public class ButtonInput : UIResponder
 {
 
     public ButtonInput()

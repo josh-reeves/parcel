@@ -1,35 +1,28 @@
 ﻿using Microsoft.Extensions.Logging;
-using GestureRecognizers = PARCEL.Controls.GestureRecognizers;
-using PARCEL;
-using Handlers = PARCEL.Handlers;
+using PARCEL.Helpers;
 
-namespace examples
+namespace examples;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                })
-                .ConfigureMauiHandlers(handlers =>
-                {
-                    handlers.AddHandler(typeof(GestureRecognizers.ButtonInputDetector), typeof(Handlers.ButtonInputHandler));
-
-                    PARCEL.Helpers.DebugLogger.Log("Test");
-
-                });
-
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 #if DEBUG
-    		builder.Logging.AddDebug();
+                DebugLogger.Log("Basic cross-platform accessibility test.");
 #endif
-
-            return builder.Build();
-        }
+            });
+#if DEBUG
+		builder.Logging.AddDebug();
+#endif
+        return builder.Build();
+  
     }
+
 }
