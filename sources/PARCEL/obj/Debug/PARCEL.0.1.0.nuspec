@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>PARCEL</id>
+    <version>0.1.0</version>
+    <authors>PARCEL</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="4f41f78e4cb58b0be72f6c0bbfb7c17498bac238" />
+    <dependencies>
+      <group targetFramework="net8.0-android34.0">
+        <dependency id="Microsoft.Maui.Controls" version="8.0.82" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="8.0.82" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0-ios18.0">
+        <dependency id="Microsoft.Maui.Controls" version="8.0.82" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="8.0.82" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0-maccatalyst18.0">
+        <dependency id="Microsoft.Maui.Controls" version="8.0.82" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="8.0.82" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0-windows10.0.19041">
+        <dependency id="Microsoft.Maui.Controls" version="8.0.82" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Maui.Controls.Compatibility" version="8.0.82" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\JoshReeves\Documents\repos\parcel\sources\PARCEL\bin\Debug\net8.0-android\PARCEL.dll" target="lib\net8.0-android34.0\PARCEL.dll" />
+    <file src="C:\Users\JoshReeves\Documents\repos\parcel\sources\PARCEL\bin\Debug\net8.0-android\PARCEL.xml" target="lib\net8.0-android34.0\PARCEL.xml" />
+    <file src="C:\Users\JoshReeves\Documents\repos\parcel\sources\PARCEL\bin\Debug\net8.0-ios\PARCEL.dll" target="lib\net8.0-ios18.0\PARCEL.dll" />
+    <file src="C:\Users\JoshReeves\Documents\repos\parcel\sources\PARCEL\bin\Debug\net8.0-maccatalyst\PARCEL.dll" target="lib\net8.0-maccatalyst18.0\PARCEL.dll" />
+    <file src="C:\Users\JoshReeves\Documents\repos\parcel\sources\PARCEL\bin\Debug\net8.0-windows10.0.19041.0\PARCEL.dll" target="lib\net8.0-windows10.0.19041\PARCEL.dll" />
+  </files>
+</package>
