@@ -12,7 +12,7 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #region Constructors
     public ControlPARCEL() { }
 
-    #endregion
+#endregion
 
     #region Properties
     protected GraphicsView? ControlCanvas { get; set; }

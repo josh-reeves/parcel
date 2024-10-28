@@ -2,14 +2,14 @@
 using PARCEL.Helpers;
 using PlatformView = Android.Views.View;
 using VirtualView = Microsoft.Maui.Controls.View;
-using RectF = Android.Graphics.RectF;
+
 
 namespace PARCEL.Controls.Behaviors;
 
 public partial class ButtonInputDetector : PlatformBehavior<VirtualView, PlatformView>
 {
     #region Fields
-    private RectF bounds;
+    private bool canceled;
 
     #endregion
 
@@ -37,6 +37,7 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
         catch (Exception ex)
         {
             DebugLogger.Log(ex);
+
         }
 
     }
@@ -47,18 +48,34 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
 
         platformView.Touch -= OnTouch;
 
-        bounds.Dispose();
 #if DEBUG
-        DebugLogger.Log("Behavior detatched.");
+        DebugLogger.Log($"Behavior detatched from {platformView}.");
 #endif
     }
 
     private void OnTouch(object? sender, PlatformView.TouchEventArgs e)
     {
-        if (sender is null)
+        if (e.Event is null || sender is not PlatformView platformView)
             return;
 
-        switch (e.Event?.ActionMasked)
+        bounds = RectF.FromLTRB(
+            platformView.Left,
+            platformView.Top,
+            platformView.Right,
+            platformView.Bottom);
+
+        float inputX = bounds.Left + e.Event.GetX(),
+              inputY = bounds.Top + e.Event.GetY();
+
+        if (!canceled && !bounds.Contains(inputX, inputY))
+        {
+            SendExited();
+
+            canceled = true;
+            
+        }
+
+        switch (e.Event.ActionMasked)
         {
             case MotionEventActions.Down:
                 SendPressed();
@@ -66,33 +83,14 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
                 break;
 
             case MotionEventActions.Up:
-                SendReleased();
+                if (!canceled)
+                    SendReleased();
 
-                break;
+                canceled = false;
 
-            case MotionEventActions.Move:
-                if (sender is not PlatformView platformView)
-                    return;
-
-                bounds.Set(
-                    platformView.Left,
-                    platformView.Top,
-                    platformView.Right,
-                    platformView.Bottom);
-
-                float inputX = bounds.Left + e.Event.GetX(),
-                      inputY = bounds.Top + e.Event.GetY();
-
-                if (!bounds.Contains(inputX, inputY))
-                    SendExited();
-#if DEBUG
-                DebugLogger.Log($"inputCoords: {inputX}, {inputY} | preCalc: {e.Event.GetX()}, {e.Event.GetY()}");
-                DebugLogger.Log($"bounds: {bounds.Left}, {bounds.Top}, {bounds.Right}, {bounds.Bottom} | preCalc: {platformView.Left}, {platformView.Top}, {platformView.Right}, {platformView.Bottom}");
-#endif
                 break;
 
             default:
-
                 return;
 
         }

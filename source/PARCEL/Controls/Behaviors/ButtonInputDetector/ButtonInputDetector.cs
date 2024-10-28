@@ -6,6 +6,8 @@ namespace PARCEL.Controls.Behaviors;
 public partial class ButtonInputDetector 
 {
     #region Fields
+    private RectF bounds;
+
     public static BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonInputDetector));
     public static BindableProperty ReleasedCommandProperty = BindableProperty.Create(nameof(ReleasedCommand), typeof(ICommand), typeof(ButtonInputDetector));
     public static BindableProperty ExitedCommandProperty = BindableProperty.Create(nameof(ExitedCommand), typeof(ICommand), typeof(ButtonInputDetector));
@@ -67,7 +69,7 @@ public partial class ButtonInputDetector
     #endregion
 
     #region Methods
-    internal void SendPressed()
+    private void SendPressed()
     {
         Pressed?.Invoke(this, EventArgs.Empty);
 
@@ -78,7 +80,7 @@ public partial class ButtonInputDetector
 #endif
     }
 
-    internal void SendReleased()
+    private void SendReleased()
     {
         Released?.Invoke(this, EventArgs.Empty);
 
@@ -89,7 +91,7 @@ public partial class ButtonInputDetector
 #endif
     }
 
-    internal void SendExited()
+    private void SendExited()
     {
         Exited?.Invoke(this, EventArgs.Empty);
 
