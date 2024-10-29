@@ -8,17 +8,8 @@ namespace PARCEL.Controls.Behaviors;
 
 public partial class ButtonInputDetector : PlatformBehavior<VirtualView, PlatformView>
 {
-    #region Fields
-    private bool canceled;
-
-    #endregion
-
     #region Constructors
-    public ButtonInputDetector()
-    {
-        bounds = new();
-
-    }
+    public ButtonInputDetector() { }
 
     #endregion
 
@@ -30,6 +21,8 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
             base.OnAttachedTo(bindable, platformView);
             
             platformView.Touch += OnTouch;
+
+            canExecute = true;
 #if DEBUG
             DebugLogger.Log($"Behavior attached to {platformView}");
 #endif
@@ -67,11 +60,11 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
         float inputX = bounds.Left + e.Event.GetX(),
               inputY = bounds.Top + e.Event.GetY();
 
-        if (!canceled && !bounds.Contains(inputX, inputY))
+        if (canExecute && !bounds.Contains(inputX, inputY))
         {
             SendExited();
 
-            canceled = true;
+            canExecute = false;
             
         }
 
@@ -83,10 +76,10 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
                 break;
 
             case MotionEventActions.Up:
-                if (!canceled)
+                if (canExecute)
                     SendReleased();
 
-                canceled = false;
+                canExecute = true;
 
                 break;
 
@@ -95,8 +88,7 @@ public partial class ButtonInputDetector : PlatformBehavior<VirtualView, Platfor
 
         }
 #if DEBUG
-        if (e.Event is not null)
-            DebugLogger.Log(e.Event.Action);
+        DebugLogger.Log(e.Event.Action);
 #endif
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace PARCEL.Helpers;
 
@@ -10,7 +11,7 @@ public static class DebugLogger
 
     public static void Log(object message, [CallerMemberName] string callerMemberName = "",[CallerLineNumber] int lineNumber = 0) 
     {
-        Console.WriteLine(textToPrepend + callerMemberName + ' ' + lineNumber + ' ' + ": " + message);
+        Trace.WriteLine(textToPrepend + callerMemberName + ' ' + lineNumber + ' ' + ": " + message);
 
     }
 
@@ -19,7 +20,7 @@ public static class DebugLogger
 
         foreach (object message in messages)
         {
-            Console.WriteLine(textToPrepend + callerMemberName + ' ' + lineNumber + ' ' + ": " + message);
+            Trace.WriteLine(textToPrepend + callerMemberName + ' ' + lineNumber + ' ' + ": " + message);
 
         }
 

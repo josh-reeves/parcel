@@ -1,3 +1,4 @@
+using PARCEL.Handlers;
 using PARCEL.Interfaces;
 
 namespace PARCEL.Controls;
@@ -10,7 +11,11 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #endregion
 
     #region Constructors
-    public ControlPARCEL() { }
+    public ControlPARCEL()
+    {
+        Generalizer.UpdateHandlers();
+
+    }
 
 #endregion
 

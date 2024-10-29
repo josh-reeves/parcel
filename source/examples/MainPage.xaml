@@ -79,10 +79,11 @@
                 </parcels:GaugePARCEL.Indicator>
             </parcels:GaugePARCEL>
 
-            <Grid>
-                <RoundRectangle WidthRequest="200"
-                                HeightRequest="75"
-                                CornerRadius="5"
+            <!-- The below is used to test touch and drag functionality in debug mode:
+            <Grid WidthRequest="200"
+                  HeightRequest="75"
+                  HorizontalOptions="Center">
+                <RoundRectangle CornerRadius="5"
                                 BackgroundColor="DarkOrange"/>
                 <Label HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
@@ -92,7 +93,7 @@
                     <behaviors:ButtonInputDetector/>
                 </Grid.Behaviors>
             </Grid>
-
+            -->
 
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Spacing="15">

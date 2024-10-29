@@ -7,18 +7,19 @@ namespace PARCEL.Controls.Behaviors;
 public partial class ButtonInputDetector : PlatformBehavior<View, UIView>
 {
     #region Fields
-    private bool canceled;
-
     private UIView? view;
     private PlatformGestureRecognizer gestureRecognizer;
 
     #endregion
 
+    #region Constructors
     public ButtonInputDetector()
     {
         gestureRecognizer = new(this);
 
     }
+
+    #endregion
 
     #region Methods
     protected override void OnAttachedTo(View bindable, UIView platformView)
@@ -30,6 +31,8 @@ public partial class ButtonInputDetector : PlatformBehavior<View, UIView>
         view.AddGestureRecognizer(gestureRecognizer);
 
         view.UserInteractionEnabled = true;
+
+        canExecute = true;
 #if DEBUG
         DebugLogger.Log($"Behavior attached to {platformView}.");
 #endif
@@ -45,6 +48,8 @@ public partial class ButtonInputDetector : PlatformBehavior<View, UIView>
         platformView.UserInteractionEnabled = false;
         
         gestureRecognizer?.Dispose();
+        
+        canExecute = false;
 #if DEBUG
         DebugLogger.Log($"Behavior removed from {platformView}");
 #endif
@@ -77,10 +82,10 @@ public partial class ButtonInputDetector : PlatformBehavior<View, UIView>
         {
             base.TouchesEnded(touches, evt);
 
-            if (!parent.canceled)
+            if (parent.canExecute)
                 parent.SendReleased();
 
-            parent.canceled = false;
+            parent.canExecute = true;
 #if DEBUG
             DebugLogger.Log(evt);
 #endif
@@ -99,11 +104,11 @@ public partial class ButtonInputDetector : PlatformBehavior<View, UIView>
                 (float)parent.view.Frame.Width,
                 (float)parent.view.Frame.Height);
 
-            if (!parent.bounds.Contains((float)touch.LocationInView(parent.view).X, (float)touch.LocationInView(parent.view).Y))
+            if (parent.canExecute && !parent.bounds.Contains((float)touch.LocationInView(parent.view).X, (float)touch.LocationInView(parent.view).Y))
             {
                 parent.SendExited();
 
-                parent.canceled = true;
+                parent.canExecute = false;
 
             }
 #if DEBUG

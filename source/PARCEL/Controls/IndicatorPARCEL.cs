@@ -1,7 +1,6 @@
 using Microsoft.Maui.Controls.Shapes;
 using PARCEL.Interfaces;
 using PARCEL.Converters;
-using Path = Microsoft.Maui.Controls.Shapes.Path;
 using PARCEL.Helpers;
 
 namespace PARCEL.Controls;

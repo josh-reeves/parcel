@@ -6,6 +6,8 @@ namespace PARCEL.Controls.Behaviors;
 public partial class ButtonInputDetector 
 {
     #region Fields
+    private bool canExecute;
+
     private RectF bounds;
 
     public static BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonInputDetector));

@@ -2,9 +2,6 @@ using System.Windows.Input;
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
-using Microsoft.Maui.Graphics;
-using Microsoft.Extensions.Logging.Abstractions;
-using System.ComponentModel;
 
 namespace PARCEL.Controls;
 

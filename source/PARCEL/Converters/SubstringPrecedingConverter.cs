@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 
-
 namespace PARCEL.Converters;
 
 class SubstringPrecedingConverter : IValueConverter
