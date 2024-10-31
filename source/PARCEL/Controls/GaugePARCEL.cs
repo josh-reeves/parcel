@@ -2,6 +2,8 @@ using System.Windows.Input;
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
+using Microsoft.Maui.Controls.Shapes;
+using System.Diagnostics;
 
 namespace PARCEL.Controls;
 
@@ -11,8 +13,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     private readonly Grid? controlContainer;
     private readonly Label? valueLabel;
     
-    private bool dragEnabled;
-
     private PointF firstTouch;
     private RectF workingCanvas,
                   indicatorBounds;
@@ -331,29 +331,26 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             if (firstTouch.IsEmpty)
                 firstTouch = e.Touches.First();
 
-            if (indicatorBounds.Contains(firstTouch))
-                dragEnabled = true;
+            if (!indicatorBounds.Contains(firstTouch))
+                return;
+            
+            TranslateInput(e);
 
-            if (dragEnabled)
-                TranslateInput(e);
-#if DEBUG
-            Console.WriteLine($"Console Drag Event");
-#endif
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
 
         }
-
+#if DEBUG
+        Trace.WriteLine($"Console Drag Event");
+#endif
     }
 
     private void ControlCanvasEndInteraction(object? sender, TouchEventArgs e)
     {
         try
         {
-            dragEnabled = false;
-
             firstTouch = new();
 
         }
@@ -369,10 +366,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
-            double previous = Value,
-                   inputThreshold = 20;
-
-            PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(workingCanvas.Left, workingCanvas.Top, workingCanvas.Width, workingCanvas.Height, StartPos);
+            double previous = Value;
 
             switch (Appearance)
             {
@@ -383,6 +377,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                     throw new NotImplementedException();
 
                 case IGaugePARCEL.MeterStyle.Radial:
+                    double inputThreshold = 20;
+
+                    PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(workingCanvas.Left, workingCanvas.Top, workingCanvas.Width, workingCanvas.Height, StartPos);
+
                     if (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) <= (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) + inputThreshold)
                         Value = Math.Round(ValueMin + (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) / (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) * (ValueMax - ValueMin)), Precision);
 
@@ -437,14 +435,11 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
-            GaugePARCEL instance = (GaugePARCEL)bindable;
+            if (bindable is not GaugePARCEL instance || instance.ControlCanvas is null)
+                return;
 
-            if (instance.ControlCanvas != null)
-            {
-                instance.ControlCanvas.DragInteraction -= instance.ControlCanvasDragInteraction;
-                instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
-
-            }
+            instance.ControlCanvas.DragInteraction -= instance.ControlCanvasDragInteraction;
+            instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
 
             if ((bool)newValue && instance.ControlCanvas != null)
             {                
@@ -467,10 +462,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     #endregion
 
     #region Classes
-    private class GaugePARCELRenderer : IDrawable
+    public class GaugePARCELRenderer : IDrawable
     {
         #region Fields
-        private const float offset = 1f;
+        private const float offset = 2f;
 
         private float valuePos;
 
@@ -497,14 +492,20 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             switch (parent.Appearance)
             {
                 case IGaugePARCEL.MeterStyle.Horizontal:
-                    parent.workingCanvas = GetSafeMargins(rect, offset);
+                    parent.workingCanvas = RectF.FromLTRB(
+                        rect.Left + offset + (parent.Thickness / 2),
+                        rect.Top + offset,
+                        rect.Right - offset - (parent.Thickness / 2),
+                        rect.Bottom - offset);
 
-                    valuePos = (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * (parent.workingCanvas.Width + offset);
+                    valuePos = parent.workingCanvas.Left + (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * (parent.workingCanvas.Width);
 
                     parent.indicatorBounds = new()
                     {
-                        X = valuePos,
-                        Y = parent.workingCanvas.Center.Y
+                        X = valuePos - (float)((parent.Indicator?.Width ?? parent.Thickness) / 2),
+                        Y = parent.workingCanvas.Center.Y - (float)((parent.Indicator?.Height ?? parent.Thickness) / 2),
+                        Width = (float)(parent.Indicator?.Width ?? parent.Thickness),
+                        Height = (float)(parent.Indicator?.Height ?? parent.Thickness)
 
                     };
 
@@ -516,9 +517,9 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                     canvas.StrokeSize = parent.Thickness;
                     canvas.StrokeColor = parent.EmptyColor;
 
-                    canvas.DrawLine(parent.workingCanvas.Left, 
-                                    parent.workingCanvas.Center.Y, 
-                                    parent.workingCanvas.Right, 
+                    canvas.DrawLine(parent.workingCanvas.Left,
+                                    parent.workingCanvas.Center.Y,
+                                    parent.workingCanvas.Right,
                                     parent.workingCanvas.Center.Y);
 
                     canvas.StrokeColor = parent.FillColor;
@@ -610,7 +611,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
                 default:
                     throw new NotImplementedException();
 
-            }
+            } 
 
             if (parent.Indicator != null)
                 DrawIndicator(rect);

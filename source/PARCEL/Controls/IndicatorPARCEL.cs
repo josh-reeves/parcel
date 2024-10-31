@@ -175,7 +175,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     #endregion
 
     #region Classes
-    private class IndicatorPARCELRenderer : IDrawable
+    public class IndicatorPARCELRenderer : IDrawable
 	{
         #region Fields
         private const float offset = 1.0f;

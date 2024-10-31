@@ -259,7 +259,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     #endregion
 
     #region Classes
-    private class ButtonPARCELRenderer : IDrawable
+    public class ButtonPARCELRenderer : IDrawable
     {
         #region Fields
         private const float offset = 1.0f;

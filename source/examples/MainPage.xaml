@@ -50,6 +50,7 @@
                                  VerticalOptions="Start"
                                  LineCap="Round"
                                  WidthRequest="300"
+                                 HeightRequest="50"
                                  Thickness="32"
                                  StrokeThickness="3"
                                  ValueMin="50"
