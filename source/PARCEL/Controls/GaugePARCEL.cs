@@ -2,8 +2,10 @@ using System.Windows.Input;
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
-using Microsoft.Maui.Controls.Shapes;
 using System.Diagnostics;
+using PARCEL.Controls.Strategies.GaugePARCEL;
+using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 namespace PARCEL.Controls;
 
@@ -12,10 +14,9 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     #region Fields
     private readonly Grid? controlContainer;
     private readonly Label? valueLabel;
-    
+    private bool touchActive;
+
     private PointF firstTouch;
-    private RectF workingCanvas,
-                  indicatorBounds;
 
     public static readonly BindableProperty TouchEnabledProperty = BindableProperty.Create(nameof(TouchEnabled), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: EnableTouch);
     public static readonly BindableProperty DisplayValueProperty = BindableProperty.Create(nameof(DisplayValue), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: RefreshView);
@@ -31,9 +32,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public static readonly BindableProperty PrecisionProperty = BindableProperty.Create(nameof(Precision), typeof(int), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FontFamilyProperty = BindableProperty.Create(nameof(FontFamily), typeof(string), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty LineCapProperty = BindableProperty.Create(nameof(LineCap), typeof(LineCap), typeof(GaugePARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty GaugeStyleProperty = BindableProperty.Create(nameof(Appearance), typeof(IGaugePARCEL.MeterStyle), typeof(GaugePARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty GaugeStyleProperty = BindableProperty.Create(nameof(Appearance), typeof(IGaugePARCEL.MeterStyle), typeof(GaugePARCEL));
     public static readonly BindableProperty ValueChangedCommandProperty = BindableProperty.Create(nameof(ValueChangedCommand), typeof(ICommand), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorProperty = BindableProperty.Create(nameof(Indicator), typeof(IIndicatorPARCEL), typeof(GaugePARCEL), propertyChanged: AddIndicator);
+    public static readonly BindableProperty StrategyProperty = BindableProperty.Create(nameof(Strategy), typeof(IGaugePARCELStrategy), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty EmptyColorProperty = BindableProperty.Create(nameof(EmptyColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FillColorProperty = BindableProperty.Create(nameof(FillColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -46,30 +48,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         try
         {
             ControlCanvas = ViewBuilder<GraphicsView>.BuildView(
-                new GraphicsView()
-                {
-                    Triggers =
-                    {
-                        new DataTrigger(typeof(GraphicsView))
-                        {
-                            Binding =  new Binding(nameof(Renderer), converter: new IsNullConverter()),
-                            Value = true,
-                            Setters =
-                            {
-                                new()
-                                {
-                                    Property = GraphicsView.DrawableProperty,
-                                    Value = new GaugePARCELRenderer(this)
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                },
+                new GraphicsView(),
                 [
                     new ViewBuilder<GraphicsView>.BindingPair(GraphicsView.DrawableProperty, nameof(Renderer))
 
@@ -178,6 +157,13 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
+    public int Precision
+    {
+        get => (int)GetValue(PrecisionProperty);
+        set => SetValue(PrecisionProperty, value);
+
+    }
+
     public float Thickness
     {
         get => (float)GetValue(ThicknessProperty);
@@ -251,13 +237,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
-    public int Precision
-    {
-        get => (int)GetValue(PrecisionProperty);
-        set => SetValue(PrecisionProperty, value);
-
-    }
-
     public string FontFamily
     {
         get => (string)GetValue(FontFamilyProperty);
@@ -275,7 +254,38 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public IGaugePARCEL.MeterStyle Appearance
     {
         get => (IGaugePARCEL.MeterStyle)GetValue(GaugeStyleProperty);
-        set => SetValue(GaugeStyleProperty, value);
+        set
+        {
+            SetValue(GaugeStyleProperty, value);
+
+            if (Strategy is not null)
+                return;
+
+            switch (value)
+            {
+                case IGaugePARCEL.MeterStyle.Horizontal:
+                    Strategy = new HorizontalStrategy(this);
+
+                    break;
+
+                case IGaugePARCEL.MeterStyle.Vertical:
+                    Strategy = new VerticalStrategy(this);
+
+                    break;
+
+                case IGaugePARCEL.MeterStyle.Radial:
+                    Strategy = new RadialStrategy(this);
+
+                    break;
+
+            }
+
+            if (Renderer is null && ControlCanvas is not null)
+                ControlCanvas.Drawable = Strategy?.Renderer;
+#if DEBUG
+            DebugLogger.Log("Strategy updated.");
+#endif
+        }
 
     }
 
@@ -290,6 +300,20 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         get => (IIndicatorPARCEL)GetValue(IndicatorProperty);
         set => SetValue(IndicatorProperty, value);
+
+    }
+
+    public IGaugePARCELStrategy Strategy
+    {
+        get => (IGaugePARCELStrategy)GetValue(StrategyProperty);
+        set
+        {
+            SetValue(StrategyProperty, value);
+
+            if (Renderer is null && ControlCanvas is not null)
+                ControlCanvas.Drawable = value.Renderer;
+
+        }
 
     }
 
@@ -331,10 +355,11 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             if (firstTouch.IsEmpty)
                 firstTouch = e.Touches.First();
 
-            if (!indicatorBounds.Contains(firstTouch))
-                return;
-            
-            TranslateInput(e);
+            if (Strategy.IndicatorBounds.Contains(firstTouch))
+                touchActive = true;
+
+            if (touchActive)
+                Strategy.HandleInput(e);
 
         }
         catch (Exception ex)
@@ -351,51 +376,8 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     {
         try
         {
+            touchActive = false;
             firstTouch = new();
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-
-        }
-
-    }
-
-    private void TranslateInput(TouchEventArgs e)
-    {
-        try
-        {
-            double previous = Value;
-
-            switch (Appearance)
-            {
-                case IGaugePARCEL.MeterStyle.Horizontal:
-                    throw new NotImplementedException();
-
-                case IGaugePARCEL.MeterStyle.Vertical:
-                    throw new NotImplementedException();
-
-                case IGaugePARCEL.MeterStyle.Radial:
-                    double inputThreshold = 20;
-
-                    PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(workingCanvas.Left, workingCanvas.Top, workingCanvas.Width, workingCanvas.Height, StartPos);
-
-                    if (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) <= (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) + inputThreshold)
-                        Value = Math.Round(ValueMin + (Mathematician.GetAngle(workingCanvas.Center, e.Touches.Last(), startPosPoint) / (360f - (Math.Abs(StartPos) - Math.Abs(EndPos))) * (ValueMax - ValueMin)), Precision);
-
-                    break;
-
-            }
-
-            if (Value != previous)
-            {
-                ValueChanged?.Invoke(this, EventArgs.Empty);
-
-                if (ValueChangedCommand?.CanExecute(null) ?? false)
-                    ValueChangedCommand.Execute(null);
-
-            }
 
         }
         catch (Exception ex)
@@ -456,176 +438,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         }
 
         RefreshView(bindable, oldValue, newValue);
-
-    }
-
-    #endregion
-
-    #region Classes
-    public class GaugePARCELRenderer : IDrawable
-    {
-        #region Fields
-        private const float offset = 2f;
-
-        private float valuePos;
-
-        private readonly GaugePARCEL parent;
-
-        #endregion
-
-        #region Constructors
-        public GaugePARCELRenderer(GaugePARCEL parentControl)
-        {
-            parent = parentControl;
-
-        }
-
-        #endregion
-
-        #region Methods
-        public void Draw(ICanvas canvas, RectF rect)
-        {
-            canvas.StrokeLineCap = parent.LineCap;
-            canvas.StrokeSize = parent.Thickness + parent.StrokeThickness;
-            canvas.StrokeColor = parent.StrokeColor;
-
-            switch (parent.Appearance)
-            {
-                case IGaugePARCEL.MeterStyle.Horizontal:
-                    parent.workingCanvas = RectF.FromLTRB(
-                        rect.Left + offset + (parent.Thickness / 2),
-                        rect.Top + offset,
-                        rect.Right - offset - (parent.Thickness / 2),
-                        rect.Bottom - offset);
-
-                    valuePos = parent.workingCanvas.Left + (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * (parent.workingCanvas.Width);
-
-                    parent.indicatorBounds = new()
-                    {
-                        X = valuePos - (float)((parent.Indicator?.Width ?? parent.Thickness) / 2),
-                        Y = parent.workingCanvas.Center.Y - (float)((parent.Indicator?.Height ?? parent.Thickness) / 2),
-                        Width = (float)(parent.Indicator?.Width ?? parent.Thickness),
-                        Height = (float)(parent.Indicator?.Height ?? parent.Thickness)
-
-                    };
-
-                    canvas.DrawLine(parent.workingCanvas.Left,
-                                    parent.workingCanvas.Center.Y,
-                                    parent.workingCanvas.Right,
-                                    parent.workingCanvas.Center.Y);
-
-                    canvas.StrokeSize = parent.Thickness;
-                    canvas.StrokeColor = parent.EmptyColor;
-
-                    canvas.DrawLine(parent.workingCanvas.Left,
-                                    parent.workingCanvas.Center.Y,
-                                    parent.workingCanvas.Right,
-                                    parent.workingCanvas.Center.Y);
-
-                    canvas.StrokeColor = parent.FillColor;
-
-                    canvas.DrawLine(parent.workingCanvas.Left,
-                                    parent.workingCanvas.Center.Y,
-                                    valuePos,
-                                    parent.workingCanvas.Center.Y);
-
-                    break;
-                     
-                case IGaugePARCEL.MeterStyle.Vertical:
-                    throw new NotImplementedException();
-
-                case IGaugePARCEL.MeterStyle.Radial:
-                    parent.workingCanvas = new()
-                    {
-                        Width = rect.Width - (parent.Thickness + parent.StrokeThickness),
-                        Height = rect.Height - (parent.Thickness + parent.StrokeThickness),
-                        Left = rect.Left + (float)((parent.Thickness + parent.StrokeThickness) / 2),
-                        Top = rect.Top + (float)((parent.Thickness + parent.StrokeThickness) / 2)
-
-                    };
-
-                    valuePos = parent.StartPos - (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin) * (360f - (Math.Abs(parent.StartPos) - Math.Abs(parent.EndPos))));
-                    
-                    if (parent.EmptyColor.Alpha > 0)
-                        canvas.DrawArc(
-                            parent.workingCanvas.Left,
-                            parent.workingCanvas.Top,
-                            parent.workingCanvas.Width,
-                            parent.workingCanvas.Height,
-                            parent.StartPos,
-                            parent.EndPos,
-                            clockwise: true,
-                            closed: false);
-
-                    if (parent.EmptyColor.Alpha == 0)
-                        canvas.DrawArc(
-                            parent.workingCanvas.Left,
-                            parent.workingCanvas.Top,
-                            parent.workingCanvas.Width,
-                            parent.workingCanvas.Height,
-                            parent.StartPos,
-                            valuePos,
-                            clockwise: true,
-                            closed: false);
-
-                    canvas.StrokeSize = parent.Thickness;
-                    canvas.StrokeColor = parent.EmptyColor;
-
-                    canvas.DrawArc(
-                        parent.workingCanvas.Left, 
-                        parent.workingCanvas.Top, 
-                        parent.workingCanvas.Width, 
-                        parent.workingCanvas.Height, 
-                        parent.StartPos, 
-                        parent.EndPos, 
-                        clockwise: true, 
-                        closed: false);
-
-                    canvas.StrokeColor = parent.FillColor;
-
-                    canvas.DrawArc(
-                        parent.workingCanvas.Left, 
-                        parent.workingCanvas.Top, 
-                        parent.workingCanvas.Width, 
-                        parent.workingCanvas.Height, 
-                        parent.StartPos, 
-                        valuePos, 
-                        clockwise: true, 
-                        closed: false);
-
-                    PointF indicatorPos = GeometryUtil.EllipseAngleToPoint(
-                        parent.workingCanvas.Left,
-                        parent.workingCanvas.Top,
-                        parent.workingCanvas.Width,
-                        parent.workingCanvas.Height,
-                        Math.Abs(valuePos));
-
-                    parent.indicatorBounds = new(
-                        (float)(indicatorPos.X - ((parent.Indicator?.Width ?? parent.Thickness) / 2)), 
-                        (float)(indicatorPos.Y - ((parent.Indicator?.Height ?? parent.Thickness) / 2)), 
-                        (float)(parent.Indicator?.Width ?? parent.Thickness), 
-                        (float)(parent.Indicator?.Height ?? parent.Thickness));
-
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-
-            } 
-
-            if (parent.Indicator != null)
-                DrawIndicator(rect);
-
-        }
-
-        private void DrawIndicator(RectF rect)
-        {
-            parent.Indicator.TranslationX = parent.indicatorBounds.X - (rect.Width / 2 - (parent.indicatorBounds.Width / 2));
-            parent.Indicator.TranslationY = parent.indicatorBounds.Y - (rect.Height / 2 - (parent.indicatorBounds.Height / 2));
-
-        }
-
-        #endregion
 
     }
 
