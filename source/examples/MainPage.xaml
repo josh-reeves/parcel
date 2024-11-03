@@ -56,12 +56,12 @@
                                  ValueMin="50"
                                  FontSize="20"
                                  ValueMax="400"
-                                 Value="50"
+                                 Value="175"
                                  TouchEnabled="True"
-                                 Appearance="Horizontal"
                                  FontColor="#18181B"
                                  StrokeColor="#52525B"
                                  FillColor="#1E88E5"
+                                 Appearance="Horizontal"
                                  EmptyColor="#A1A1AA">
                 <parcels:GaugePARCEL.Indicator>
                     <parcels:IndicatorPARCEL WidthRequest="32"

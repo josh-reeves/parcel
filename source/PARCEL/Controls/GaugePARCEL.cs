@@ -18,6 +18,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     private PointF firstTouch;
 
+    public static readonly BindableProperty ValueChangedParameterProperty = BindableProperty.Create(nameof(ValueChangedCommandParameter), typeof(object), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty TouchEnabledProperty = BindableProperty.Create(nameof(TouchEnabled), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: EnableTouch);
     public static readonly BindableProperty DisplayValueProperty = BindableProperty.Create(nameof(DisplayValue), typeof(bool), typeof(GaugePARCEL), defaultValue: false, propertyChanged: RefreshView);
     public static readonly BindableProperty ReverseProperty = BindableProperty.Create(nameof(Reverse), typeof(bool), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -136,6 +137,13 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     #endregion
 
     #region Properties
+    public object ValueChangedCommandParameter
+    {
+        get => GetValue(ValueChangedParameterProperty);
+        set => SetValue(ValueChangedParameterProperty, value);
+           
+    }
+
     public bool TouchEnabled
     {
         get => (bool)GetValue(TouchEnabledProperty);
@@ -258,33 +266,8 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         {
             SetValue(GaugeStyleProperty, value);
 
-            if (Strategy is not null)
-                return;
+            UpdateStrategy();
 
-            switch (value)
-            {
-                case IGaugePARCEL.MeterStyle.Horizontal:
-                    Strategy = new HorizontalStrategy(this);
-
-                    break;
-
-                case IGaugePARCEL.MeterStyle.Vertical:
-                    Strategy = new VerticalStrategy(this);
-
-                    break;
-
-                case IGaugePARCEL.MeterStyle.Radial:
-                    Strategy = new RadialStrategy(this);
-
-                    break;
-
-            }
-
-            if (Renderer is null && ControlCanvas is not null)
-                ControlCanvas.Drawable = Strategy?.Renderer;
-#if DEBUG
-            DebugLogger.Log("Strategy updated.");
-#endif
         }
 
     }
@@ -348,46 +331,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     #endregion
 
     #region Methods
-    private void ControlCanvasDragInteraction(object? sender, TouchEventArgs e)
-    {
-        try
-        {
-            if (firstTouch.IsEmpty)
-                firstTouch = e.Touches.First();
-
-            if (Strategy.IndicatorBounds.Contains(firstTouch))
-                touchActive = true;
-
-            if (touchActive)
-                Strategy.HandleInput(e);
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-
-        }
-#if DEBUG
-        Trace.WriteLine($"Console Drag Event");
-#endif
-    }
-
-    private void ControlCanvasEndInteraction(object? sender, TouchEventArgs e)
-    {
-        try
-        {
-            touchActive = false;
-            firstTouch = new();
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-
-        }
-
-    }
-
     private static void AddIndicator(BindableObject bindable, object oldValue, object newValue)
     {
         try
@@ -424,7 +367,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             instance.ControlCanvas.EndInteraction -= instance.ControlCanvasEndInteraction;
 
             if ((bool)newValue && instance.ControlCanvas != null)
-            {                
+            {
                 instance.ControlCanvas.DragInteraction += instance.ControlCanvasDragInteraction;
                 instance.ControlCanvas.EndInteraction += instance.ControlCanvasEndInteraction;
 
@@ -433,12 +376,80 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            DebugLogger.Log(ex);
 
         }
 
         RefreshView(bindable, oldValue, newValue);
 
+    }
+
+    private void ControlCanvasDragInteraction(object? sender, TouchEventArgs e)
+    {
+        try
+        {
+            if (firstTouch.IsEmpty)
+                firstTouch = e.Touches.First();
+
+            if (Strategy.IndicatorBounds.Contains(firstTouch))
+                touchActive = true;
+
+            if (touchActive)
+                Strategy.HandleInput(e);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+
+        }
+#if DEBUG
+        DebugLogger.Log("GaugePARCEL drag event.");
+#endif
+    }
+
+    private void ControlCanvasEndInteraction(object? sender, TouchEventArgs e)
+    {
+        try
+        {
+            touchActive = false;
+            firstTouch = new();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+
+        }
+
+    }
+
+    private void UpdateStrategy()
+    {
+        switch (Appearance)
+        {
+            case IGaugePARCEL.MeterStyle.Horizontal:
+                Strategy = new HorizontalStrategy(this);
+
+                break;
+
+            case IGaugePARCEL.MeterStyle.Vertical:
+                Strategy = new VerticalStrategy(this);
+
+                break;
+
+            case IGaugePARCEL.MeterStyle.Radial:
+                Strategy = new RadialStrategy(this);
+
+                break;
+
+        }
+
+        if (Renderer is null && ControlCanvas is not null)
+            ControlCanvas.Drawable = Strategy.Renderer;
+#if DEBUG
+        DebugLogger.Log($"Strategy set to {Strategy}.");
+#endif
     }
 
     #endregion

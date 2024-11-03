@@ -57,20 +57,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\icon_add_fill_32x32.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PARCEL" Version="1.0.96" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="MainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Resources\Fonts\" />
+		<PackageReference Include="PARCEL" Version="1.0.11" />
 	</ItemGroup>
 
 </Project>
