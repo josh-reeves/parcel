@@ -1,4 +1,6 @@
+using PARCEL.Helpers;
 using PARCEL.Interfaces;
+using System.Diagnostics;
 
 namespace PARCEL.Controls;
 
@@ -35,12 +37,13 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     /// <param name="newValue">New value of ControlCanvas.</param>
     protected static void RefreshView(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is ControlPARCEL)
-        {
-            (bindable as ControlPARCEL)?.ControlCanvas?.Invalidate();
-
-        }
-
+        if (bindable is not ControlPARCEL)
+            return;
+        
+        (bindable as ControlPARCEL)?.ControlCanvas?.Invalidate();
+#if DEBUG
+        DebugLogger.Log($"{bindable} refreshed");
+#endif
     }
 
     /// <summary>

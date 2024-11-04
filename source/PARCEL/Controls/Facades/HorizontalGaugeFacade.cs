@@ -1,7 +1,8 @@
 ﻿using PARCEL.Interfaces;
-namespace PARCEL.Controls.Strategies.GaugePARCEL;
 
-public class HorizontalStrategy : GaugePARCELStrategy
+namespace PARCEL.Controls.Facades;
+
+public class HorizontalGaugeFacade : GaugePARCELFacade
 {
     #region Fields
     private IDrawable? renderer;
@@ -9,7 +10,9 @@ public class HorizontalStrategy : GaugePARCELStrategy
     #endregion
 
     #region Constructors
-    public HorizontalStrategy(IGaugePARCEL parentControl) : base(parentControl) { }
+    public HorizontalGaugeFacade() { }
+
+    public HorizontalGaugeFacade(IGaugePARCEL parentControl) : base(parentControl) { }
 
     #endregion
 
@@ -22,13 +25,14 @@ public class HorizontalStrategy : GaugePARCELStrategy
     public override void HandleInput(TouchEventArgs e)
         => throw new NotImplementedException();
 
-    public class HorizontalRenderer : GaugePARCELStrategyRenderer
+    public class HorizontalRenderer : GaugeFacadeRenderer
     {
-        public HorizontalRenderer(IGaugePARCELStrategy parentStrategy) : base(parentStrategy) { }
+        public HorizontalRenderer(IGaugePARCELStrategy parentFacade) : base(parentFacade) { }
 
         public override void Draw(ICanvas canvas, RectF rect)
         {
-            if (Parent is not HorizontalStrategy parent)
+
+            if (Parent is not GaugePARCELFacade parent || parent.Control is null)
                 return;
 
             float offset = 2,
@@ -77,6 +81,7 @@ public class HorizontalStrategy : GaugePARCELStrategy
 
             if (parent.Control.Indicator is not null)
                 DrawIndicator(rect);
+
         }
 
     }

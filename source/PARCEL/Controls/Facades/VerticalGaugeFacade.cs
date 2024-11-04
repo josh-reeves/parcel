@@ -1,8 +1,8 @@
 ﻿using PARCEL.Interfaces;
 
-namespace PARCEL.Controls.Strategies.GaugePARCEL;
+namespace PARCEL.Controls.Facades;
 
-public class VerticalStrategy : GaugePARCELStrategy
+public class VerticalGaugeFacade : GaugePARCELFacade
 {
     #region Fields
     private IDrawable? renderer;
@@ -10,7 +10,9 @@ public class VerticalStrategy : GaugePARCELStrategy
     #endregion
 
     #region Constructors
-    public VerticalStrategy(IGaugePARCEL parentControl) : base(parentControl) { }
+    public VerticalGaugeFacade() { }
+
+    public VerticalGaugeFacade(IGaugePARCEL parentControl) : base(parentControl) { }
 
     #endregion
 
@@ -23,7 +25,7 @@ public class VerticalStrategy : GaugePARCELStrategy
     public override void HandleInput(TouchEventArgs e)
         => throw new NotImplementedException();
 
-    public class VerticalRenderer : GaugePARCELStrategyRenderer
+    public class VerticalRenderer : GaugeFacadeRenderer
     {
         public VerticalRenderer(IGaugePARCELStrategy parentStrategy) : base(parentStrategy) { }
 

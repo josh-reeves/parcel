@@ -2,9 +2,9 @@
 using PARCEL.Helpers;
 using System.Runtime.CompilerServices;
 
-namespace PARCEL.Controls.Strategies.GaugePARCEL;
+namespace PARCEL.Controls.Facades;
 
-public class RadialStrategy : GaugePARCELStrategy
+public class RadialGaugeFacade : GaugePARCELFacade
 {
     #region Fields
     private IDrawable? renderer;
@@ -12,7 +12,9 @@ public class RadialStrategy : GaugePARCELStrategy
     #endregion
 
     #region Constructors
-    public RadialStrategy(IGaugePARCEL parentControl) : base(parentControl) { }
+    public RadialGaugeFacade() { }
+
+    public RadialGaugeFacade(IGaugePARCEL parentControl) : base(parentControl) { }
 
     #endregion
 
@@ -24,6 +26,10 @@ public class RadialStrategy : GaugePARCELStrategy
 
     public override void HandleInput(TouchEventArgs e)
     {
+
+        if (Control is null)
+            return;
+
         double inputThreshold = 20;
 
         PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(WorkingCanvas.Left, WorkingCanvas.Top, WorkingCanvas.Width, WorkingCanvas.Height, Control.StartPos);
@@ -33,7 +39,7 @@ public class RadialStrategy : GaugePARCELStrategy
 
     }
 
-    public class RadialRenderer : GaugePARCELStrategyRenderer
+    public class RadialRenderer : GaugeFacadeRenderer
     {
         #region Constructors
         public RadialRenderer(IGaugePARCELStrategy parentStrategy) : base(parentStrategy) { }
@@ -45,7 +51,7 @@ public class RadialStrategy : GaugePARCELStrategy
         {
             float valuePos;
 
-            if (Parent is not RadialStrategy parent)
+            if (Parent is not RadialGaugeFacade parent || parent.Control is null)
                 return;
 
             parent.WorkingCanvas = new()

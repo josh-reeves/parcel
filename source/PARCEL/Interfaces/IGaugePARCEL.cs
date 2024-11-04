@@ -1,6 +1,4 @@
 ﻿using System.Windows.Input;
-using PARCEL.Controls.Strategies;
-using PARCEL.Controls.Strategies.GaugePARCEL;
 
 namespace PARCEL.Interfaces;
 
@@ -52,7 +50,7 @@ public interface IGaugePARCEL : IControlPARCEL
 
     public IIndicatorPARCEL Indicator { get; set; }
 
-    public IGaugePARCELStrategy Strategy { get; set; }
+    public IGaugePARCELStrategy Facade { get; set; }
 
     public Color EmptyColor { get; set; }
 

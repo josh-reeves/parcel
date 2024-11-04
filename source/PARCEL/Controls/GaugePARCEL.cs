@@ -2,10 +2,8 @@ using System.Windows.Input;
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using PARCEL.Converters;
-using System.Diagnostics;
-using PARCEL.Controls.Strategies.GaugePARCEL;
-using System.Runtime.CompilerServices;
-using System.ComponentModel;
+using PARCEL.Controls.Facades;
+using Microsoft.Maui.Platform;
 
 namespace PARCEL.Controls;
 
@@ -26,7 +24,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public static readonly BindableProperty StrokeThicknessProperty = BindableProperty.Create(nameof(StrokeThickness), typeof(float), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StartPosProperty = BindableProperty.Create(nameof(StartPos), typeof(float), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty EndPosProperty = BindableProperty.Create(nameof(EndPos), typeof(float), typeof(GaugePARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(double), typeof(GaugePARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty ValueProperty = BindableProperty.Create(nameof(Value), typeof(double), typeof(GaugePARCEL), propertyChanged: SendValueChanged);
     public static readonly BindableProperty ValueMinProperty = BindableProperty.Create(nameof(ValueMin), typeof(double), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ValueMaxProperty = BindableProperty.Create(nameof(ValueMax), typeof(double), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FontSizeProperty = BindableProperty.Create(nameof(FontSize), typeof(double), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -36,7 +34,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public static readonly BindableProperty GaugeStyleProperty = BindableProperty.Create(nameof(Appearance), typeof(IGaugePARCEL.MeterStyle), typeof(GaugePARCEL));
     public static readonly BindableProperty ValueChangedCommandProperty = BindableProperty.Create(nameof(ValueChangedCommand), typeof(ICommand), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorProperty = BindableProperty.Create(nameof(Indicator), typeof(IIndicatorPARCEL), typeof(GaugePARCEL), propertyChanged: AddIndicator);
-    public static readonly BindableProperty StrategyProperty = BindableProperty.Create(nameof(Strategy), typeof(IGaugePARCELStrategy), typeof(GaugePARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty FacadeProperty = BindableProperty.Create(nameof(Facade), typeof(IGaugePARCELStrategy), typeof(GaugePARCEL), propertyChanged: InitializeFacade);
     public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty EmptyColorProperty = BindableProperty.Create(nameof(EmptyColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FillColorProperty = BindableProperty.Create(nameof(FillColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -266,7 +264,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         {
             SetValue(GaugeStyleProperty, value);
 
-            UpdateStrategy();
+            UpdateFacade();
 
         }
 
@@ -286,17 +284,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
-    public IGaugePARCELStrategy Strategy
+    public IGaugePARCELStrategy Facade
     {
-        get => (IGaugePARCELStrategy)GetValue(StrategyProperty);
-        set
-        {
-            SetValue(StrategyProperty, value);
-
-            if (Renderer is null && ControlCanvas is not null)
-                ControlCanvas.Drawable = value.Renderer;
-
-        }
+        get => (IGaugePARCELStrategy)GetValue(FacadeProperty);
+        set => SetValue(FacadeProperty, value);
 
     }
 
@@ -384,6 +375,37 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
+    private static void InitializeFacade(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is not GaugePARCEL instance)
+            return;
+
+        instance.Facade.Control = instance;
+
+        if (instance.ControlCanvas is not null && instance.Renderer is null)
+            instance.ControlCanvas.Drawable = instance.Facade.Renderer;
+#if DEBUG
+        DebugLogger.Log($"New facade attached to ${instance.Facade.Control}. Previous facade: {oldValue}");
+#endif
+        RefreshView(bindable, oldValue, newValue);
+    }
+
+    private static void SendValueChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (newValue == oldValue || bindable is not GaugePARCEL instance)
+            return; 
+        
+        instance.ValueChanged?.Invoke(instance, EventArgs.Empty);
+
+        if (instance.ValueChangedCommand?.CanExecute(instance.ValueChangedCommandParameter) ?? false)
+            instance.ValueChangedCommand.Execute(instance.ValueChangedCommandParameter);
+#if DEBUG
+        DebugLogger.Log($"Value changed to {instance.Value}.");
+#endif
+        RefreshView(bindable, oldValue, newValue);
+
+    }
+    
     private void ControlCanvasDragInteraction(object? sender, TouchEventArgs e)
     {
         try
@@ -391,16 +413,16 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
             if (firstTouch.IsEmpty)
                 firstTouch = e.Touches.First();
 
-            if (Strategy.IndicatorBounds.Contains(firstTouch))
+            if (Facade.IndicatorBounds.Contains(firstTouch))
                 touchActive = true;
 
             if (touchActive)
-                Strategy.HandleInput(e);
+                Facade.HandleInput(e);
 
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            DebugLogger.Log(ex);
 
         }
 #if DEBUG
@@ -418,37 +440,33 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            DebugLogger.Log(ex);
 
         }
 
     }
 
-    private void UpdateStrategy()
+    private void UpdateFacade()
     {
         switch (Appearance)
         {
             case IGaugePARCEL.MeterStyle.Horizontal:
-                Strategy = new HorizontalStrategy(this);
+                Facade = new HorizontalGaugeFacade();
 
                 break;
 
             case IGaugePARCEL.MeterStyle.Vertical:
-                Strategy = new VerticalStrategy(this);
-
+                Facade = new VerticalGaugeFacade();
                 break;
 
             case IGaugePARCEL.MeterStyle.Radial:
-                Strategy = new RadialStrategy(this);
+                Facade = new RadialGaugeFacade();
 
                 break;
 
         }
-
-        if (Renderer is null && ControlCanvas is not null)
-            ControlCanvas.Drawable = Strategy.Renderer;
 #if DEBUG
-        DebugLogger.Log($"Strategy set to {Strategy}.");
+        DebugLogger.Log($"Strategy set to {Facade}.");
 #endif
     }
 

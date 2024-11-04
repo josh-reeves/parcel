@@ -9,6 +9,7 @@ namespace PARCEL.Interfaces;
 public interface IGaugePARCELStrategy : IControlPARCELStrategy
 {
     #region Properties
+    public RectF WorkingCanvas { get; }
     public RectF IndicatorBounds { get; set; }
 
     #endregion
