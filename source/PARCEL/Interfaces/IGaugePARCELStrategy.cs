@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PARCEL.Controls.Behaviors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ public interface IGaugePARCELStrategy : IControlPARCELStrategy
     #endregion
 
     #region Methods
+    public void HandleInput(DragDetector.DragEventArgs e);
     public void HandleInput(TouchEventArgs e);
 
     #endregion

@@ -60,7 +60,7 @@ public partial class ButtonInputDetector : PlatformBehavior<View, UIView>
     #region Classes
     private class PlatformGestureRecognizer : UIGestureRecognizer
     {
-        ButtonInputDetector parent;
+        private readonly ButtonInputDetector parent;
 
         public PlatformGestureRecognizer(ButtonInputDetector parentBehavior)
         {

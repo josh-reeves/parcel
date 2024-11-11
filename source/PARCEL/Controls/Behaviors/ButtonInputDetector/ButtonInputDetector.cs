@@ -10,12 +10,12 @@ public partial class ButtonInputDetector
 
     private RectF bounds;
 
-    public static BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonInputDetector));
-    public static BindableProperty ReleasedCommandProperty = BindableProperty.Create(nameof(ReleasedCommand), typeof(ICommand), typeof(ButtonInputDetector));
-    public static BindableProperty ExitedCommandProperty = BindableProperty.Create(nameof(ExitedCommand), typeof(ICommand), typeof(ButtonInputDetector));
-    public static BindableProperty PressedCommandParameterProperty = BindableProperty.Create(nameof(PressedCommandParamter), typeof(object), typeof(ButtonInputDetector));
-    public static BindableProperty ReleasedCommandParameterProperty = BindableProperty.Create(nameof(ReleasedCommandParamter), typeof(object), typeof(ButtonInputDetector));
-    public static BindableProperty ExitedCommandParameterProperty = BindableProperty.Create(nameof(ExitedCommandParameter), typeof(object), typeof(ButtonInputDetector));
+    public static readonly BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonInputDetector));
+    public static readonly BindableProperty ReleasedCommandProperty = BindableProperty.Create(nameof(ReleasedCommand), typeof(ICommand), typeof(ButtonInputDetector));
+    public static readonly BindableProperty ExitedCommandProperty = BindableProperty.Create(nameof(ExitedCommand), typeof(ICommand), typeof(ButtonInputDetector));
+    public static readonly BindableProperty PressedCommandParameterProperty = BindableProperty.Create(nameof(PressedCommandParamter), typeof(object), typeof(ButtonInputDetector));
+    public static readonly BindableProperty ReleasedCommandParameterProperty = BindableProperty.Create(nameof(ReleasedCommandParamter), typeof(object), typeof(ButtonInputDetector));
+    public static readonly BindableProperty ExitedCommandParameterProperty = BindableProperty.Create(nameof(ExitedCommandParameter), typeof(object), typeof(ButtonInputDetector));
 
     #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Graphics;
+using PARCEL.Controls.Behaviors;
 using PARCEL.Interfaces;
 
 namespace PARCEL.Controls.Facades;
@@ -25,6 +26,7 @@ public abstract class GaugePARCELFacade : IGaugePARCELStrategy
     #endregion
 
     #region Methods
+    public abstract void HandleInput(DragDetector.DragEventArgs e);
     public abstract void HandleInput(TouchEventArgs e);
 
     #endregion

@@ -223,7 +223,6 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
         Pressed?.Invoke(this, EventArgs.Empty);
 
-
     }
 
     private void OnReleased()

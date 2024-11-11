@@ -56,16 +56,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
             {
                 BindingContext = this,
                 Children = { ControlCanvas },
-                GestureRecognizers =
-                {
-                    new PointerGestureRecognizer()
-                    {
-                        PointerPressedCommand = new Command(OnPointerPressed),
-                        PointerReleasedCommand = new Command(OnPointerReleased)
 
-                    }
-
-                }
 
             };
 

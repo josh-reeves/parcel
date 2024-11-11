@@ -1,6 +1,7 @@
 ﻿using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using System.Runtime.CompilerServices;
+using PARCEL.Controls.Behaviors;
 
 namespace PARCEL.Controls.Facades;
 
@@ -23,6 +24,22 @@ public class RadialGaugeFacade : GaugePARCELFacade
         get => renderer ??= new RadialRenderer(this);
 
     }
+
+    public override void HandleInput(DragDetector.DragEventArgs e)
+    {
+
+        if (Control is null)
+            return;
+
+        double inputThreshold = 20;
+
+        PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(WorkingCanvas.Left, WorkingCanvas.Top, WorkingCanvas.Width, WorkingCanvas.Height, Control.StartPos);
+
+        if (Mathematician.GetAngle(WorkingCanvas.Center, e.Points.Last(), startPosPoint) <= (360f - (Math.Abs(Control.StartPos) - Math.Abs(Control.EndPos))) + inputThreshold)
+            Control.Value = Math.Round(Control.ValueMin + (Mathematician.GetAngle(WorkingCanvas.Center, e.Points.Last(), startPosPoint) / (360f - (Math.Abs(Control.StartPos) - Math.Abs(Control.EndPos))) * (Control.ValueMax - Control.ValueMin)), Control.Precision);
+
+    }
+
 
     public override void HandleInput(TouchEventArgs e)
     {

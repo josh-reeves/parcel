@@ -3,7 +3,6 @@ using PARCEL.Helpers;
 using PlatformView = Android.Views.View;
 using VirtualView = Microsoft.Maui.Controls.View;
 
-
 namespace PARCEL.Controls.Behaviors;
 
 public partial class ButtonInputDetector : PlatformBehavior<VirtualView, PlatformView>

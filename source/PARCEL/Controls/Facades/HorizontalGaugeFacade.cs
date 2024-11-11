@@ -1,4 +1,5 @@
-﻿using PARCEL.Interfaces;
+﻿using PARCEL.Controls.Behaviors;
+using PARCEL.Interfaces;
 
 namespace PARCEL.Controls.Facades;
 
@@ -21,6 +22,9 @@ public class HorizontalGaugeFacade : GaugePARCELFacade
         get => renderer ??= new HorizontalRenderer(this);
 
     }
+
+    public override void HandleInput(DragDetector.DragEventArgs e)
+    => throw new NotImplementedException();
 
     public override void HandleInput(TouchEventArgs e)
         => throw new NotImplementedException();
