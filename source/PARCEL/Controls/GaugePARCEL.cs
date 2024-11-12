@@ -36,7 +36,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
     public static readonly BindableProperty GaugeStyleProperty = BindableProperty.Create(nameof(Appearance), typeof(IGaugePARCEL.MeterStyle), typeof(GaugePARCEL), propertyChanged: UpdateFacade);
     public static readonly BindableProperty ValueChangedCommandProperty = BindableProperty.Create(nameof(ValueChangedCommand), typeof(ICommand), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorProperty = BindableProperty.Create(nameof(Indicator), typeof(IIndicatorPARCEL), typeof(GaugePARCEL), propertyChanged: AddIndicator);
-    public static readonly BindableProperty FacadeProperty = BindableProperty.Create(nameof(Facade), typeof(IGaugePARCELStrategy), typeof(GaugePARCEL), propertyChanged: UpdateFacade);
+    public static readonly BindableProperty FacadeProperty = BindableProperty.Create(nameof(Facade), typeof(IGaugeFacade), typeof(GaugePARCEL), propertyChanged: UpdateFacade);
     public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty EmptyColorProperty = BindableProperty.Create(nameof(EmptyColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty FillColorProperty = BindableProperty.Create(nameof(FillColor), typeof(Color), typeof(GaugePARCEL), propertyChanged: RefreshView);
@@ -295,9 +295,9 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
 
     }
 
-    public IGaugePARCELStrategy Facade
+    public IGaugeFacade Facade
     {
-        get => (IGaugePARCELStrategy)GetValue(FacadeProperty);
+        get => (IGaugeFacade)GetValue(FacadeProperty);
         set => SetValue(FacadeProperty, value);
 
     }
@@ -391,7 +391,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL
         if (bindable is not GaugePARCEL instance)
             return;
 
-        if (newValue is not GaugePARCELFacade)
+        if (newValue is not GaugeFacade)
             instance.SetFacadeByAppearance();
 
         instance.Facade.Control = instance;
