@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PARCEL.Interfaces;
 
-public interface IGaugePARCELStrategy : IControlPARCELStrategy
+public interface IGaugeFacade : IControlFacade
 {
     #region Properties
     public RectF WorkingCanvas { get; }
@@ -17,7 +17,6 @@ public interface IGaugePARCELStrategy : IControlPARCELStrategy
 
     #region Methods
     public void HandleInput(DragDetector.DragEventArgs e);
-    public void HandleInput(TouchEventArgs e);
 
     #endregion
 }

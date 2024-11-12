@@ -3,7 +3,7 @@ using PARCEL.Interfaces;
 
 namespace PARCEL.Controls.Facades;
 
-public class VerticalGaugeFacade : GaugePARCELFacade
+public class VerticalGaugeFacade : GaugeFacade
 {
     #region Fields
     private IDrawable? renderer;
@@ -25,12 +25,9 @@ public class VerticalGaugeFacade : GaugePARCELFacade
     public override void HandleInput(DragDetector.DragEventArgs e)
         => throw new NotImplementedException();
 
-    public override void HandleInput(TouchEventArgs e)
-        => throw new NotImplementedException();
-
     public class VerticalRenderer : GaugeFacadeRenderer
     {
-        public VerticalRenderer(IGaugePARCELStrategy parentStrategy) : base(parentStrategy) { }
+        public VerticalRenderer(IGaugeFacade parentStrategy) : base(parentStrategy) { }
 
         public override void Draw(ICanvas canvas, RectF rect)
         {

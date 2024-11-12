@@ -1,6 +1,6 @@
 ﻿namespace PARCEL.Interfaces;
 
-public interface IControlPARCELStrategy
+public interface IControlFacade
 {
     #region Properties
     public IDrawable Renderer { get; }

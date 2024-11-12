@@ -5,7 +5,7 @@ using PARCEL.Controls.Behaviors;
 
 namespace PARCEL.Controls.Facades;
 
-public class RadialGaugeFacade : GaugePARCELFacade
+public class RadialGaugeFacade : GaugeFacade
 {
     #region Fields
     private IDrawable? renderer;
@@ -27,7 +27,6 @@ public class RadialGaugeFacade : GaugePARCELFacade
 
     public override void HandleInput(DragDetector.DragEventArgs e)
     {
-
         if (Control is null)
             return;
 
@@ -40,26 +39,10 @@ public class RadialGaugeFacade : GaugePARCELFacade
 
     }
 
-
-    public override void HandleInput(TouchEventArgs e)
-    {
-
-        if (Control is null)
-            return;
-
-        double inputThreshold = 20;
-
-        PointF startPosPoint = GeometryUtil.EllipseAngleToPoint(WorkingCanvas.Left, WorkingCanvas.Top, WorkingCanvas.Width, WorkingCanvas.Height, Control.StartPos);
-
-        if (Mathematician.GetAngle(WorkingCanvas.Center, e.Touches.Last(), startPosPoint) <= (360f - (Math.Abs(Control.StartPos) - Math.Abs(Control.EndPos))) + inputThreshold)
-            Control.Value = Math.Round(Control.ValueMin + (Mathematician.GetAngle(WorkingCanvas.Center, e.Touches.Last(), startPosPoint) / (360f - (Math.Abs(Control.StartPos) - Math.Abs(Control.EndPos))) * (Control.ValueMax - Control.ValueMin)), Control.Precision);
-
-    }
-
     public class RadialRenderer : GaugeFacadeRenderer
     {
         #region Constructors
-        public RadialRenderer(IGaugePARCELStrategy parentStrategy) : base(parentStrategy) { }
+        public RadialRenderer(IGaugeFacade parentStrategy) : base(parentStrategy) { }
 
         #endregion
 

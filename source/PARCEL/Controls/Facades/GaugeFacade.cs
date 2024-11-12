@@ -4,12 +4,12 @@ using PARCEL.Interfaces;
 
 namespace PARCEL.Controls.Facades;
 
-public abstract class GaugePARCELFacade : IGaugePARCELStrategy
+public abstract class GaugeFacade : IGaugeFacade
 {
     #region Constructors
-    public GaugePARCELFacade() { }
+    public GaugeFacade() { }
 
-    public GaugePARCELFacade(IGaugePARCEL parentControl)
+    public GaugeFacade(IGaugePARCEL parentControl)
         => Control = parentControl;
 
     #endregion
@@ -17,9 +17,9 @@ public abstract class GaugePARCELFacade : IGaugePARCELStrategy
     #region Properties
     public abstract IDrawable Renderer { get; }
 
-    public RectF WorkingCanvas { get; set; }
-
     public IGaugePARCEL? Control { get; set; }
+
+    public RectF WorkingCanvas { get; set; }
 
     public RectF IndicatorBounds { get; set; }
 
@@ -27,7 +27,6 @@ public abstract class GaugePARCELFacade : IGaugePARCELStrategy
 
     #region Methods
     public abstract void HandleInput(DragDetector.DragEventArgs e);
-    public abstract void HandleInput(TouchEventArgs e);
 
     #endregion
 
@@ -35,13 +34,13 @@ public abstract class GaugePARCELFacade : IGaugePARCELStrategy
     public abstract class GaugeFacadeRenderer : IDrawable
     {
         #region Constructors
-        public GaugeFacadeRenderer(IGaugePARCELStrategy parentFacade)
+        public GaugeFacadeRenderer(IGaugeFacade parentFacade)
             => Parent = parentFacade;
 
         #endregion
 
         #region Properties
-        protected IGaugePARCELStrategy Parent { get; private set; }
+        protected IGaugeFacade Parent { get; private set; }
 
         #endregion
 
