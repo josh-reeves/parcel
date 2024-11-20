@@ -2,6 +2,7 @@ using Microsoft.Maui.Controls.Shapes;
 using PARCEL.Interfaces;
 using PARCEL.Converters;
 using PARCEL.Helpers;
+using PARCEL.Controls.Behaviors;
 
 namespace PARCEL.Controls;
 
@@ -10,7 +11,6 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     #region Fields
     private readonly Grid? controlContainer;
 
-    public static readonly BindableProperty IndicatorGaugeProperty = BindableProperty.Create(nameof(IndicatorGauge), typeof(IGaugePARCEL), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorColorProperty = BindableProperty.Create(nameof(IndicatorColor), typeof(Brush), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorShapeProperty = BindableProperty.Create(nameof(IndicatorShape), typeof(Shape), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorIconProperty = BindableProperty.Create(nameof(IndicatorIcon), typeof(Image), typeof(IndicatorPARCEL), propertyChanged: AddIcon);
@@ -56,7 +56,16 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
             {
                 BindingContext = this,
                 Children = { ControlCanvas },
+                Behaviors = 
+                {
+                    new ButtonInputDetector()
+                    {
+                        PressedCommand = new Command(OnPointerPressed),
+                        ReleasedCommand = new Command(OnPointerReleased)
 
+                    }
+
+                }
 
             };
 
@@ -82,13 +91,6 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
     #endregion
 
     #region Properties
-    public IGaugePARCEL IndicatorGauge
-    {
-        get => (IGaugePARCEL)GetValue(IndicatorGaugeProperty); 
-        set => SetValue(IndicatorGaugeProperty, value);
-
-    }
-
     public Brush IndicatorColor
     {
         get => (Brush)GetValue(IndicatorColorProperty); 

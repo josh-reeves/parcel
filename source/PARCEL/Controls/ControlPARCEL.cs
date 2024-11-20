@@ -1,13 +1,12 @@
 using PARCEL.Helpers;
 using PARCEL.Interfaces;
-using System.Diagnostics;
 
 namespace PARCEL.Controls;
 
 public abstract class ControlPARCEL : ContentView, IControlPARCEL
 {
     #region Fields
-    public static readonly BindableProperty RendererProperty = BindableProperty.Create(nameof(Renderer), typeof(IDrawable), typeof(ControlPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty RendererProperty = BindableProperty.Create(nameof(Renderer), typeof(IDrawable), typeof(ControlPARCEL), propertyChanged: SetRenderer);
 
     #endregion
 
@@ -28,19 +27,31 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
 
     #endregion
 
+
     #region Methods
+    private static void SetRenderer(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is not ControlPARCEL instance || instance.ControlCanvas is null)
+            return;
+
+        instance.ControlCanvas.Drawable = instance.Renderer;
+
+        RefreshView(bindable, oldValue, newValue);
+
+    }
+
     /// <summary>
-    /// Refreshes the ControlCanvas of bindable. Invokeable via BindableProperty delegates and accessible by sub-classes.
+    /// Refreshes the ControlCanvas of bindable. Invocable via BindableProperty delegates and accessible by sub-classes.
     /// </summary>
     /// <param name="bindable">ControlPARCEL</param>
     /// <param name="oldValue">Old value of ControlCanvas.</param>
     /// <param name="newValue">New value of ControlCanvas.</param>
     protected static void RefreshView(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is not ControlPARCEL)
+        if (bindable is not ControlPARCEL instance)
             return;
         
-        (bindable as ControlPARCEL)?.ControlCanvas?.Invalidate();
+        instance.ControlCanvas?.Invalidate();
 #if DEBUG
         DebugLogger.Log($"{bindable} refreshed");
 #endif
@@ -67,6 +78,6 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
 
     }
 
-    #endregion
+    #endregion 
 
 }

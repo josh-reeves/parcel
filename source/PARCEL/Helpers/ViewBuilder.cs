@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace PARCEL.Helpers;
 
-namespace PARCEL.Helpers;
-
-public static class ViewBuilder<T>
+public static class ViewBuilder<T> where T: new()
 {
     #region Constructors
 
@@ -20,8 +14,10 @@ public static class ViewBuilder<T>
     #endregion
 
     #region Methods
-    public static T BuildView(T view, BindingPair[]? bindings = null, AdditionalSetupDelegate? additionalSetup = null)
+    public static T BuildView(T? view, BindingPair[]? bindings = null, AdditionalSetupDelegate? additionalSetup = null) 
     {
+        view ??= new T();
+
         try
         {
             if (view is View && bindings != null)

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:parcels="clr-namespace:PARCEL.Controls;assembly=PARCEL"
              xmlns:behaviors="clr-namespace:PARCEL.Controls.Behaviors;assembly=PARCEL"
-             xmlns:facades="clr-namespace:PARCEL.Controls.Facades;assembly=PARCEL"
+             xmlns:renderers="clr-namespace:PARCEL.Controls.Renderers;assembly=PARCEL"
+             xmlns:strategies="clr-namespace:PARCEL.Controls.InputStrategies;assembly=PARCEL"
              x:Class="examples.MainPage"
              Shell.NavBarIsVisible="False">
 
@@ -11,7 +12,8 @@
         <VerticalStackLayout VerticalOptions="Center"
                              Spacing="25">
 
-            <parcels:GaugePARCEL DisplayValue="True"
+            <parcels:GaugePARCEL x:Name="Radial"
+                                 DisplayValue="True"
                                  VerticalOptions="Start"
                                  LineCap="Round"
                                  MinimumHeightRequest="300"
@@ -24,8 +26,8 @@
                                  StartPos="-135"
                                  EndPos="-45"
                                  Value="300"
-                                 TouchEnabled="True"
                                  Appearance="Radial"
+                                 TouchEnabled="True"
                                  FontColor="#18181B"
                                  StrokeColor="#52525B"
                                  FillColor="#1E88E5"
@@ -47,7 +49,8 @@
                 </parcels:GaugePARCEL.Indicator>
             </parcels:GaugePARCEL>
 
-            <parcels:GaugePARCEL DisplayValue="True"
+            <parcels:GaugePARCEL x:Name="Horizontal"
+                                 DisplayValue="True"
                                  VerticalOptions="Start"
                                  LineCap="Round"
                                  WidthRequest="300"
@@ -62,7 +65,7 @@
                                  FontColor="#18181B"
                                  StrokeColor="#52525B"
                                  FillColor="#1E88E5"
-                                 Facade="{facades:HorizontalGaugeFacade}"
+                                 Appearance="Horizontal"
                                  EmptyColor="#A1A1AA">
                 <parcels:GaugePARCEL.Indicator>
                     <parcels:IndicatorPARCEL WidthRequest="32"
@@ -81,7 +84,6 @@
                 </parcels:GaugePARCEL.Indicator>
             </parcels:GaugePARCEL>
 
-            <!-- The below is used to test touch and drag functionality in debug mode:
             <Grid WidthRequest="200"
                   HeightRequest="75"
                   HorizontalOptions="Center">
@@ -92,10 +94,9 @@
                        TextColor="#FAFAFA"
                        Text="Touch and Drag"/>
                 <Grid.Behaviors>
-                    <behaviors:ButtonInputDetector/>
+                    <behaviors:DragDetector/>
                 </Grid.Behaviors>
             </Grid>
-            -->
 
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Spacing="15">

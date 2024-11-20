@@ -50,8 +50,6 @@ public interface IGaugePARCEL : IControlPARCEL
 
     public IIndicatorPARCEL Indicator { get; set; }
 
-    public IGaugeFacade Facade { get; set; }
-
     public Color EmptyColor { get; set; }
 
     public Color FillColor { get; set; }
