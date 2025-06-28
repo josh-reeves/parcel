@@ -27,7 +27,6 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
 
     #endregion
 
-
     #region Methods
     private static void SetRenderer(BindableObject bindable, object oldValue, object newValue)
     {
@@ -65,7 +64,7 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     /// <param name="rect">The RectF that will act as a base for the new RectF the method returns.</param>
     /// <param name="offset">The value by which to reduce the perimeter of the new RectF the method returns.</param>
     /// <returns></returns>
-    protected static RectF GetSafeMargins(RectF rect, float offset)
+    public static RectF GetSafeMargins(RectF rect, float offset)
     {
         return new RectF()
         {
