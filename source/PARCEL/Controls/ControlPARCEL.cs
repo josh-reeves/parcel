@@ -6,6 +6,8 @@ namespace PARCEL.Controls;
 public abstract class ControlPARCEL : ContentView, IControlPARCEL
 {
     #region Fields
+    private IDrawable? defaultRenderer;
+
     public static readonly BindableProperty RendererProperty = BindableProperty.Create(nameof(Renderer), typeof(IDrawable), typeof(ControlPARCEL), propertyChanged: SetRenderer);
 
     #endregion
@@ -13,7 +15,7 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #region Constructors
     public ControlPARCEL() { }
 
-#endregion
+    #endregion
 
     #region Properties
     protected GraphicsView? ControlCanvas { get; set; }
@@ -49,34 +51,15 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     {
         if (bindable is not ControlPARCEL instance)
             return;
-        
+
         instance.ControlCanvas?.Invalidate();
 #if DEBUG
         DebugLogger.Log($"{bindable} refreshed");
 #endif
     }
 
-    /// <summary>
-    /// Returns a new RectF whose measurements have been reduced by the value of offset.
-    /// This was built primarily as a workaround for this issue: https://github.com/dotnet/maui/issues/8629
-    /// Presumably, if MS fixes the bug so that canvas edges no longer clip on Windows/iOS, this won't be needed anymore.
-    /// </summary>
-    /// <param name="rect">The RectF that will act as a base for the new RectF the method returns.</param>
-    /// <param name="offset">The value by which to reduce the perimeter of the new RectF the method returns.</param>
-    /// <returns></returns>
-    public static RectF GetSafeMargins(RectF rect, float offset)
-    {
-        return new RectF()
-        {
-            Left = rect.Left + offset,
-            Top = rect.Top + offset,
-            Width = rect.Width - (offset * 2),
-            Height = rect.Height - (offset * 2)
+    protected abstract IDrawable GetDefaultRenderer();
 
-        };
-
-    }
-
-    #endregion 
+    #endregion
 
 }

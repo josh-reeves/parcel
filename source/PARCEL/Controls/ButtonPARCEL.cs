@@ -1,4 +1,5 @@
 using PARCEL.Controls.Behaviors;
+using PARCEL.Controls.Renderers;
 using PARCEL.Converters;
 using PARCEL.Helpers;
 using PARCEL.Interfaces;
@@ -47,7 +48,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
                                 new()
                                 {
                                     Property = GraphicsView.DrawableProperty,
-                                    Value = new ButtonPARCELRenderer(this)
+                                    Value = GetDefaultRenderer()
 
                                 }
 
@@ -74,7 +75,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
                     {
                         PressedCommand = new Command(OnPressed),
                         ReleasedCommand = new Command(OnReleased),
-                        ExitedCommand = (new Command(() => IsPressed = false))
+                        ExitedCommand = new Command(() => IsPressed = false)
 
                     }
 
@@ -255,136 +256,15 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     public static void SetIsParentPressed(BindableObject view, bool value)
         => view.SetValue(IsParentPressedProperty, value);
 
-    #endregion
-
-    #region Classes
-    public class ButtonPARCELRenderer : IDrawable
+    protected override IDrawable GetDefaultRenderer()
     {
-        #region Fields
-        private const float offset = 1.0f;
-
-        private readonly ButtonPARCEL parent;
-
-        #endregion
-
-        #region Constructors
-        public ButtonPARCELRenderer(ButtonPARCEL parentControl)
+        return Offset switch
         {
-            parent = parentControl;
+            >= 0 => new RaisedButtonRenderer(this),
+            < 0 => new RecessedButtonRenderer(this),
+            _ => throw new NotImplementedException()
 
-        }
-
-        #endregion
-
-        public void Draw(ICanvas canvas, RectF rect)
-        {
-            VisualElement? content = parent.ButtonContent as VisualElement; 
-
-            canvas.StrokeSize = (float)parent.StrokeWidth;
-
-            if (parent.Offset >= 0)
-                DrawRaised(canvas, rect, content);
-
-            if (parent.Offset < 0)
-                DrawRecessed(canvas, rect, content);
-
-        }
-
-        private void DrawRaised(ICanvas canvas, RectF rect, VisualElement? content)
-        {
-            if (parent.IsPressed)
-            {
-                Designer.FillShape(canvas,
-                    new RectF()
-                    {
-                        Top = rect.Top + offset + (float)parent.Offset,
-                        Left = rect.Left + offset,
-                        Width = rect.Width - (offset * 2),
-                        Bottom = rect.Bottom - offset
-
-                    },
-                    parent.ButtonShape,
-                    parent.PressedColor);
-
-                Designer.OutlineShape(
-                    canvas,
-                    new RectF()
-                    {
-                        Top = rect.Top + offset + (float)parent.Offset,
-                        Left = rect.Left + offset,
-                        Width = rect.Width - (offset * 2),
-                        Bottom = rect.Bottom - offset
-
-                    },
-                    parent.ButtonShape,
-                    parent.StrokeColor.Color);
-
-                if (content != null)
-                    content.TranslationY = 0 + (parent.Offset / 2);
-
-            }
-            else
-            {
-                Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
-
-                Designer.FillShape(
-                    canvas,
-                    new RectF()
-                    {
-                        Top = rect.Top + offset,
-                        Left = rect.Left + offset,
-                        Width = rect.Width - (offset * 2),
-                        Bottom = rect.Bottom - offset - (float)parent.Offset
-
-                    },
-                    parent.ButtonShape,
-                    parent.ButtonColor);
-
-                Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor.Color);
-
-                if (content != null )
-                    content.TranslationY = 0 - (parent.Offset / 2);
-
-            }
-
-        }
-
-        private void DrawRecessed(ICanvas canvas, RectF rect, VisualElement? content)
-        {
-            Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.OffsetColor);
-
-            if (parent.IsPressed)
-            {
-
-                Designer.FillShape(
-                    canvas,
-                    new RectF()
-                    {
-                        Top = rect.Top + offset + Math.Abs((float)parent.Offset),
-                        Left = rect.Left + offset,
-                        Width = rect.Width - (offset * 2),
-                        Bottom = rect.Bottom - offset
-
-                    },
-                    parent.ButtonShape,
-                    parent.PressedColor);
-
-                if (content != null)
-                    content.TranslationY = 0 + (Math.Abs(parent.Offset) / 2);
-
-            }
-            else
-            {
-                Designer.FillShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.ButtonColor);
-
-                if (content != null)
-                    content.TranslationY = 0;
-
-            }
-
-            Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), parent.ButtonShape, parent.StrokeColor.Color);
-
-        }
+        };
 
     }
 

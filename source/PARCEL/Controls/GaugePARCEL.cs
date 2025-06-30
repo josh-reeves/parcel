@@ -470,14 +470,14 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
 
     }
     
-    private IDrawable GetDefaultRenderer()
+    protected override IDrawable GetDefaultRenderer()
     {
         return Appearance switch
         {
             IGaugePARCEL.MeterStyle.Horizontal => new HorizontalGaugeRenderer(this),
             IGaugePARCEL.MeterStyle.Vertical => new VerticalGaugeRenderer(this),
             IGaugePARCEL.MeterStyle.Radial => new RadialGaugeRenderer(this),
-            _=> throw new NotImplementedException()
+            _ => throw new NotImplementedException()
 
         };
 

@@ -54,7 +54,7 @@ public class RaisedButtonRenderer : ButtonRenderer
         else
         {
             Designer.FillShape(canvas,
-                               ControlPARCEL.GetSafeMargins(rect, offset),
+                               GetSafeMargins(rect, offset),
                                Parent.ButtonShape,
                                Parent.OffsetColor);
 
@@ -72,7 +72,7 @@ public class RaisedButtonRenderer : ButtonRenderer
                 Parent.ButtonColor);
 
             Designer.OutlineShape(canvas,
-                                  ControlPARCEL.GetSafeMargins(rect, offset),
+                                  GetSafeMargins(rect, offset),
                                   Parent.ButtonShape,
                                   Parent.StrokeColor.Color);
 

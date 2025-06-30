@@ -3,6 +3,7 @@ using PARCEL.Interfaces;
 using PARCEL.Converters;
 using PARCEL.Helpers;
 using PARCEL.Controls.Behaviors;
+using PARCEL.Controls.Renderers;
 
 namespace PARCEL.Controls;
 
@@ -36,7 +37,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
                                 new()
                                 {
                                     Property = GraphicsView.DrawableProperty,
-                                    Value = new IndicatorPARCELRenderer(this)
+                                    Value = GetDefaultRenderer()
 
                                 }
 
@@ -165,45 +166,9 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
     }
 
-    #endregion
-
-    #region Classes
-    public class IndicatorPARCELRenderer : IDrawable
-	{
-        #region Fields
-        private const float offset = 1.0f;
-
-        private readonly IndicatorPARCEL parent;
-
-        #endregion
-
-        #region Constructors
-        public IndicatorPARCELRenderer(IndicatorPARCEL parentControl)
-		{
-			parent = parentControl;
-
-		}
-
-        #endregion
-
-        #region Methods
-		public void Draw(ICanvas canvas, RectF rect)
-		{
-			parent.IndicatorColor ??= parent.IndicatorShape.BackgroundColor; // Set IndicatorColor to IndicatorShape.BackgroundColor if it is currently null;
-
-            canvas.SetFillPaint(parent.IndicatorColor, rect);
-
-            Designer.FillShape(
-                canvas,
-                GetSafeMargins(rect, offset),
-                parent.IndicatorShape);
-
-        }
-
-        #endregion
-
-    }
-
+    protected override IDrawable GetDefaultRenderer()
+        => new IndicatorRenderer(this);
+        
     #endregion
 
 }
