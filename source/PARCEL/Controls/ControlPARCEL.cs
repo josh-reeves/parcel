@@ -6,8 +6,6 @@ namespace PARCEL.Controls;
 public abstract class ControlPARCEL : ContentView, IControlPARCEL
 {
     #region Fields
-    private IDrawable? defaultRenderer;
-
     public static readonly BindableProperty RendererProperty = BindableProperty.Create(nameof(Renderer), typeof(IDrawable), typeof(ControlPARCEL), propertyChanged: SetRenderer);
 
     #endregion

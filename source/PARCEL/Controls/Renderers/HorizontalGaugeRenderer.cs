@@ -9,7 +9,7 @@ public class HorizontalGaugeRenderer : GaugeRenderer
     public HorizontalGaugeRenderer() {}
 
     public HorizontalGaugeRenderer(IGaugePARCEL control) : base(control) {}
-
+ 
     #endregion
 
     public override void Draw(ICanvas canvas, RectF rect)
