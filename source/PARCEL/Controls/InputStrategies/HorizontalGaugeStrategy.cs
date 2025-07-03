@@ -13,7 +13,15 @@ public class HorizontalGaugeStrategy : IInputStrategy
         if (control is not GaugePARCEL parent || args is not DragDetector.DragEventArgs e)
             return;
 
-        parent.Value = Math.Round(parent.ValueMin + ((e.Points.Last().X - (parent.Thickness / 2)) / parent.WorkingCanvas.Width * (parent.ValueMax - parent.ValueMin)), parent.Precision);
+        // Creates a float storing the x coordinate of the last touched point if it's value is greater than or equal to zero. Otherwise, set to 0: 
+        float point = e.Points.Last().X >= 0 ? e.Points.Last().X : 0;
+
+        /* Add the minimum value to the X coordinate of the last touched point.
+         * Subtract half of thickness to account for endcaps.
+         * Divide by width of working canvas to convert to a decimal representation of X value as compared to canvas*/
+        parent.Value = Math.Round(
+            parent.ValueMin + ((point - (parent.Thickness / 2)) / parent.WorkingCanvas.Width * (parent.ValueMax - parent.ValueMin)),
+            parent.Precision);
 
     }
 

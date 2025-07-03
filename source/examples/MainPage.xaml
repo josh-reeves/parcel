@@ -55,7 +55,7 @@
                                  LineCap="Round"
                                  WidthRequest="300"
                                  HeightRequest="50"
-                                 Thickness="8"
+                                 Thickness="32"
                                  StrokeThickness="3"
                                  ValueMin="0"
                                  FontSize="20"

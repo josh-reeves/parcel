@@ -357,7 +357,8 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
             {
                 instance.Indicator.InputTransparent = true;
 
-                instance.controlContainer?.Add(instance.Indicator);
+                int labelIndex = Convert.ToInt32(instance.controlContainer?.IndexOf(instance.valueLabel));
+                instance.controlContainer?.Insert(labelIndex, instance.Indicator);
 
             }
 
