@@ -6,9 +6,13 @@ namespace PARCEL.Controls.Renderers;
 public class HorizontalGaugeRenderer : GaugeRenderer
 {
     #region Constructors
-    public HorizontalGaugeRenderer() {}
+    public HorizontalGaugeRenderer()
+    {
 
-    public HorizontalGaugeRenderer(IGaugePARCEL control) : base(control) {}
+
+    }
+
+    public HorizontalGaugeRenderer(IGaugePARCEL control) : base(control) { }
  
     #endregion
 
@@ -18,20 +22,21 @@ public class HorizontalGaugeRenderer : GaugeRenderer
             return;
 
         float offset = 2,
-                valuePos;
+              inputMargin = (float)(parent.Indicator?.Width ?? parent.Thickness) / 2,
+              valuePos;
 
         parent.WorkingCanvas = RectF.FromLTRB(
-            rect.Left + offset + (parent.Thickness / 2),
+            rect.Left + offset + inputMargin,
             rect.Top + offset,
-            rect.Right - offset - (parent.Thickness / 2),
+            rect.Right - offset - inputMargin,
             rect.Bottom - offset);
 
         valuePos = parent.WorkingCanvas.Left + (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * parent.WorkingCanvas.Width;
         
         parent.IndicatorBounds = new()
         {
-            X = valuePos - (float)((parent.Indicator?.Width ?? parent.Thickness) / 2),
-            Y = parent.WorkingCanvas.Center.Y - (float)((parent.Indicator?.Height ?? parent.Thickness) / 2),
+            X = valuePos - inputMargin,
+            Y = parent.WorkingCanvas.Center.Y - inputMargin,
             Width = (float)(parent.Indicator?.Width ?? parent.Thickness),
             Height = (float)(parent.Indicator?.Height ?? parent.Thickness)
 

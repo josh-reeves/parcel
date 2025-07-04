@@ -355,8 +355,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
 
             if (instance.Indicator != null && !(instance.controlContainer?.Contains(instance.Indicator) ?? true))
             {
-                instance.Indicator.InputTransparent = true;
-
                 int labelIndex = Convert.ToInt32(instance.controlContainer?.IndexOf(instance.valueLabel));
                 instance.controlContainer?.Insert(labelIndex, instance.Indicator);
 
@@ -439,7 +437,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
     {
         try
         {
-            if (IndicatorBounds.Contains(args.Points.First()))
+            if (IndicatorBounds.Contains(args.Points.First()) || Indicator.Frame.Contains(args.Points.First()))
                 touchActive = true;
 
             if (touchActive)
