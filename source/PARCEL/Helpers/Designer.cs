@@ -188,6 +188,9 @@ public static class Designer
 
     }
 
+    public static void DrawLine(this ICanvas canvas, LineCap lineCap, PointF startPoint, PointF endPoint)
+        => throw new NotImplementedException();
+
     #endregion
 
 }

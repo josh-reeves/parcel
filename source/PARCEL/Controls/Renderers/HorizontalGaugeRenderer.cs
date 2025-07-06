@@ -24,12 +24,19 @@ public class HorizontalGaugeRenderer : GaugeRenderer
         float offset = 2,
               inputMargin = (float)(parent.Indicator?.Width ?? parent.Thickness) / 2,
               valuePos;
-
-        parent.WorkingCanvas = RectF.FromLTRB(
-            rect.Left + offset + inputMargin,
-            rect.Top + offset,
-            rect.Right - offset - inputMargin,
-            rect.Bottom - offset);
+    
+        if (parent.Reverse)
+            parent.WorkingCanvas = RectF.FromLTRB(
+                rect.Right - offset - inputMargin,
+                rect.Top + offset,
+                rect.Left + offset + inputMargin,
+                rect.Bottom - offset);
+        else
+            parent.WorkingCanvas = RectF.FromLTRB(
+                rect.Left + offset + inputMargin,
+                rect.Top + offset,
+                rect.Right - offset - inputMargin,
+                rect.Bottom - offset);
 
         valuePos = parent.WorkingCanvas.Left + (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * parent.WorkingCanvas.Width;
         
