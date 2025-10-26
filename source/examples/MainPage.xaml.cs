@@ -1,6 +1,6 @@
 ﻿using PARCEL.Controls;
 
-namespace examples
+namespace Examples
 {
     public partial class MainPage : ContentPage
     {

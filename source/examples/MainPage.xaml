@@ -5,7 +5,7 @@
              xmlns:behaviors="clr-namespace:PARCEL.Controls.Behaviors;assembly=PARCEL"
              xmlns:renderers="clr-namespace:PARCEL.Controls.Renderers;assembly=PARCEL"
              xmlns:strategies="clr-namespace:PARCEL.Controls.InputStrategies;assembly=PARCEL"
-             x:Class="examples.MainPage"
+             x:Class="Examples.MainPage"
              Shell.NavBarIsVisible="False">
 
     <Grid BackgroundColor="#E0E0E0">
