@@ -10,8 +10,6 @@ namespace PARCEL.Controls;
 public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 {
     #region Fields
-    private readonly Grid? controlContainer;
-
     public static readonly BindableProperty IsPressedProperty = BindableProperty.Create(nameof(IsPressed), typeof(bool), typeof(ButtonPARCEL), defaultValue: false, propertyChanged: RefreshView);
     public static readonly BindableProperty OffsetProperty = BindableProperty.Create(nameof(Offset), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
@@ -64,7 +62,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
                 ]);
 
-            controlContainer = new()
+            ControlContainer = new Grid()
             {
                 BindingContext = this,
                 InputTransparent = false,
@@ -83,7 +81,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
             };
 
-            Content = controlContainer;
+            Content = ControlContainer;
 
         }
         catch (Exception ex)
@@ -241,8 +239,8 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     {
         if (bindable is ButtonPARCEL instance)
         {
-            instance.controlContainer?.Remove(oldValue as IView);
-            instance.controlContainer?.Add(instance.ButtonContent);
+            instance.ControlContainer?.Remove(oldValue as IView);
+            instance.ControlContainer?.Add(instance.ButtonContent);
 
         }
 

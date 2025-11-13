@@ -11,7 +11,6 @@ namespace PARCEL.Controls;
 public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
 {
     #region Fields
-    private readonly Grid? controlContainer;
     private readonly Label? valueLabel;
 
     private bool touchActive;
@@ -111,7 +110,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
 
                 ]);
 
-            controlContainer = new()
+            ControlContainer = new Grid()
             {
                 BindingContext = this,
                 Children =
@@ -128,7 +127,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
 
             };
 
-            Content = controlContainer;
+            Content = ControlContainer;
 
         }
         catch (Exception ex)
@@ -353,10 +352,10 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
         {
             GaugePARCEL instance = (GaugePARCEL)bindable;
 
-            if (instance.Indicator != null && !(instance.controlContainer?.Contains(instance.Indicator) ?? true))
+            if (instance.Indicator != null && !(instance.ControlContainer?.Contains(instance.Indicator) ?? true))
             {
-                int labelIndex = Convert.ToInt32(instance.controlContainer?.IndexOf(instance.valueLabel));
-                instance.controlContainer?.Insert(labelIndex, instance.Indicator);
+                int labelIndex = Convert.ToInt32(instance.ControlContainer?.IndexOf(instance.valueLabel));
+                instance.ControlContainer?.Insert(labelIndex, instance.Indicator);
 
             }
 

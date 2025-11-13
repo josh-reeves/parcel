@@ -10,8 +10,6 @@ namespace PARCEL.Controls;
 public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 {
     #region Fields
-    private readonly Grid? controlContainer;
-
     public static readonly BindableProperty IndicatorColorProperty = BindableProperty.Create(nameof(IndicatorColor), typeof(Brush), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorShapeProperty = BindableProperty.Create(nameof(IndicatorShape), typeof(Shape), typeof(IndicatorPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty IndicatorIconProperty = BindableProperty.Create(nameof(IndicatorIcon), typeof(Image), typeof(IndicatorPARCEL), propertyChanged: AddIcon);
@@ -53,7 +51,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
                     
                 ]);
 
-            controlContainer = new()
+            ControlContainer = new Grid()
             {
                 BindingContext = this,
                 Children = { ControlCanvas },
@@ -70,7 +68,7 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
             };
 
-            Content = controlContainer;
+            Content = ControlContainer;
 
             BackgroundColor = Colors.Transparent;
 
@@ -152,8 +150,8 @@ public class IndicatorPARCEL : ControlPARCEL, IIndicatorPARCEL
 
         try
         {
-            if (instance.IndicatorIcon != null && (!instance.controlContainer?.Contains(instance.IndicatorIcon) ?? false))
-                instance.controlContainer?.Add(instance.IndicatorIcon);
+            if (instance.IndicatorIcon != null && (!instance.ControlContainer?.Contains(instance.IndicatorIcon) ?? false))
+                instance.ControlContainer?.Add(instance.IndicatorIcon);
 
             RefreshView(bindable, oldValue, newValue);
 

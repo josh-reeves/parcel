@@ -16,6 +16,8 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #endregion
 
     #region Properties
+    protected Layout? ControlContainer{ get; set; }
+
     protected GraphicsView? ControlCanvas { get; set; }
 
     public IDrawable Renderer
