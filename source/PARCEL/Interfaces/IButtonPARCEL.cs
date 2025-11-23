@@ -37,7 +37,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public IStackLayout ButtonContent
+    public IView ButtonContent
     {
         get;
         set;

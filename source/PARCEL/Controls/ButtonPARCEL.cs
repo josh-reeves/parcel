@@ -105,11 +105,17 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     {
         get
         {
-            if (ButtonContent is StackLayout stackLayout)
+            if (ButtonContent is Layout layout)
             {
-                foreach (View child in stackLayout.Children)
+                foreach (View child in layout.Children)
+                {
                     if (GetIsParentPressed(child))
+                    {
                         IsPressed = GetIsParentPressed(child);
+                        
+                    }
+                    
+                }
 
             }
             
@@ -118,11 +124,11 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
         }
         set
         {
-            if (ButtonContent is StackLayout stackLayout)
+            if (ButtonContent is Layout layout)
             {
-                SetIsParentPressed(stackLayout, value);
+                SetIsParentPressed(layout, value);
 
-                foreach (View child in stackLayout.Children)
+                foreach (View child in layout.Children)
                     SetIsParentPressed(child, value);
 
             }
@@ -154,9 +160,9 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     }
 
-    public IStackLayout ButtonContent
+    public IView ButtonContent
     {
-        get => (IStackLayout)GetValue(ButtonContentProperty);
+        get => (IView)GetValue(ButtonContentProperty);
         set => SetValue(ButtonContentProperty, value);
 
     }

@@ -61,7 +61,6 @@
                                  FontSize="20"
                                  ValueMax="100"
                                  Value="50"
-                                 Margin="0,-20,0,0"
                                  TouchEnabled="True"
                                  FontColor="#18181B"
                                  StrokeColor="#52525B"
@@ -140,8 +139,8 @@
 
                 <parcels:ButtonPARCEL WidthRequest="140"
                                       HeightRequest="80"
-                                      ButtonShape="{RoundRectangle CornerRadius=5}"
-                                      Offset="2"
+                                      ButtonShape="{Ellipse}"
+                                      Offset="20"
                                       StrokeWidth="1"
                                       StrokeColor="#0D47A1"
                                       OffsetColor="#1565C0"

@@ -129,6 +129,9 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
 
             Content = ControlContainer;
 
+            ControlContainer.SetBinding(MarginProperty, nameof(Margin));
+            ControlCanvas.SetBinding(MarginProperty, nameof(ControlContainer.Margin));
+
         }
         catch (Exception ex)
         {
@@ -437,10 +440,15 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
         try
         {
             if (IndicatorBounds.Contains(args.Points.First()) || Indicator.Frame.Contains(args.Points.First()))
-                touchActive = true;
+            {
+                touchActive = true;                
+            }
 
             if (touchActive)
+            {
                 InputStrategy?.HandleInput(this, args);
+
+            }
 
         }
         catch (Exception ex)
@@ -454,19 +462,7 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
     }
 
     private void OnDragEnded(object? sender, DragDetector.DragEventArgs e)
-    {
-        try
-        {
-            touchActive = false;
-
-        }
-        catch (Exception ex)
-        {
-            DebugLogger.Log(ex);
-
-        }
-
-    }
+        => touchActive = false;
     
     protected override IDrawable GetDefaultRenderer()
     {
