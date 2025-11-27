@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls.Shapes;
 using PARCEL.Interfaces;
 
 namespace PARCEL.Controls.Renderers;
@@ -9,15 +10,18 @@ public abstract class ButtonRenderer : IDrawable
 
     #endregion
     #region Constructors
-    public ButtonRenderer() { }
+    public ButtonRenderer()
+        => GeometryConverter = new();
 
-    public ButtonRenderer(IButtonPARCEL control)
+    public ButtonRenderer(IButtonPARCEL control) : this()
         => Parent = control;
 
     #endregion
 
     #region Properties
-    public IButtonPARCEL? Parent;
+    public IButtonPARCEL? Parent { get; set; }
+    
+    protected PathGeometryConverter GeometryConverter { get; private set;}
 
     #endregion
 

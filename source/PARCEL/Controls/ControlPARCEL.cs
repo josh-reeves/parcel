@@ -11,7 +11,8 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #endregion
 
     #region Constructors
-    public ControlPARCEL() { }
+    public ControlPARCEL()
+    {}
 
     #endregion
 
