@@ -19,7 +19,7 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
     #region Properties
     protected Layout? ControlContainer{ get; set; }
 
-    protected GraphicsView? ControlCanvas { get; set; }
+    internal GraphicsView? ControlCanvas {  get;  private protected set; }
 
     public IDrawable Renderer
     {

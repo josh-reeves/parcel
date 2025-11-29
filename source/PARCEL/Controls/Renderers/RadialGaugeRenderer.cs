@@ -19,7 +19,7 @@ public class RadialGaugeRenderer : GaugeRenderer
         if (Parent is not GaugePARCEL parent)
             return;
 
-        parent.WorkingCanvas = new()
+        RectF WorkingCanvas = new()
         {
             Width = rect.Width - (parent.Thickness + parent.StrokeThickness),
             Height = rect.Height - (parent.Thickness + parent.StrokeThickness),
@@ -36,10 +36,10 @@ public class RadialGaugeRenderer : GaugeRenderer
 
         if (parent.EmptyColor.Alpha > 0)
             canvas.DrawArc(
-                parent.WorkingCanvas.Left,
-                parent.WorkingCanvas.Top,
-                parent.WorkingCanvas.Width,
-                parent.WorkingCanvas.Height,
+                WorkingCanvas.Left,
+                WorkingCanvas.Top,
+                WorkingCanvas.Width,
+                WorkingCanvas.Height,
                 parent.StartPos,
                 parent.EndPos,
                 clockwise: true,
@@ -47,10 +47,10 @@ public class RadialGaugeRenderer : GaugeRenderer
 
         if (parent.EmptyColor.Alpha == 0)
             canvas.DrawArc(
-                parent.WorkingCanvas.Left,
-                parent.WorkingCanvas.Top,
-                parent.WorkingCanvas.Width,
-                parent.WorkingCanvas.Height,
+                WorkingCanvas.Left,
+                WorkingCanvas.Top,
+                WorkingCanvas.Width,
+                WorkingCanvas.Height,
                 parent.StartPos,
                 valuePos,
                 clockwise: true,
@@ -60,10 +60,10 @@ public class RadialGaugeRenderer : GaugeRenderer
         canvas.StrokeColor = parent.EmptyColor;
 
         canvas.DrawArc(
-            parent.WorkingCanvas.Left,
-            parent.WorkingCanvas.Top,
-            parent.WorkingCanvas.Width,
-            parent.WorkingCanvas.Height,
+            WorkingCanvas.Left,
+            WorkingCanvas.Top,
+            WorkingCanvas.Width,
+            WorkingCanvas.Height,
             parent.StartPos,
             parent.EndPos,
             clockwise: true,
@@ -72,20 +72,20 @@ public class RadialGaugeRenderer : GaugeRenderer
         canvas.StrokeColor = parent.FillColor;
 
         canvas.DrawArc(
-            parent.WorkingCanvas.Left,
-            parent.WorkingCanvas.Top,
-            parent.WorkingCanvas.Width,
-            parent.WorkingCanvas.Height,
+            WorkingCanvas.Left,
+            WorkingCanvas.Top,
+            WorkingCanvas.Width,
+            WorkingCanvas.Height,
             parent.StartPos,
             valuePos,
             clockwise: true,
             closed: false);
 
         PointF indicatorPos = GeometryUtil.EllipseAngleToPoint(
-            parent.WorkingCanvas.Left,
-            parent.WorkingCanvas.Top,
-            parent.WorkingCanvas.Width,
-            parent.WorkingCanvas.Height,
+            WorkingCanvas.Left,
+            WorkingCanvas.Top,
+            WorkingCanvas.Width,
+            WorkingCanvas.Height,
             Math.Abs(valuePos));
 
         parent.IndicatorBounds = new(

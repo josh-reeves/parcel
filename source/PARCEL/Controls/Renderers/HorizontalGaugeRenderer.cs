@@ -24,26 +24,28 @@ public class HorizontalGaugeRenderer : GaugeRenderer
         float offset = 2,
               inputMargin = (float)(parent.Indicator?.Width ?? parent.Thickness) / 2,
               valuePos;
+
+        RectF WorkingCanvas;
     
         if (parent.Reverse)
-            parent.WorkingCanvas = RectF.FromLTRB(
+            WorkingCanvas = RectF.FromLTRB(
                 rect.Right - offset - inputMargin,
                 rect.Top + offset,
                 rect.Left + offset + inputMargin,
                 rect.Bottom - offset);
         else
-            parent.WorkingCanvas = RectF.FromLTRB(
+            WorkingCanvas = RectF.FromLTRB(
                 rect.Left + offset + inputMargin,
                 rect.Top + offset,
                 rect.Right - offset - inputMargin,
                 rect.Bottom - offset);
 
-        valuePos = parent.WorkingCanvas.Left + (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * parent.WorkingCanvas.Width;
+        valuePos = WorkingCanvas.Left + (float)((parent.Value - parent.ValueMin) / (parent.ValueMax - parent.ValueMin)) * WorkingCanvas.Width;
         
         parent.IndicatorBounds = new()
         {
             X = valuePos - inputMargin,
-            Y = parent.WorkingCanvas.Center.Y - inputMargin,
+            Y = WorkingCanvas.Center.Y - inputMargin,
             Width = (float)(parent.Indicator?.Width ?? parent.Thickness),
             Height = (float)(parent.Indicator?.Height ?? parent.Thickness)
 
@@ -53,25 +55,25 @@ public class HorizontalGaugeRenderer : GaugeRenderer
         canvas.StrokeSize = parent.Thickness + parent.StrokeThickness;
         canvas.StrokeColor = parent.StrokeColor;
 
-        canvas.DrawLine(parent.WorkingCanvas.Left,
-            parent.WorkingCanvas.Center.Y,
-            parent.WorkingCanvas.Right,
-            parent.WorkingCanvas.Center.Y);
+        canvas.DrawLine(WorkingCanvas.Left,
+            WorkingCanvas.Center.Y,
+            WorkingCanvas.Right,
+            WorkingCanvas.Center.Y);
 
         canvas.StrokeSize = parent.Thickness;
         canvas.StrokeColor = parent.EmptyColor;
 
-        canvas.DrawLine(parent.WorkingCanvas.Left,
-            parent.WorkingCanvas.Center.Y,
-            parent.WorkingCanvas.Right,
-            parent.WorkingCanvas.Center.Y);
+        canvas.DrawLine(WorkingCanvas.Left,
+            WorkingCanvas.Center.Y,
+            WorkingCanvas.Right,
+            WorkingCanvas.Center.Y);
 
         canvas.StrokeColor = parent.FillColor;
 
-        canvas.DrawLine(parent.WorkingCanvas.Left,
-            parent.WorkingCanvas.Center.Y,
+        canvas.DrawLine(WorkingCanvas.Left,
+            WorkingCanvas.Center.Y,
             valuePos,
-            parent.WorkingCanvas.Center.Y);
+            WorkingCanvas.Center.Y);
 
         if (parent.Indicator is not null)
             DrawIndicator(rect);

@@ -14,7 +14,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     public static readonly BindableProperty OffsetProperty = BindableProperty.Create(nameof(Offset), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ButtonShapeProperty = BindableProperty.Create(nameof(ButtonShape), typeof(IShape), typeof(ButtonPARCEL), propertyChanged: RefreshView);
-    public static readonly BindableProperty ButtonContentProperty = BindableProperty.Create(nameof(ButtonContent), typeof(IStackLayout), typeof(ButtonPARCEL), propertyChanged: AddContent);
+    public static readonly BindableProperty ButtonContentProperty = BindableProperty.Create(nameof(ButtonContent), typeof(IView), typeof(ButtonPARCEL), propertyChanged: AddContent);
     public static readonly BindableProperty ReleasedCommandProperty = BindableProperty.Create(nameof(ReleasedCommand), typeof(ICommand), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty PressedCommandProperty = BindableProperty.Create(nameof(PressedCommand), typeof(ICommand), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty CommandParameterProperty = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(ButtonPARCEL), propertyChanged: RefreshView);

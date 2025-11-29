@@ -8,7 +8,7 @@
              x:Class="Examples.MainPage"
              Shell.NavBarIsVisible="False">
 
-    <Grid BackgroundColor="#E0E0E0">
+    <ScrollView BackgroundColor="#E0E0E0">
         <VerticalStackLayout VerticalOptions="Center"
                              Spacing="25">
 
@@ -121,7 +121,7 @@
             </parcels:GaugePARCEL>
 
             <Grid WidthRequest="200"
-                  HeightRequest="75"
+                  HeightRequest="100"
                   HorizontalOptions="Center">
                 <RoundRectangle CornerRadius="5"
                                 BackgroundColor="DarkOrange"/>
@@ -260,15 +260,12 @@
                     </RadialGradientBrush>
                 </parcels:ButtonPARCEL.ButtonColor>
                 <parcels:ButtonPARCEL.ButtonContent>
-                    <StackLayout HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    Spacing="1">
-                        <Label Text="BIG RED BUTTON"
-                               HorizontalTextAlignment="Center"
-                               FontAttributes="Bold"
-                               TextColor="#FAFAFA"
-                               FontSize="16"/>
-                    </StackLayout>
+                    <Label Text="BIG RED BUTTON"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            FontAttributes="Bold"
+                            TextColor="#FAFAFA"
+                            FontSize="16"/>
                 </parcels:ButtonPARCEL.ButtonContent>
                 <parcels:ButtonPARCEL.Triggers>
                     <Trigger TargetType="parcels:ButtonPARCEL"
@@ -291,6 +288,6 @@
 
         </VerticalStackLayout>
         
-    </Grid>
+    </ScrollView>
 
 </ContentPage>

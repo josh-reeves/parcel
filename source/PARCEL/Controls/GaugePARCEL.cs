@@ -151,8 +151,6 @@ public class GaugePARCEL : ControlPARCEL, IGaugePARCEL, IStrategizedControl
     #region Properties
     internal RectF IndicatorBounds { get; set; }
 
-    internal RectF WorkingCanvas { get; set; }
-
     public object ValueChangedCommandParameter
     {
         get => GetValue(ValueChangedParameterProperty);

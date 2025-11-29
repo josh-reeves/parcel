@@ -69,7 +69,7 @@ public class RaisedButtonRenderer : ButtonRenderer
 
         if (Parent.ButtonShape.GetType() == typeof(Ellipse))
         {
-            DrawEllipseBackground(canvas, rect);
+            DrawEllipseBackground(canvas, rect, Parent);
 
         }
         else
@@ -93,7 +93,7 @@ public class RaisedButtonRenderer : ButtonRenderer
 
         if (Parent.ButtonShape.GetType() == typeof(Ellipse))
         {
-            DrawEllipseOutline(canvas, rect);
+            DrawEllipseOutline(canvas, rect, Parent);
 
         }
         else
@@ -110,53 +110,43 @@ public class RaisedButtonRenderer : ButtonRenderer
 
     }
 
-    private void DrawEllipseBackground(ICanvas canvas, RectF rect)
+    private void DrawEllipseBackground(ICanvas canvas, RectF rect, IButtonPARCEL parent)
     {
-        if (Parent is not ButtonPARCEL)
-        {
-            return;
-
-        }
-
         Path background = new();
 
-        background.Data = GeometryConverter.ConvertFromString(
-            "M " + rect.Left + ',' + (((rect.Bottom - Parent.Offset) / 2) + rect.Top ) + 
-            "L " + rect.Left + ',' + (((rect.Bottom - Parent.Offset) / 2) + Parent.Offset) + 
-            "A " + rect.Width / 2 + ',' + (rect.Bottom - Parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (((rect.Bottom - Parent.Offset) / 2) + Parent.Offset) +
-            "L " + rect.Right + ',' + ((rect.Bottom - Parent.Offset) / 2) + " z") as Geometry;
+        double offsetYPos = (rect.Top + rect.Bottom - parent.Offset) / 2;
 
-            Designer.FillShape(canvas,
-                rect,
-                background,
-                Parent.OffsetColor);
-        
+        background.Data = GeometryConverter.ConvertFromString(
+            "M " + rect.Left + ',' + offsetYPos + 
+            "L " + rect.Left + ',' + (offsetYPos + parent.Offset) + 
+            "A " + rect.Width / 2 + ',' + (rect.Bottom - parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (offsetYPos + parent.Offset) +
+            "L " + rect.Right + ',' + offsetYPos + " Z") as Geometry;
+
+        Designer.FillShape(canvas,
+            rect,
+            background,
+            parent.OffsetColor);
+    
     }
 
-    private void DrawEllipseOutline(ICanvas canvas, RectF rect)
+    private void DrawEllipseOutline(ICanvas canvas, RectF rect, IButtonPARCEL parent)
     {
-        if (Parent is not ButtonPARCEL)
-        {
-            return;
-
-        }
-
         Path outline = new();
 
-        double offsetYPos = (rect.Top + rect.Bottom - Parent.Offset) / 2;
+        double offsetYPos = (rect.Top + rect.Bottom - parent.Offset) / 2;
 
         outline.Data = GeometryConverter.ConvertFromString(
             "M " + rect.Left + ',' + offsetYPos + 
-            "L " + rect.Left + ',' + (offsetYPos + Parent.Offset) + 
-            "A " + rect.Width / 2 + ',' + (rect.Bottom - Parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (offsetYPos + Parent.Offset) +
+            "L " + rect.Left + ',' + (offsetYPos + parent.Offset) + 
+            "A " + rect.Width / 2 + ',' + (rect.Bottom - parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (offsetYPos + parent.Offset) +
             "L " + rect.Right + ',' + offsetYPos +
-            "A " + rect.Width / 2 + ',' + ((rect.Bottom - Parent.Offset) / 2 )  + " 0 0,0 " + rect.Left + ',' + offsetYPos + " z") as Geometry;
+            "A " + rect.Width / 2 + ',' + ((rect.Bottom - parent.Offset) / 2 )  + " 0 0,0 " + rect.Left + ',' + offsetYPos + " z") as Geometry;
 
         Designer.OutlineShape(canvas,
             rect,
             outline,
-            Parent.StrokeColor.Color,
-            (float)Parent.StrokeWidth);
+            parent.StrokeColor.Color,
+            (float)parent.StrokeWidth);
             
     }
 
