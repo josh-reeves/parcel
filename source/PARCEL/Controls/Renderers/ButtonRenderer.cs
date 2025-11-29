@@ -6,7 +6,7 @@ namespace PARCEL.Controls.Renderers;
 public abstract class ButtonRenderer : IDrawable
 {
     #region Fields
-    protected const float offset = 1.0f;
+    protected const float defaultOffset = 0.5f;
 
     #endregion
     #region Constructors

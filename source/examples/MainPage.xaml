@@ -245,36 +245,29 @@
             </HorizontalStackLayout>
 
                 <parcels:ButtonPARCEL WidthRequest="100"
-                            HeightRequest="100"
-                            ButtonShape="{Ellipse}"
-                            Offset="5"
-                            StrokeWidth="1"
-                            StrokeColor="#0D47A1"
-                            OffsetColor="#1565C0"
-                            PressedColor="#1565C0"
-                            VerticalOptions="Center">
+                                      HeightRequest="100"
+                                      ButtonShape="{Ellipse}"
+                                      Offset="5"
+                                      StrokeWidth="1"
+                                      StrokeColor="#732424"
+                                      OffsetColor="#a82c2c"
+                                      PressedColor="#a82c2c"
+                                      VerticalOptions="Center">
                 <parcels:ButtonPARCEL.ButtonColor>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#90CAF9" Offset="0.0"/>
-                        <GradientStop Color="#1E88E5" Offset="0.02"/>
-                    </LinearGradientBrush>
+                    <RadialGradientBrush Center="0.50, 0.53">
+                        <GradientStop Color="#de3737" Offset="0.97"/>
+                        <GradientStop Color="#ed8787" Offset="1.00"/>
+                    </RadialGradientBrush>
                 </parcels:ButtonPARCEL.ButtonColor>
                 <parcels:ButtonPARCEL.ButtonContent>
                     <StackLayout HorizontalOptions="Center"
                                     VerticalOptions="Center"
                                     Spacing="1">
-                        <Image Source="icon_add_fill_32x32.png"
-                                Aspect="Center"/>
-                        <Label Text="Add"
-                                TextColor="#FAFAFA"
-                                FontSize="16"/>
-                        <StackLayout.Triggers>
-                            <Trigger TargetType="StackLayout"
-                                        Property="parcels:ButtonPARCEL.IsParentPressed"
-                                        Value="True">
-                                <Setter Property="Opacity" Value="0.40"/>
-                            </Trigger>
-                        </StackLayout.Triggers>
+                        <Label Text="BIG RED BUTTON"
+                               HorizontalTextAlignment="Center"
+                               FontAttributes="Bold"
+                               TextColor="#FAFAFA"
+                               FontSize="16"/>
                     </StackLayout>
                 </parcels:ButtonPARCEL.ButtonContent>
                 <parcels:ButtonPARCEL.Triggers>

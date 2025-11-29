@@ -55,9 +55,12 @@ public static class Designer
 
     }
 
-    public static void OutlineShape(ICanvas canvas, RectF rect, IShape shape, Color stroke)
+    public static void OutlineShape(ICanvas canvas, RectF rect, IShape shape, Color strokeColor, float strokeWidth)
     {
-        canvas.StrokeColor = stroke;
+        canvas.SaveState();
+
+        canvas.StrokeColor = strokeColor;
+        canvas.StrokeSize = strokeWidth;
 
         switch (shape)
         {
@@ -95,6 +98,8 @@ public static class Designer
                 throw new NotImplementedException();
 
         }
+
+        canvas.RestoreState();
 
     }
 
@@ -183,10 +188,7 @@ public static class Designer
     }
 
     public static void ConvertImage(ICanvas canvas, Image image)
-    {
-        throw new NotImplementedException();
-
-    }
+        => throw new NotImplementedException();
 
     public static void DrawLine(this ICanvas canvas, LineCap lineCap, PointF startPoint, PointF endPoint)
         => throw new NotImplementedException();

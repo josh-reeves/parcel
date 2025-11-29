@@ -20,7 +20,7 @@ public class RecessedButtonRenderer : ButtonRenderer
 
         VisualElement? content = Parent.ButtonContent as VisualElement;
 
-        Designer.FillShape(canvas, GetSafeMargins(rect, offset), Parent.ButtonShape, Parent.OffsetColor);
+        Designer.FillShape(canvas, GetSafeMargins(rect, defaultOffset), Parent.ButtonShape, Parent.OffsetColor);
 
         if (Parent.IsPressed)
         {
@@ -29,10 +29,10 @@ public class RecessedButtonRenderer : ButtonRenderer
                 canvas,
                 new RectF()
                 {
-                    Top = rect.Top + offset + Math.Abs((float)Parent.Offset),
-                    Left = rect.Left + offset,
-                    Width = rect.Width - (offset * 2),
-                    Bottom = rect.Bottom - offset
+                    Top = rect.Top + defaultOffset + Math.Abs((float)Parent.Offset),
+                    Left = rect.Left + defaultOffset,
+                    Width = rect.Width - (defaultOffset * 2),
+                    Bottom = rect.Bottom - defaultOffset
 
                 },
                 Parent.ButtonShape,
@@ -44,14 +44,14 @@ public class RecessedButtonRenderer : ButtonRenderer
         }
         else
         {
-            Designer.FillShape(canvas, GetSafeMargins(rect, offset), Parent.ButtonShape, Parent.ButtonColor);
+            Designer.FillShape(canvas, GetSafeMargins(rect, defaultOffset), Parent.ButtonShape, Parent.ButtonColor);
 
             if (content != null)
                 content.TranslationY = 0;
 
         }
 
-        Designer.OutlineShape(canvas, GetSafeMargins(rect, offset), Parent.ButtonShape, Parent.StrokeColor.Color);
+        Designer.OutlineShape(canvas, GetSafeMargins(rect, defaultOffset), Parent.ButtonShape, Parent.StrokeColor.Color, (float)Parent.StrokeWidth);
 
     }
 

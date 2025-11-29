@@ -25,7 +25,7 @@ public class RaisedButtonRenderer : ButtonRenderer
             
         }
 
-        rect = GetSafeMargins(rect, offset);
+        rect = GetSafeMargins(rect, (float)Parent.StrokeWidth + defaultOffset);
 
         VisualElement? content = Parent.ButtonContent as VisualElement;
 
@@ -54,7 +54,8 @@ public class RaisedButtonRenderer : ButtonRenderer
 
                 },
                 Parent.ButtonShape,
-                Parent.StrokeColor.Color);
+                Parent.StrokeColor.Color,
+                (float)Parent.StrokeWidth);
 
             if (content != null)
             {
@@ -73,10 +74,7 @@ public class RaisedButtonRenderer : ButtonRenderer
         }
         else
         {
-            Designer.FillShape(canvas,
-                rect,
-                Parent.ButtonShape,
-                Parent.OffsetColor);
+            Designer.FillShape(canvas, rect, Parent.ButtonShape, Parent.OffsetColor);
 
         }
 
@@ -100,10 +98,7 @@ public class RaisedButtonRenderer : ButtonRenderer
         }
         else
         {
-            Designer.OutlineShape(canvas,
-                rect,
-                Parent.ButtonShape,
-                Parent.StrokeColor.Color);
+            Designer.OutlineShape(canvas, rect, Parent.ButtonShape, Parent.StrokeColor.Color, (float)Parent.StrokeWidth);
 
         }
 
@@ -126,7 +121,7 @@ public class RaisedButtonRenderer : ButtonRenderer
         Path background = new();
 
         background.Data = GeometryConverter.ConvertFromString(
-            "M " + rect.Left + ',' + (rect.Bottom - Parent.Offset) / 2 + 
+            "M " + rect.Left + ',' + (((rect.Bottom - Parent.Offset) / 2) + rect.Top ) + 
             "L " + rect.Left + ',' + (((rect.Bottom - Parent.Offset) / 2) + Parent.Offset) + 
             "A " + rect.Width / 2 + ',' + (rect.Bottom - Parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (((rect.Bottom - Parent.Offset) / 2) + Parent.Offset) +
             "L " + rect.Right + ',' + ((rect.Bottom - Parent.Offset) / 2) + " z") as Geometry;
@@ -148,19 +143,21 @@ public class RaisedButtonRenderer : ButtonRenderer
 
         Path outline = new();
 
+        double offsetYPos = (rect.Top + rect.Bottom - Parent.Offset) / 2;
+
         outline.Data = GeometryConverter.ConvertFromString(
-            "M " + rect.Left + ',' + (rect.Bottom - Parent.Offset) / 2 + 
-            "L " + rect.Left + ',' + ((rect.Bottom - Parent.Offset) / 2 + Parent.Offset) + 
-            "A " + rect.Width / 2 + ',' + (rect.Bottom - Parent.Offset) / 2 + " 180 0,0 " + rect.Right + ',' + (((rect.Bottom - Parent.Offset) / 2) + Parent.Offset) +
-            "L " + rect.Right + ',' + ((rect.Bottom - Parent.Offset) / 2) +
-            "A " + (rect.Width / 2) + ',' + (rect.Bottom - Parent.Offset) / 2  + " 180 0,0 " + rect.Left + ',' + (rect.Bottom - Parent.Offset) / 2 + " z") as Geometry;
+            "M " + rect.Left + ',' + offsetYPos + 
+            "L " + rect.Left + ',' + (offsetYPos + Parent.Offset) + 
+            "A " + rect.Width / 2 + ',' + (rect.Bottom - Parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (offsetYPos + Parent.Offset) +
+            "L " + rect.Right + ',' + offsetYPos +
+            "A " + rect.Width / 2 + ',' + ((rect.Bottom - Parent.Offset) / 2 )  + " 0 0,0 " + rect.Left + ',' + offsetYPos + " z") as Geometry;
 
         Designer.OutlineShape(canvas,
             rect,
             outline,
-            Parent.StrokeColor.Color);
-
-        
+            Parent.StrokeColor.Color,
+            (float)Parent.StrokeWidth);
+            
     }
 
     #endregion
