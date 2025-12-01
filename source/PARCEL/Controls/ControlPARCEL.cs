@@ -38,6 +38,9 @@ public abstract class ControlPARCEL : ContentView, IControlPARCEL
 
         instance.ControlCanvas.Drawable = instance.Renderer;
 
+        if (instance.ControlCanvas.Drawable is null)
+            instance.ControlCanvas.Drawable = instance.GetDefaultRenderer();
+
         RefreshView(bindable, oldValue, newValue);
 
     }

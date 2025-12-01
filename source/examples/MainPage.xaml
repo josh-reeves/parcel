@@ -244,6 +244,38 @@
 
             </HorizontalStackLayout>
 
+            <HorizontalStackLayout HorizontalOptions="Center"
+                                   Spacing="15">
+
+                <parcels:ButtonPARCEL WidthRequest="100"
+                                      HeightRequest="100"
+                                      ButtonShape="{RoundRectangle CornerRadius=5}"
+                                      Offset="-10"
+                                      StrokeWidth="1"
+                                      ButtonColor="#de3737"
+                                      StrokeColor="#732424"
+                                      OffsetColor="#a82c2c"
+                                      PressedColor="#a82c2c"
+                                      VerticalOptions="Center">
+                <parcels:ButtonPARCEL.Triggers>
+                    <Trigger TargetType="parcels:ButtonPARCEL"
+                                Property="IsPressed"
+                                Value="True">
+                        <Setter Property="Shadow">
+                            <Setter.Value>
+                                <Shadow Opacity="0"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </parcels:ButtonPARCEL.Triggers>
+                <parcels:ButtonPARCEL.Shadow>
+                    <Shadow Brush="Black"
+                            Radius="1"
+                            Offset="0,0"
+                            Opacity="1"/>
+                </parcels:ButtonPARCEL.Shadow>
+            </parcels:ButtonPARCEL>
+
                 <parcels:ButtonPARCEL WidthRequest="100"
                                       HeightRequest="100"
                                       ButtonShape="{Ellipse}"
@@ -286,6 +318,7 @@
                 </parcels:ButtonPARCEL.Shadow>
             </parcels:ButtonPARCEL>
 
+            </HorizontalStackLayout>
         </VerticalStackLayout>
         
     </ScrollView>

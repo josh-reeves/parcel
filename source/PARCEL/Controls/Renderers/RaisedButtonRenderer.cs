@@ -29,17 +29,17 @@ public class RaisedButtonRenderer : ButtonRenderer
 
         if (Parent.IsPressed)
         {
-            DrawPressed(canvas, rect, Parent);
+            DrawPressedState(canvas, rect, Parent);
 
             return;
 
         }
 
-        DrawReady(canvas, rect, Parent);
+        DrawDefaultState(canvas, rect, Parent);
 
     }
 
-    private void DrawPressed(ICanvas canvas, RectF rect, IButtonPARCEL parent)
+    private void DrawPressedState(ICanvas canvas, RectF rect, IButtonPARCEL parent)
     {
         Designer.FillShape(canvas,
             new RectF()
@@ -75,7 +75,7 @@ public class RaisedButtonRenderer : ButtonRenderer
 
     }
 
-    private void DrawReady(ICanvas canvas, RectF rect, IButtonPARCEL parent)
+    private void DrawDefaultState(ICanvas canvas, RectF rect, IButtonPARCEL parent)
     {
         RectF buttonFace = new RectF()
         {

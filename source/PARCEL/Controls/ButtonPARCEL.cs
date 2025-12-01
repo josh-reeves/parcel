@@ -3,6 +3,7 @@ using PARCEL.Controls.Renderers;
 using PARCEL.Converters;
 using PARCEL.Helpers;
 using PARCEL.Interfaces;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace PARCEL.Controls;
@@ -262,6 +263,8 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 
     protected override IDrawable GetDefaultRenderer()
     {
+        Trace.WriteLine(Offset);
+
         return Offset switch
         {
             >= 0 => new RaisedButtonRenderer(this),
