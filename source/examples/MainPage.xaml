@@ -247,7 +247,8 @@
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Spacing="15">
 
-                <parcels:ButtonPARCEL WidthRequest="100"
+                <parcels:ButtonPARCEL x:Name="RecessedButton"
+                                      WidthRequest="100"
                                       HeightRequest="100"
                                       ButtonShape="{RoundRectangle CornerRadius=5}"
                                       Offset="-10"

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace PARCEL.Interfaces;
 
@@ -30,7 +31,7 @@ public interface IButtonPARCEL : IControlPARCEL
 
     }
 
-    public IShape ButtonShape
+    public Shape ButtonShape
     {
         get;
         set;

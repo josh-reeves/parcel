@@ -7,38 +7,44 @@ using Path = Microsoft.Maui.Controls.Shapes.Path;
 
 namespace PARCEL.Controls.Renderers;
 
-public class RaisedButtonRenderer : ButtonRenderer
+public class RaisedButtonRenderer : RendererPARCEL
 {
     #region Constructors
     public RaisedButtonRenderer() : base() {}
 
-    public RaisedButtonRenderer(IButtonPARCEL control) : base(control) { }
+    public RaisedButtonRenderer(IButtonPARCEL parent) : base(parent) { }
 
     #endregion
 
     #region Methods
     public override void Draw(ICanvas canvas, RectF rect)
     {
-        if (Parent is not ButtonPARCEL)
+        if (Parent is not IButtonPARCEL parent)
         {
             return;
             
         }
 
-        rect = GetSafeMargins(rect, (float)Parent.StrokeWidth + defaultOffset);
+        rect = GetSafeMargins(rect, (float)parent.StrokeWidth + defaultOffset);
 
-        if (Parent.IsPressed)
+        if (parent.IsPressed)
         {
-            DrawPressedState(canvas, rect, Parent);
+            DrawPressedState(canvas, rect, parent);
 
             return;
 
         }
 
-        DrawDefaultState(canvas, rect, Parent);
+        DrawDefaultState(canvas, rect, parent);
 
     }
 
+    /// <summary>
+    /// Draws the button in its pressed state.
+    /// </summary>
+    /// <param name="canvas">The canvas onto which the image will be drawn.</param>
+    /// <param name="rect">The bounds for the button.</param>
+    /// <param name="parent">An object implementing IButtonPARCEL that contains the shape, color, etc. to render.</param>
     private void DrawPressedState(ICanvas canvas, RectF rect, IButtonPARCEL parent)
     {
         Designer.FillShape(canvas,
@@ -75,8 +81,16 @@ public class RaisedButtonRenderer : ButtonRenderer
 
     }
 
+    /// <summary>
+    /// Draws the button in its default (unpressed) state.
+    /// </summary>
+    /// <param name="canvas">The canvas onto which the image will be drawn.</param>
+    /// <param name="rect">The bounds for the button.</param>
+    /// <param name="parent">An object implementing IButtonPARCEL that contains the shape, color, etc. to render.</param>
     private void DrawDefaultState(ICanvas canvas, RectF rect, IButtonPARCEL parent)
     {
+        Shape offset = parent.ButtonShape;
+
         RectF buttonFace = new RectF()
         {
             Top = rect.Top,
@@ -86,48 +100,28 @@ public class RaisedButtonRenderer : ButtonRenderer
 
         };
 
-        double ellipseOffsetTopY = (rect.Top + rect.Bottom - parent.Offset) / 2;
-
+        /* Checks to see if ButtonShape is an Ellipse to create a custom shape for the offset and outline.
+         * This is necessary because adjusting the RectF used to draw the ellipse will distort the shape.*/
         if (parent.ButtonShape.GetType() == typeof(Ellipse))
         {
-            Path background = new();
+            double ellipseOffsetTopY = (rect.Top + buttonFace.Bottom) / 2;
 
-            background.Data = GeometryConverter.ConvertFromString(
+            offset = new Path();
+
+            ((Path)offset).Data = GeometryConverter.ConvertFromString(
                 "M " + rect.Left + ',' + ellipseOffsetTopY + 
                 "L " + rect.Left + ',' + (ellipseOffsetTopY + parent.Offset) + 
-                "A " + rect.Width / 2 + ',' + (rect.Bottom - parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (ellipseOffsetTopY + parent.Offset) +
-                "L " + rect.Right + ',' + ellipseOffsetTopY + " Z") as Geometry;
-
-            Designer.FillShape(canvas, rect, background, parent.OffsetColor);
-
-        }
-        else
-        {
-            Designer.FillShape(canvas, rect, parent.ButtonShape, parent.OffsetColor);
+                "A " + rect.Width / 2 + ',' + (buttonFace.Bottom / 2) + " 0 0,0 " + rect.Right + ',' + (ellipseOffsetTopY + parent.Offset) +
+                "L " + rect.Right + ',' + ellipseOffsetTopY +
+                "A " + rect.Width / 2 + ',' + (buttonFace.Bottom / 2)  + " 0 0,0 " + rect.Left + ',' + ellipseOffsetTopY + " z") as Geometry;
 
         }
+
+        Designer.FillShape(canvas, rect, offset, parent.OffsetColor);
 
         Designer.FillShape(canvas, buttonFace, parent.ButtonShape, parent.ButtonColor);
 
-        if (parent.ButtonShape.GetType() == typeof(Ellipse))
-        {
-            Path outline = new();
-
-            outline.Data = GeometryConverter.ConvertFromString(
-                "M " + rect.Left + ',' + ellipseOffsetTopY + 
-                "L " + rect.Left + ',' + (ellipseOffsetTopY + parent.Offset) + 
-                "A " + rect.Width / 2 + ',' + (rect.Bottom - parent.Offset) / 2 + " 0 0,0 " + rect.Right + ',' + (ellipseOffsetTopY + parent.Offset) +
-                "L " + rect.Right + ',' + ellipseOffsetTopY +
-                "A " + rect.Width / 2 + ',' + ((rect.Bottom - parent.Offset) / 2 )  + " 0 0,0 " + rect.Left + ',' + ellipseOffsetTopY + " z") as Geometry;
-
-            Designer.OutlineShape(canvas, rect, outline, parent.StrokeColor.Color, (float)parent.StrokeWidth);
-
-        }
-        else
-        {
-            Designer.OutlineShape(canvas, rect, parent.ButtonShape, parent.StrokeColor.Color, (float)parent.StrokeWidth);
-
-        }
+        Designer.OutlineShape(canvas, rect, offset, parent.StrokeColor.Color, (float)parent.StrokeWidth);
 
         if (parent.ButtonContent is VisualElement)
         {

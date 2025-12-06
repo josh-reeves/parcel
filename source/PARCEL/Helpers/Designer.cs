@@ -95,7 +95,7 @@ public static class Designer
                 break;
 
             default:
-                throw new NotImplementedException();
+                break;
 
         }
 
@@ -146,6 +146,8 @@ public static class Designer
 
     public static void FillShape(ICanvas canvas, RectF rect, IShape shape, Brush fill)
     {
+        canvas.SaveState();
+
         canvas.SetFillPaint(fill, rect);
 
         switch (shape)
@@ -181,9 +183,11 @@ public static class Designer
                 break;
 
             default:
-                throw new NotImplementedException();
+                break;
 
         }
+
+        canvas.RestoreState();
 
     }
 

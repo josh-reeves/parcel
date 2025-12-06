@@ -4,57 +4,57 @@ using System.Diagnostics;
 
 namespace PARCEL.Controls.Renderers;
 
-public class RecessedButtonRenderer : ButtonRenderer
+public class RecessedButtonRenderer : RendererPARCEL    
 {
     #region Constructors
     public RecessedButtonRenderer() { }
 
-    public RecessedButtonRenderer(IButtonPARCEL control) : base(control) { }
+    public RecessedButtonRenderer(IControlPARCEL parent) : base(parent) { }
 
     #endregion
 
     #region Methods
     public override void Draw(ICanvas canvas, RectF rect)
     {
-        if (Parent is not IButtonPARCEL)
+        if (Parent is not IButtonPARCEL parent)
             return;
 
-        VisualElement? content = Parent.ButtonContent as VisualElement;
+        VisualElement? content = parent.ButtonContent as VisualElement;
 
-        rect = GetSafeMargins(rect, (float)(Parent.StrokeWidth * 5 + defaultOffset));
+        rect = GetSafeMargins(rect, (float)(parent.StrokeWidth * 5 + defaultOffset));
 
         // Designer.FillShape(canvas, rect, Parent.ButtonShape, Parent.OffsetColor);
 
-        if (Parent.IsPressed)
+        if (parent.IsPressed)
         {
 
             Designer.FillShape(
                 canvas,
                 new RectF()
                 {
-                    Top = rect.Top + Math.Abs((float)Parent.Offset),
+                    Top = rect.Top + Math.Abs((float)parent.Offset),
                     Left = rect.Left ,
                     Width = rect.Width ,
                     Bottom = rect.Bottom 
 
                 },
-                Parent.ButtonShape,
-                Parent.PressedColor);
+                parent.ButtonShape,
+                parent.PressedColor);
 
             if (content != null)
-                content.TranslationY = 0 + (Math.Abs(Parent.Offset) / 2);
+                content.TranslationY = 0 + (Math.Abs(parent.Offset) / 2);
 
         }
         else
         {
-            Designer.FillShape(canvas, rect, Parent.ButtonShape, Parent.ButtonColor);
+            Designer.FillShape(canvas, rect, parent.ButtonShape, parent.ButtonColor);
 
             if (content != null)
                 content.TranslationY = 0;
 
         }
 
-        Designer.OutlineShape(canvas, rect, Parent.ButtonShape, Parent.StrokeColor.Color, (float)Parent.StrokeWidth);
+        Designer.OutlineShape(canvas, rect, parent.ButtonShape, parent.StrokeColor.Color, (float)parent.StrokeWidth);
 
     }
 
