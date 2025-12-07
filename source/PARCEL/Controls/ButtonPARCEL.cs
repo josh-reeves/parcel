@@ -13,7 +13,7 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
 {
     #region Fields
     public static readonly BindableProperty IsPressedProperty = BindableProperty.Create(nameof(IsPressed), typeof(bool), typeof(ButtonPARCEL), defaultValue: false, propertyChanged: RefreshView);
-    public static readonly BindableProperty OffsetProperty = BindableProperty.Create(nameof(Offset), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
+    public static readonly BindableProperty OffsetProperty = BindableProperty.Create(nameof(Offset), typeof(double), typeof(ButtonPARCEL), propertyChanged: UpdateOffset);
     public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(double), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ButtonShapeProperty = BindableProperty.Create(nameof(ButtonShape), typeof(Shape), typeof(ButtonPARCEL), propertyChanged: RefreshView);
     public static readonly BindableProperty ButtonContentProperty = BindableProperty.Create(nameof(ButtonContent), typeof(IView), typeof(ButtonPARCEL), propertyChanged: AddContent);
@@ -33,36 +33,12 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
     {
         try
         {
-            ControlCanvas = ViewBuilder<GraphicsView>.BuildView(
-                new GraphicsView()
-                {
-                    InputTransparent = true,
-                    Triggers =
-                    {
-                        new DataTrigger(typeof(GraphicsView))
-                        {
-                            Binding = new Binding(nameof(Renderer), converter: new IsNullConverter()),
-                            Value = true,
-                            Setters =
-                            {
-                                new()
-                                {
-                                    Property = GraphicsView.DrawableProperty,
-                                    Value = GetDefaultRenderer()
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                },
-                [
-                    new ViewBuilder<GraphicsView>.BindingPair(GraphicsView.DrawableProperty, nameof(Renderer))
-
-                ]);
+            ControlCanvas = new()
+            {
+                InputTransparent = true,
+                Drawable = GetDefaultRenderer()
+            
+            };
 
             ControlContainer = new Grid()
             {
@@ -251,6 +227,23 @@ public class ButtonPARCEL : ControlPARCEL, IButtonPARCEL
             instance.ControlContainer?.Add(instance.ButtonContent);
 
         }
+
+        RefreshView(bindable, oldValue, newValue);
+
+    }
+
+    private static void UpdateOffset(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is not ButtonPARCEL instance || 
+            instance.ControlCanvas is null ||
+            instance.Renderer is not null ||
+            newValue is not double)
+        {
+            return;
+
+        }
+
+        instance.ControlCanvas.Drawable = instance.GetDefaultRenderer();
 
         RefreshView(bindable, oldValue, newValue);
 

@@ -191,6 +191,42 @@ public static class Designer
 
     }
 
+    /// <summary>
+    /// Returns a PathF from the provided shape regardless of whether or not it is visible, has defined dimensions, etc.
+    /// </summary>
+    /// <param name="shape">The shape from which to create the path.</param>
+    /// <param name="rect">Provides the dimensions for the returned path.</param>
+    /// <returns>A new PathF object projected (that is, drawn with the bounds/dimensions of) the provided RectF.</returns>
+    public static PathF GetProjectedPath(Shape shape, RectF rect)
+    {
+        PathF path = new();
+
+        switch (shape)
+        {
+            case Ellipse:
+                path.AppendEllipse(0, 0, rect.Width, rect.Height);
+                break;
+
+            case RoundRectangle roundRectShape:
+                path.AppendRoundedRectangle(rect, 
+                                            (float)roundRectShape.CornerRadius.TopLeft,
+                                            (float)roundRectShape.CornerRadius.TopRight,
+                                            (float)roundRectShape.CornerRadius.BottomRight,
+                                            (float)roundRectShape.CornerRadius.BottomLeft);
+                break;
+
+            case Rectangle:
+                path.AppendRectangle(0, 0, rect.Width, rect.Height);
+                break;
+
+            default:
+                break;
+
+        }
+
+        return path;
+    }
+
     public static void ConvertImage(ICanvas canvas, Image image)
         => throw new NotImplementedException();
 

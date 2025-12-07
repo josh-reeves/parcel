@@ -1,6 +1,7 @@
 using PARCEL.Interfaces;
 using PARCEL.Helpers;
 using System.Diagnostics;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace PARCEL.Controls.Renderers;
 
@@ -21,9 +22,11 @@ public class RecessedButtonRenderer : RendererPARCEL
 
         VisualElement? content = parent.ButtonContent as VisualElement;
 
-        rect = GetSafeMargins(rect, (float)(parent.StrokeWidth * 5 + defaultOffset));
+        canvas.ClipPath(Designer.GetProjectedPath(parent.ButtonShape, rect));
 
-        // Designer.FillShape(canvas, rect, Parent.ButtonShape, Parent.OffsetColor);
+        rect = GetSafeMargins(rect, (float)parent.StrokeWidth / 2 + defaultOffset);
+
+        Designer.FillShape(canvas, rect, parent.ButtonShape, parent.OffsetColor);
 
         if (parent.IsPressed)
         {
@@ -35,7 +38,7 @@ public class RecessedButtonRenderer : RendererPARCEL
                     Top = rect.Top + Math.Abs((float)parent.Offset),
                     Left = rect.Left ,
                     Width = rect.Width ,
-                    Bottom = rect.Bottom 
+                    Bottom = rect.Bottom + Math.Abs((float)parent.Offset)
 
                 },
                 parent.ButtonShape,
@@ -55,6 +58,7 @@ public class RecessedButtonRenderer : RendererPARCEL
         }
 
         Designer.OutlineShape(canvas, rect, parent.ButtonShape, parent.StrokeColor.Color, (float)parent.StrokeWidth);
+
 
     }
 
