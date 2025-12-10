@@ -197,7 +197,8 @@
                                       StrokeColor="#0D47A1"
                                       OffsetColor="#1565C0"
                                       PressedColor="#1565C0"
-                                      VerticalOptions="Center">
+                                      VerticalOptions="Center"
+                                      IsPressed="True">
                     <parcels:ButtonPARCEL.ButtonColor>
                         <LinearGradientBrush EndPoint="0,1">
                             <GradientStop Color="#90CAF9" Offset="0.0"/>
@@ -247,17 +248,21 @@
             <HorizontalStackLayout HorizontalOptions="Center"
                                    Spacing="15">
 
-                <parcels:ButtonPARCEL x:Name="RecessedButton"
-                                      WidthRequest="100"
-                                      HeightRequest="100"
+                <parcels:ButtonPARCEL x:Name="RecessedButtonLeft"
+                                      WidthRequest="75"
+                                      HeightRequest="75"
                                       ButtonShape="{Ellipse}"
-                                      Offset="-5"
+                                      Offset="-3"
                                       StrokeWidth="1"
-                                      ButtonColor="#FFAEAEAE"
+                                      ButtonColor="#FFCBCBCB"
                                       StrokeColor="#FF333333"
                                       OffsetColor="#FF4F4F4F"
-                                      PressedColor="#FF8B8B8B"
+                                      PressedColor="#FFAEAEAE"
                                       VerticalOptions="Center">
+                <parcels:ButtonPARCEL.ButtonContent>
+                    <Image Source="icon_darkmode.png"
+                           Scale="0.63"/>
+                </parcels:ButtonPARCEL.ButtonContent>
                 <parcels:ButtonPARCEL.Triggers>
                     <Trigger TargetType="parcels:ButtonPARCEL"
                                 Property="IsPressed"
@@ -277,7 +282,8 @@
                 </parcels:ButtonPARCEL.Shadow>
             </parcels:ButtonPARCEL>
 
-                <parcels:ButtonPARCEL WidthRequest="100"
+                <parcels:ButtonPARCEL x:Name="RoundRaisedButton"
+                                      WidthRequest="100"
                                       HeightRequest="100"
                                       ButtonShape="{Ellipse}"
                                       Offset="5"
@@ -300,6 +306,36 @@
                             TextColor="#FAFAFA"
                             FontSize="16"/>
                 </parcels:ButtonPARCEL.ButtonContent>
+                <parcels:ButtonPARCEL.Triggers>
+                    <Trigger TargetType="parcels:ButtonPARCEL"
+                                Property="IsPressed"
+                                Value="True">
+                        <Setter Property="Shadow">
+                            <Setter.Value>
+                                <Shadow Opacity="0"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </parcels:ButtonPARCEL.Triggers>
+                <parcels:ButtonPARCEL.Shadow>
+                    <Shadow Brush="Black"
+                            Radius="1"
+                            Offset="0,0"
+                            Opacity="1"/>
+                </parcels:ButtonPARCEL.Shadow>
+            </parcels:ButtonPARCEL>
+
+                <parcels:ButtonPARCEL x:Name="RecessedButtonRight"
+                                      WidthRequest="75"
+                                      HeightRequest="75"
+                                      ButtonShape="{Ellipse}"
+                                      Offset="-3"
+                                      StrokeWidth="1"
+                                      ButtonColor="#FFCBCBCB"
+                                      StrokeColor="#FF333333"
+                                      OffsetColor="#FF4F4F4F"
+                                      PressedColor="#FFAEAEAE"
+                                      VerticalOptions="Center">
                 <parcels:ButtonPARCEL.Triggers>
                     <Trigger TargetType="parcels:ButtonPARCEL"
                                 Property="IsPressed"

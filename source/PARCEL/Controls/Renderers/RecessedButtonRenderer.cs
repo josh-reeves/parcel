@@ -59,7 +59,6 @@ public class RecessedButtonRenderer : RendererPARCEL
 
         Designer.OutlineShape(canvas, rect, parent.ButtonShape, parent.StrokeColor.Color, (float)parent.StrokeWidth);
 
-
     }
 
     #endregion
